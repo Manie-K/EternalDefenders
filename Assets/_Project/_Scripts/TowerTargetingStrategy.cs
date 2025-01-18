@@ -11,7 +11,12 @@ namespace EternalDefenders
             this.tower = tower;
         }
 
-        public abstract void Validate();
-        public abstract void FindTarget();
+        
+        //<summary>
+        //Validate if the target is still in range, etc.
+        //If it is invalid, it returns null, if not, it doesn't change anything.
+        //</summary>
+        public abstract bool Validate(EnemyController target);
+        public abstract EnemyController FindTarget();
     }
 }

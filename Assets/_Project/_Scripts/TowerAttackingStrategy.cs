@@ -6,7 +6,7 @@ namespace EternalDefenders
     public abstract class TowerAttackingStrategy : ScriptableObject
     {
         protected TowerController tower;
-
+        
         public virtual void Init(TowerController tower)
         {
             this.tower = tower;
