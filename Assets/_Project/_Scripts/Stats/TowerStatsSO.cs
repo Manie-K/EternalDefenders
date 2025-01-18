@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EternalDefenders
 {
-    [CreateAssetMenu(fileName = "TowerStatsSO", menuName = "EternalDefenders/Stats/TowerStatsSO")]
+    [CreateAssetMenu(fileName = "TowerStats", menuName = "EternalDefenders/Stats/TowerStats")]
     public class TowerStatsSO : ScriptableObject
     {
         public int health;
@@ -11,14 +11,15 @@ namespace EternalDefenders
         public int range;
         public int cooldown;
         
-        public Dictionary<StatType, int> GetStats()
+        public Dictionary<StatType, Stats.Stat> GetStats()
         {
-            return new Dictionary<StatType, int>
+            return new Dictionary<StatType, Stats.Stat>
             {
-                {StatType.Health, health},
-                { StatType.Damage, damage},
-                { StatType.Range, range},
-                { StatType.Cooldown, cooldown}
+                { StatType.Health, new Stats.Stat(health) },
+                { StatType.MaxHealth, new Stats.Stat(health) },
+                { StatType.Damage, new Stats.Stat(damage) },
+                { StatType.Range, new Stats.Stat(range) },
+                { StatType.Cooldown, new Stats.Stat(cooldown) }
             };
         }
     }
