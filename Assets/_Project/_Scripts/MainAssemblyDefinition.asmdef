@@ -1,0 +1,16 @@
+{
+    "name": "MainAssemblyDefinition",
+    "rootNamespace": "EternalDefenders",
+    "references": [
+        "GUID:b9ade9c6b600ffb4a97496af7cac4421"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

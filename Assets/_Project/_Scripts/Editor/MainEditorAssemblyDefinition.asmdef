@@ -1,0 +1,19 @@
+{
+    "name": "MainEditorAssemblyDefinition",
+    "rootNamespace": "EternalDefendersPrototype.Editor",
+    "references": [
+        "GUID:8c0fce9c20ce4bc449ff1e3c0340a420",
+        "GUID:b9ade9c6b600ffb4a97496af7cac4421"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
