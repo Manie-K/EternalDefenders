@@ -2,8 +2,8 @@
 
 namespace EternalDefenders
 {
-    [CreateAssetMenu(fileName = "SphereStrategy", menuName = "EternalDefenders/Tower/TargetingStrategies/SphereStrategy")]
-    public class TowerSphereTargetingStrategy : TowerTargetingStrategy
+    [CreateAssetMenu(fileName = "SphereStrategy", menuName = "EternalDefenders/Tower/TargetStrategies/SphereStrategy")]
+    public class TowerSphereTargetStrategy : TowerTargetStrategy
     {
         readonly Collider[] _results = new Collider[32];
         public override bool Validate(EnemyController target)

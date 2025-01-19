@@ -2,7 +2,7 @@
 
 namespace EternalDefenders
 {
-    public abstract class TowerTargetingStrategy : ScriptableObject
+    public abstract class TowerTargetStrategy : ScriptableObject
     {
         protected TowerController tower;
 

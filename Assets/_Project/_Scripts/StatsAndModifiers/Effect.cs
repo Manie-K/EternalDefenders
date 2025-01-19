@@ -3,8 +3,8 @@ using UnityEngine;
 
 namespace EternalDefenders
 {
-    [CreateAssetMenu(fileName = "EffectSO", menuName = "EternalDefenders/Effect")]
-    public class EffectSO : ScriptableObject
+    [CreateAssetMenu(fileName = "Effect", menuName = "EternalDefenders/Effect")]
+    public class Effect : ScriptableObject
     {
         public List<Modifier> modifiers;
         public ParticleSystem particleSystem;

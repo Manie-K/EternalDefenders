@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EternalDefenders
 {
-    [CreateAssetMenu(fileName = "InstantModifier", menuName = "EternalDefenders/Modifiers/OverTimeModifier")]
+    [CreateAssetMenu(fileName = "OverTimeModifier", menuName = "EternalDefenders/Modifiers/OverTimeModifier")]
     public class OverTimeModifier : InstantModifier
     {
         public float tickRate;

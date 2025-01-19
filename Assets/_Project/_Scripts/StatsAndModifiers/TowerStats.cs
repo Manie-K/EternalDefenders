@@ -4,7 +4,7 @@ using UnityEngine;
 namespace EternalDefenders
 {
     [CreateAssetMenu(fileName = "TowerStats", menuName = "EternalDefenders/Stats/TowerStats")]
-    public class TowerStatsSO : ScriptableObject
+    public class TowerStats : ScriptableObject
     {
         public int health;
         public int damage;

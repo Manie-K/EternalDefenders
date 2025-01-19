@@ -1,6 +1,6 @@
 ﻿namespace EternalDefenders
 {
-    public class CountdownTimer : Timer //Implement Disposing of the timer
+    public class CountdownTimer : Timer //TODO: Implement Disposing of the timer
     {
         public override bool IsFinished => currentTime <= 0;
         public CountdownTimer(float value) : base(value)
