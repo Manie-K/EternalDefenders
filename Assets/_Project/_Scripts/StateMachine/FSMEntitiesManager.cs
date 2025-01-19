@@ -27,19 +27,19 @@ namespace EternalDefenders
             {
                 entity.OnUpdate();
             });*/
-            
-            foreach (var entity in _managedEntities)
+
+            for(int i = 0; i < _managedEntities.Count; i++)
             {
-                entity.OnUpdate();
+                _managedEntities[i].OnUpdate();
             }
         }
         
         void FixedUpdate()
         {
             //In the future, we can use Parallel.ForEach to optimize the fixed update process
-            foreach (var entity in _managedEntities)
+            for(int i = 0; i < _managedEntities.Count; i++)
             {
-                entity.OnFixedUpdate();
+                _managedEntities[i].OnFixedUpdate();
             }
         }
     }

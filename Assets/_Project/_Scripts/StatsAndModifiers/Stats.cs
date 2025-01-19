@@ -129,7 +129,7 @@ namespace EternalDefenders
             {
                 return 0;
             }
-            EnforceStatsDependencies(statType);
+            //EnforceStatsDependencies(statType); //max health, max shield etc need to >= current health, current shield
             return _stats[statType].CurrentValue;
         }
 

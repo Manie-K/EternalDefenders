@@ -18,7 +18,33 @@
             }
             
             //effect.particleSystem.Play();
+            
             //Example usage ^ shown above
+            
+            if(enemyStats.GetStat(StatType.Health) <= 0)
+            {
+                target.Die();
+            }
+        }
+        
+        public static void PerformAttack(EnemyController attacker, TowerController target) 
+        {
+            Stats towerStats = target.Stats;
+            Stats enemyStats = attacker.Stats;
+            Effect effect = attacker.Effect;
+
+            towerStats.SetStat(StatType.Health, -enemyStats.GetStat(StatType.Damage));
+            
+            foreach(var modifier in effect.modifiers)
+            {
+                towerStats.ApplyModifier(modifier);
+            }
+            
+            //effect.particleSystem.Play();
+            
+            //Example usage ^ shown above
+            
+            //check if tower is dead
         }
     }
 }
