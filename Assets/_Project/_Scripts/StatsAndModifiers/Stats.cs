@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PlasticGui.WorkspaceWindow.PendingChanges;
+using UnityEngine;
 
 namespace EternalDefenders
 {
@@ -48,6 +49,7 @@ namespace EternalDefenders
 
             public void UpdateModifiers(float dt)
             {
+                List<Modifier> toRemove = new List<Modifier>(10);
                 _isDirty = false;
                 _modifiers.ForEach(m =>
                 {
@@ -58,9 +60,13 @@ namespace EternalDefenders
                     }
                     if(m.IsFinished)
                     {
-                        RemoveModifier(m);
+                        toRemove.Add(m);
                     }
                 });
+                for(int i = 0; i < toRemove.Count; i++)
+                {
+                    RemoveModifier(toRemove[i]);
+                }
             }
 
             public void ApplyModifier(Modifier modifier)
@@ -74,6 +80,10 @@ namespace EternalDefenders
             void RemoveModifier(Modifier modifier)
             {
                 //TODO: change value back to original ???
+                if(modifier.persistAfterFinish)
+                {
+                    _baseValue -= modifier.value;
+                }
                 _modifiers.Remove(modifier);
                 _isDirty = true;
             }
@@ -97,7 +107,8 @@ namespace EternalDefenders
                         percentage += mod.value;
                     }    
                 }
-                value *= (percentage / 100);
+                float tempVal = value + value * (percentage * 0.01f);
+                value = Mathf.RoundToInt(tempVal);
                 
                 _currentValue = value;
                 _isDirty = false;

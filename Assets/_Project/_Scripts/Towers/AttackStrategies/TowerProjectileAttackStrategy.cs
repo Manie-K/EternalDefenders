@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace EternalDefenders
 {
@@ -12,7 +11,15 @@ namespace EternalDefenders
             Debug.Log("Projectile attack!");
             
             var projectile = Instantiate(projectilePrefab, tower.AttackPoint.position, Quaternion.identity);
-            //projectile.Init();
+            projectile.Launch(target);
+            
+            //I'm not sure if this works when second attack is performed before first projectile hits,
+            //but let's leave it for now
+            projectile.OnTargetHit += (enemy) =>
+            {
+                DamageCalculator.PerformAttack(tower, enemy);
+            };
         }
+        
     }
 }

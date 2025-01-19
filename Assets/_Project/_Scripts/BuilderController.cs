@@ -5,7 +5,7 @@ namespace EternalDefenders
 {
     public class BuilderController : Singleton<BuilderController>
     {
-        [SerializeField] GameObject buildingPrefab;
+        [SerializeField] TowerController towerPrefab;
         bool _isEnabled = false;
         void Update()
         {
@@ -22,7 +22,7 @@ namespace EternalDefenders
 
                 if (tile.CanBuild())
                 {
-                    tile.BuildOnThisTile(buildingPrefab);
+                    tile.BuildOnThisTile(towerPrefab);
                 }
             }
         }

@@ -7,18 +7,18 @@ namespace EternalDefenders
     {
         [SerializeField] bool canBuild = true;
         
-        public GameObject Building { get; private set; }
+        public TowerController Building { get; private set; }
         
         
         public bool CanBuild() => canBuild && Building is null;
-        public void BuildOnThisTile(GameObject building)
+        public void BuildOnThisTile(TowerController building)
         {
             if (!CanBuild())
             {
                 Debug.Log("Cannot build on this tile");
                 return;
             }
-            Building = Instantiate(building, transform.position.With(y:2f), Quaternion.identity);
+            Building = Instantiate(building, transform.position, Quaternion.identity);
         }
     }
 }

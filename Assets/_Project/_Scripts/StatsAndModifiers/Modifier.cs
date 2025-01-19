@@ -7,6 +7,7 @@ namespace EternalDefenders
     {
         public StatType statType;
         public ModifierType modifierType;
+        public bool persistAfterFinish = false;
         public float limitedDurationTime = 0;
         public int value;
         public bool IsFinished => _isFinished;

@@ -9,18 +9,21 @@ namespace EternalDefenders
         [SerializeField] Effect attackEffect;
         [SerializeField] TowerTargetStrategy targetStrategy;
         [SerializeField] TowerAttackStrategy attackStrategy;
-        [SerializeField] Transform attackPoint;
         public Stats Stats { get; private set; }
         public Effect Effect { get; private set; }
-        public Transform AttackPoint => attackPoint;
+        public Transform AttackPoint => _attackPoint;
         
         EnemyController _target;
         CountdownTimer _cooldownTimer;
+        Transform _attackPoint;
         
         void Start()
         {
             Stats = new Stats(statsConfig.GetStats());
             Effect = attackEffect;
+            
+            //TODO: This is a hardcoded value, we should find a way to get the attack point dynamically.
+            _attackPoint = transform.GetChild(1);
             
             targetStrategy.Init(this);
             attackStrategy.Init(this);
@@ -39,7 +42,7 @@ namespace EternalDefenders
             
             if(!targetStrategy.Validate(_target))
             {
-                targetStrategy.FindTarget();
+                _target = targetStrategy.FindTarget();
             }
             if(_target != null)
             {

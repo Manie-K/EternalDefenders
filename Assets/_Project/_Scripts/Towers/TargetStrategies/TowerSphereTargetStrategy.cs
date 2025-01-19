@@ -8,7 +8,8 @@ namespace EternalDefenders
         readonly Collider[] _results = new Collider[32];
         public override bool Validate(EnemyController target)
         {
-            bool targetIsValid = (target != null);
+            if(target == null) return false;
+            bool targetIsValid = true;
             
             if(Vector3.Distance(tower.transform.position, target.transform.position) > tower.Stats.GetStat(StatType.Range)) 
                 targetIsValid = false;

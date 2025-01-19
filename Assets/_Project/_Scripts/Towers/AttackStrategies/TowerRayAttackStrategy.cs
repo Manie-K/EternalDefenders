@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace EternalDefenders
 {
@@ -9,6 +8,7 @@ namespace EternalDefenders
         public override void Attack(EnemyController target)
         {
             Debug.Log("Ray attack!");
+            Debug.LogError("Not yet implemented!");
         }
     }
 }
