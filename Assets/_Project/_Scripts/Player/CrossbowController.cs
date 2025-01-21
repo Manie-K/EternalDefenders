@@ -36,17 +36,10 @@ namespace EternalDefendersPrototype
         {
             crossbow.SetEnemyTag(enemyTag);
             crossbow.Reload();
-
-            //Cursor.visible = false;
-            //Cursor.lockState = CursorLockMode.Locked;
         }
 
         void Update()
         {
-            //mouseY -= Input.GetAxis("Mouse Y") * rotateSpeed;
-            //mouseY = Mathf.Clamp(mouseY, minRotation, maxRotation);
-            //crossbow.transform.localRotation = Quaternion.Euler(mouseY, crossbow.transform.localEulerAngles.y, crossbow.transform.localEulerAngles.z);
-
             if (Input.GetMouseButtonDown(0))
             {
                 fire = true;
