@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb78f5b8cc3541a4bb79d5cc06b58f81, type: 3}
   m_Name: TargetStrategy
   m_EditorClassIdentifier: 
+  priorityTarget: 2

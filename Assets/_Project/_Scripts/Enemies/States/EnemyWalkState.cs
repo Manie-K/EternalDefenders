@@ -21,7 +21,7 @@ namespace EternalDefenders
         {
             base.OnEnter();
             animator.CrossFade(_walkHash, CrossFadeDuration);
-            Vector3 destination = _enemyController.Target.transform.position + Random.insideUnitSphere.With(y:0) * 2;
+            Vector3 destination = ((MonoBehaviour)_enemyController.Target).transform.position + Random.insideUnitSphere.With(y:0) * 2;
             _navMeshAgent.SetDestination(destination);
         }
 

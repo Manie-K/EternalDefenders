@@ -7,12 +7,13 @@ using UnityEngine.Serialization;
 
 namespace EternalDefenders
 {
-    public class PlayerController : Singleton<PlayerController>
+    public class PlayerController : Singleton<PlayerController>, IEnemyTarget
     {
         [SerializeField] Transform cameraTransform;
         [SerializeField] float speed = 6f;
         [SerializeField] float turnSmoothTime = 0.01f;
         
+        public Stats Stats { get; } //sorki ale interface musi byc zaimplementowany
         public event Action OnPlayerDeath;
         
         CharacterController _controller;
@@ -103,5 +104,6 @@ namespace EternalDefenders
                 }
             }
         }
+
     }
 }

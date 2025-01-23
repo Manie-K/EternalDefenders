@@ -9,7 +9,7 @@ namespace EternalDefenders
         {
             enemy = controller;
         }
-        public abstract void Attack(TowerController target);
-        public abstract bool ValidateTarget(TowerController target);
+        public abstract void Attack(IEnemyTarget target);
+        public abstract bool ValidateTarget(IEnemyTarget target);
     }
 }

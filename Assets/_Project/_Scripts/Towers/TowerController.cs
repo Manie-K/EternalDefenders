@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 namespace EternalDefenders
 {
-    public class TowerController : MonoBehaviour
+    public class TowerController : MonoBehaviour, IEnemyTarget
     {
         [SerializeField] TowerStats statsConfig;
         [SerializeField] Effect attackEffect;

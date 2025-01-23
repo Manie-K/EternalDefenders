@@ -12,7 +12,7 @@ namespace EternalDefenders
         [SerializeField] EnemyAttackStrategy attackStrategy;
         public Stats Stats { get; private set; }
         public Effect Effect { get; private set; }
-        public TowerController Target { get; private set; }
+        public IEnemyTarget Target { get; private set; }
 
         public event Action OnDeath;
         
@@ -20,18 +20,13 @@ namespace EternalDefenders
 
         void Awake()
         {
-            PickNewTarget();
-        }
-
-        void Start()
-        {
+            targetStrategy.Init(this);
+            attackStrategy.Init(this);
             Stats = new Stats(statsConfig.GetStats());
             Effect = attackEffect;
             
-            targetStrategy.Init(this);
-            attackStrategy.Init(this);
+            PickNewTarget();
         }
-
         void Update()
         {
             Stats.UpdateStatsModifiers(Time.deltaTime);
