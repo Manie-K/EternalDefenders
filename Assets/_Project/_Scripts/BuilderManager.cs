@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace EternalDefenders
 {
-    public class BuilderController : Singleton<BuilderController>
+    public class BuilderManager : Singleton<BuilderManager>
     {
         [SerializeField] TowerController towerPrefab;
         bool _isEnabled = false;

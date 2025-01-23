@@ -6,7 +6,9 @@ namespace EternalDefenders
 {
     public class MapManager : MonoBehaviour
     {
-        [SerializeField] List<GameObject> enemyPrefabs;
+        //TODO make good data for containing spawning data
+        //also should be singleton?
+        [SerializeField] List<EnemyController> enemyPrefabs;
 
         SpawnPoint[] _enemySpawnPoints;
         Coroutine _enemySpawnCoroutine;

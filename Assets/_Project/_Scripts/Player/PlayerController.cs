@@ -7,11 +7,13 @@ using UnityEngine.Serialization;
 
 namespace EternalDefenders
 {
-    public class PlayerController: MonoBehaviour
+    public class PlayerController : Singleton<PlayerController>
     {
         [SerializeField] Transform cameraTransform;
         [SerializeField] float speed = 6f;
         [SerializeField] float turnSmoothTime = 0.01f;
+        
+        public event Action OnPlayerDeath;
         
         CharacterController _controller;
         Transform _playerTransform;
@@ -38,6 +40,8 @@ namespace EternalDefenders
         {
             ChangeDirection();
             MovePlayer();
+            
+            //if(_stats.GetStat(StatType.Health) <= 0) OnPlayerDeath?.Invoke();
         }
 
         void ChangeDirection()

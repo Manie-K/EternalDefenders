@@ -1,12 +1,10 @@
+using MG_Utilities;
 using UnityEngine;
 
 namespace EternalDefenders
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : Singleton<GameManager>
     {
-        private void Awake()
-        {
-            DontDestroyOnLoad(gameObject);
-        }
+        //TODO everything 
     }
 }

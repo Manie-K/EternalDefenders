@@ -4,7 +4,7 @@ namespace EternalDefenders
 {
     public class SpawnPoint : MonoBehaviour
     {
-        public void Spawn(GameObject prefab)
+        public void Spawn(EnemyController prefab)
         {
             Instantiate(prefab, gameObject.transform.position, Quaternion.identity);
         }
