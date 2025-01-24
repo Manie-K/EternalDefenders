@@ -9,8 +9,8 @@
             Stats enemyStats = target.Stats;
             Effect effect = attacker.Effect;
 
-            enemyStats.SetStat(StatType.Health, -towerStats.GetStat(StatType.Damage));
-            towerStats.SetStat(StatType.Health, -enemyStats.GetStat(StatType.ReturnDamage));
+            enemyStats.ChangeStat(StatType.Health, -towerStats.GetStat(StatType.Damage));
+            towerStats.ChangeStat(StatType.Health, -enemyStats.GetStat(StatType.ReturnDamage));
             
             foreach(var modifier in effect.modifiers)
             {
@@ -33,7 +33,7 @@
             Stats enemyStats = attacker.Stats;
             Effect effect = attacker.Effect;
 
-            towerStats.SetStat(StatType.Health, -enemyStats.GetStat(StatType.Damage));
+            towerStats.ChangeStat(StatType.Health, -enemyStats.GetStat(StatType.Damage));
             
             foreach(var modifier in effect.modifiers)
             {
