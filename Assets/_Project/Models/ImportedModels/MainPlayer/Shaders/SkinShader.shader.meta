@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 02194ff69459f864c9a1d5e3db15b129
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 29559
+  packageName: Sci-Fi Soldier
+  packageVersion: 1.2
+  assetPath: Assets/Yurowm/Shaders/SkinShader.shader
+  uploadId: 62369

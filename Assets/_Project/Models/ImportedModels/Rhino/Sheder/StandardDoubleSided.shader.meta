@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 42646a1bcaa39704488463bef6431695
+timeCreated: 1467184652
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 66109
+  packageName: Fantasy Rhino
+  packageVersion: 1.0
+  assetPath: Assets/Rhino/Sheder/StandardDoubleSided.shader
+  uploadId: 124902

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c93855a59935d814ea0ea724f8bc6133
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 89243
+  packageName: Character Monsters X
+  packageVersion: 3.0
+  assetPath: Assets/Creature_Monsters_X/Monster_X.controller
+  uploadId: 196688

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c3b1e43eca5a9d24ab5ad5c3b825d40f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 175607
+  packageName: Drone Guard
+  packageVersion: 1.0
+  assetPath: Assets/Drone_Guard/Mateial/Drone_Guard.mat
+  uploadId: 381488

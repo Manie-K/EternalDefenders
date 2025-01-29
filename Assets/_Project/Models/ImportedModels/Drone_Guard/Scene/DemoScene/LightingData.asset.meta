@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 3f64fedef9cc12647adea6b9a4b9058a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 112000000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 175607
+  packageName: Drone Guard
+  packageVersion: 1.0
+  assetPath: Assets/Drone_Guard/Scene/DemoScene/LightingData.asset
+  uploadId: 381488
