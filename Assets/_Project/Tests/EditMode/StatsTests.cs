@@ -19,6 +19,26 @@ public class StatsTests
     }
 
     [Test]
+    public void StatSetBaseValueTest()
+    {
+        int value = 23;
+        int newValue = 37;
+        Stats.Stat stat = new(value);
+        stat.BaseValue = newValue;
+        Assert.AreEqual(newValue, stat.BaseValue);
+    }
+
+    [Test]
+    public void StatSetCurrentValueTest()
+    {
+        int value = 23;
+        int newValue = 37;
+        Stats.Stat stat = new(value);
+        stat.CurrentValue = newValue;
+        Assert.AreEqual(newValue, stat.CurrentValue);
+    }
+
+    [Test]
     public void StatsAllInitTest()
     {
         int value = 100;
