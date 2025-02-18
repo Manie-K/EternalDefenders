@@ -167,7 +167,7 @@ namespace EternalDefenders
                 return;
             }
             
-            _stats[statType].CurrentValue += value;
+            _stats[statType].CurrentValue = value;
         }
 
         //Called every frame - need to update modifiers' timers, need to keep this method light
