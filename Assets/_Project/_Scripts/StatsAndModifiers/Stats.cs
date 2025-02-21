@@ -157,8 +157,9 @@ namespace EternalDefenders
             {
                 return;
             }
-            
+
             _stats[statType].CurrentValue += value;
+
         }
         public void SetStat(StatType statType, int value)
         {

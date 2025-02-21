@@ -1,0 +1,3 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <EternalDefenders.Speedometer progress="51" style="align-items: stretch; justify-content: flex-start; align-self: auto; flex-direction: column; width: 207px; height: 109px; align-content: flex-start; flex-wrap: nowrap; position: relative; top: 75%; bottom: auto; -unity-text-align: upper-left; flex-basis: auto; left: 1%;" />
+</engine:UXML>
