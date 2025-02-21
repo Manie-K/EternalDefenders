@@ -130,7 +130,7 @@ namespace EternalDefenders
                 return 0;
             }
             //EnforceStatsDependencies(statType); //max health, max shield etc need to >= current health, current shield
-            return _stats[statType].BaseValue;
+            return _stats[statType].CurrentValue;
         }
 
         void EnforceStatsDependencies(StatType statType)
@@ -168,7 +168,7 @@ namespace EternalDefenders
                 return;
             }
             
-            _stats[statType].BaseValue = value;
+            _stats[statType].CurrentValue = value;
         }
 
         //Called every frame - need to update modifiers' timers, need to keep this method light
