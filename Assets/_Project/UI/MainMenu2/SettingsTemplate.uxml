@@ -1,0 +1,9 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/MainMenu2/MenuStyles.uss?fileID=7433441132597879392&amp;guid=b5c865e8413ff1b4db81640d14ccc593&amp;type=3#MenuStyles" />
+    <engine:VisualElement name="Wrapper" style="flex-grow: 1;">
+        <engine:Button text="Setting A" class="menu-button" />
+        <engine:Button text="Setting B" class="menu-button" />
+        <engine:Button text="Setting C" class="menu-button" />
+        <engine:Button text="Back" name="BackButton" class="menu-button" />
+    </engine:VisualElement>
+</engine:UXML>

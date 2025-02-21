@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/MainMenu/main-menu.uss?fileID=7433441132597879392&amp;guid=2144cdcb90127e142931e8720604cc64&amp;type=3#main-menu" />
+    <ui:VisualElement name="Panel" class="panel" style="flex-grow: 1; background-color: rgb(107, 167, 207);">
+        <ui:VisualElement name="Container" class="menu" style="flex-grow: 1; align-self: auto;">
+            <ui:Label text="Eternal Defenders" style="align-items: auto; align-self: center; width: auto; font-size: 70px; color: rgb(0, 0, 0); -unity-font-definition: resource(&apos;FlatSkin/Font/Roboto-Light&apos;);" />
+            <ui:Button text="Play" name="PlayButton" class="unity-button" style="margin-top: 100px;" />
+            <ui:Button text="Options" name="OptionsButton" class="unity-button" />
+            <ui:Button text="Quit" name="QuitButton" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

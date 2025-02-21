@@ -4,6 +4,11 @@ using System.Collections;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UIElements;
+using HudElements;
+using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using Codice.Client.BaseCommands;
 
 namespace EternalDefenders
 {
@@ -12,8 +17,12 @@ namespace EternalDefenders
         [SerializeField] Transform cameraTransform;
         [SerializeField] float speed = 6f;
         [SerializeField] float turnSmoothTime = 0.01f;
-        
-        public Stats Stats { get; } //sorki ale interface musi byc zaimplementowany
+
+        public UIDocument hud;
+        private HealthBar healthbar;
+        private HealthBar shieldbar;
+
+        public Stats Stats { get; set; } //sorki ale interface musi byc zaimplementowany 
         public event Action OnPlayerDeath;
         
         CharacterController _controller;
@@ -35,14 +44,45 @@ namespace EternalDefenders
         void Start()
         {
             ChangeAnimation(_idleHash);
+
+            var root = hud.rootVisualElement;
+            healthbar=root.Q<HealthBar>("HealthBar");
+            shieldbar = root.Q<HealthBar>("ShieldBar");
+
+
+            var initialStats = new Dictionary<StatType, Stats.Stat>
+            {
+                { StatType.Health, new Stats.Stat(100) }, 
+                { StatType.MaxHealth, new Stats.Stat(100) }, 
+                { StatType.Shield, new Stats.Stat(50) },   
+                { StatType.MaxShield, new Stats.Stat(50) } 
+            };
+
+            // Tworzymy obiekt Stats na podstawie powy¿szego s³ownika
+            Stats = new Stats(initialStats);
+
+            if (healthbar != null && Stats.HasStat(StatType.Health))
+            {
+                int currentHealth = Stats.GetStat(StatType.Health);
+                int baseHealth = Stats.GetStat(StatType.MaxHealth);
+                healthbar.value = (float) currentHealth / baseHealth;
+            }
+            if (shieldbar != null && Stats.HasStat(StatType.Shield))
+            {
+                int currentShield = Stats.GetStat(StatType.Shield);
+                int baseShield = Stats.GetStat(StatType.MaxShield);
+                shieldbar.value = (float) currentShield / baseShield;
+            }
         }
 
         void Update()
         {
             ChangeDirection();
             MovePlayer();
-            
+
             //if(_stats.GetStat(StatType.Health) <= 0) OnPlayerDeath?.Invoke();
+            if (healthbar != null) healthbar.value = (float) Stats.GetStat(StatType.Health) / Stats.GetStat(StatType.MaxHealth);           
+            if (shieldbar != null) shieldbar.value = (float) Stats.GetStat(StatType.Shield) / Stats.GetStat(StatType.MaxShield);
         }
 
         void ChangeDirection()
