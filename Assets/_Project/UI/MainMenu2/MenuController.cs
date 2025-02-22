@@ -45,7 +45,7 @@ namespace EternalDefenders
 
         private void PlayButtonOnClicked()
         {
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("GameWorld");
         }
 
         private void ExitButtonOnClicked()
