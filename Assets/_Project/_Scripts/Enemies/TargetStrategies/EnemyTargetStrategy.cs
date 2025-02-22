@@ -14,6 +14,7 @@ namespace EternalDefenders
         [SerializeField] protected PriorityTarget priorityTarget;
         
         protected EnemyController enemy;
+        
         protected PlayerController player;
         protected MainBaseController mainBase;
 

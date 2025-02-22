@@ -10,6 +10,6 @@ namespace EternalDefenders
             enemy = controller;
         }
         public abstract void Attack(IEnemyTarget target);
-        public abstract bool ValidateTarget(IEnemyTarget target);
+        public abstract bool TargetIsValid(IEnemyTarget target);
     }
 }

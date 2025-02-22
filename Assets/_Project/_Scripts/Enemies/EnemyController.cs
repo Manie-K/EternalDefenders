@@ -14,7 +14,7 @@ namespace EternalDefenders
         public Effect Effect { get; private set; }
         public IEnemyTarget Target { get; private set; }
 
-        public event Action OnDeath;
+        public static event EventHandler OnDeath;
         
         CountdownTimer _cooldownTimer;
 
@@ -44,7 +44,7 @@ namespace EternalDefenders
         
         public IEnumerator Attack()
         {
-            while(attackStrategy.ValidateTarget(Target))
+            while(attackStrategy.TargetIsValid(Target))
             {
                 attackStrategy.Attack(Target);
                 yield return new WaitForSeconds(Stats.GetStat(StatType.Cooldown));
@@ -52,7 +52,7 @@ namespace EternalDefenders
         }
         public void Die()
         {
-            OnDeath?.Invoke();
+            OnDeath?.Invoke(this, EventArgs.Empty);
             Debug.Log("I'm dead");
         }
     }

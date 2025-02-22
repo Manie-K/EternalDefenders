@@ -21,7 +21,8 @@ namespace EternalDefenders
         {
             base.OnEnter();
             animator.CrossFade(_walkHash, CrossFadeDuration);
-            Vector3 destination = ((MonoBehaviour)_enemyController.Target).transform.position + Random.insideUnitSphere.With(y:0) * 2;
+            Vector3 destination = ((MonoBehaviour)_enemyController.Target).transform.position + Random.insideUnitSphere.With(y:0) 
+                * _enemyController.Stats.GetStat(StatType.Range);
             _navMeshAgent.SetDestination(destination);
         }
 
@@ -31,6 +32,8 @@ namespace EternalDefenders
             
             if(_navMeshAgent.velocity.normalized != Vector3.zero)
                 brain.transform.forward = _navMeshAgent.velocity.normalized;
+            
+            //TODO: After some time, check if there is no better target etc.
         }
 
         public bool HasReachedDestination() => !_navMeshAgent.pathPending &&

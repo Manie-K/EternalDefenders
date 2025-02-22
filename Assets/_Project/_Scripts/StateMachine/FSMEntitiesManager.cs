@@ -20,6 +20,10 @@ namespace EternalDefenders
             _managedEntities.Remove(entity);
         }
         
+        void Start()
+        {
+            EnemyController.OnDeath += ((sender, args) => UnregisterEntity((StateMachineBrain)sender));
+        }
         void Update()
         {
             /* In the future, we can use Parallel.ForEach to optimize the update process

@@ -8,15 +8,18 @@ namespace EternalDefenders
     {
         //TODO make good data for containing spawning data
         //also should be singleton?
+        [SerializeField] bool spawningEnabled = true;
         [SerializeField] List<EnemyController> enemyPrefabs;
-
+        
         SpawnPoint[] _enemySpawnPoints;
         Coroutine _enemySpawnCoroutine;
 
         void Start()
         {
             _enemySpawnPoints = FindObjectsByType<SpawnPoint>(FindObjectsSortMode.InstanceID);
-            _enemySpawnCoroutine = StartCoroutine(SpawnEnemies());
+
+            if (spawningEnabled)
+                _enemySpawnCoroutine = StartCoroutine(SpawnEnemies());
         }
 
         IEnumerator SpawnEnemies()

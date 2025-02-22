@@ -16,7 +16,6 @@ namespace EternalDefenders
             animator.CrossFade(_attackHash, CrossFadeDuration);
             brain.StartAttack();
         }
-        
         public override void OnExit()
         {
             base.OnExit();

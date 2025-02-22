@@ -1,4 +1,6 @@
-﻿namespace EternalDefenders
+﻿using UnityEngine;
+
+namespace EternalDefenders
 {
     public static class DamageCalculator
     {
@@ -45,6 +47,11 @@
             //Example usage ^ shown above
             
             //check if tower is dead
+        }
+        
+        public static void PerformAttack(EnemyController attacker, MainBaseController target) 
+        {
+            Debug.Log("Base is being attacked!");
         }
     }
 }
