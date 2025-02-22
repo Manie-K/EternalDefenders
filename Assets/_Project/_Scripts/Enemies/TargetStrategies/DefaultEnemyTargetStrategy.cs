@@ -70,15 +70,15 @@ namespace EternalDefenders
         }
 
         bool IsMainBaseValid() => Vector3.Distance(enemy.transform.position, mainBase.transform.position) <=
-                                  enemy.Stats.GetStat(StatType.Range);
+                                  enemy.Stats.GetStat(StatType.SeekingRange);
         
         bool IsPlayerValid() => Vector3.Distance(enemy.transform.position, player.transform.position) <=
-                               enemy.Stats.GetStat(StatType.Range);
+                               enemy.Stats.GetStat(StatType.SeekingRange);
         
         TowerController AreTowersValid()
         { 
             int foundCount = Physics.OverlapSphereNonAlloc(enemy.transform.position,
-                enemy.Stats.GetStat(StatType.Range), _colliders);
+                enemy.Stats.GetStat(StatType.SeekingRange), _colliders);
 
             for(int i = 0; i < foundCount; i++)
             {

@@ -14,7 +14,7 @@ namespace EternalDefenders
         public Effect Effect { get; private set; }
         public IEnemyTarget Target { get; private set; }
 
-        public static event EventHandler OnDeath;
+        public static event Action OnDeath;
         
         CountdownTimer _cooldownTimer;
 
@@ -36,7 +36,7 @@ namespace EternalDefenders
             }
         }
 
-        //It should be called from EnemyBrain component.
+        //Don't know when to call this method xd
         public void PickNewTarget()
         {
             Target = targetStrategy.FindTarget();
@@ -52,8 +52,9 @@ namespace EternalDefenders
         }
         public void Die()
         {
-            OnDeath?.Invoke(this, EventArgs.Empty);
+            OnDeath?.Invoke();
             Debug.Log("I'm dead");
+            Destroy(gameObject);
         }
     }
 }

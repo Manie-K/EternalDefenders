@@ -15,8 +15,12 @@ namespace EternalDefenders
         protected override void Start()
         {
             _enemyController = GetComponent<EnemyController>();
-            base.Start();            
+            base.Start();           
+            
+            navMeshAgent.speed = _enemyController.Stats.GetStat(StatType.Speed);
             FSMEntitiesManager.Instance.RegisterEntity(this);
+            
+            EnemyController.OnDeath += () => FSMEntitiesManager.Instance?.UnregisterEntity(this);
         }
         protected override void SetUpStateMachine()
         {

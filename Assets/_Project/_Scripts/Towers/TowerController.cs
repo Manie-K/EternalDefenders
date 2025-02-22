@@ -71,6 +71,7 @@ namespace EternalDefenders
         void Die()
         {
             OnTowerDestroyed?.Invoke(this);
+            Debug.Log("Tower destroyed");
             Destroy(gameObject);
         }
     }

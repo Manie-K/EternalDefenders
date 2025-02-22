@@ -10,6 +10,7 @@
         Shield,
         MaxShield,
         Speed,
-        ReturnDamage
+        ReturnDamage,
+        SeekingRange
     }
 }

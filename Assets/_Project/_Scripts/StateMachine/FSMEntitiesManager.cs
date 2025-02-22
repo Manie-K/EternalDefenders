@@ -10,20 +10,16 @@ namespace EternalDefenders
         
         public void RegisterEntity(StateMachineBrain entity)
         {
-            if(_managedEntities.Contains(entity)) return;
+            if(entity && _managedEntities.Contains(entity)) return;
             _managedEntities.Add(entity);
         }
         
         public void UnregisterEntity(StateMachineBrain entity)
         {
-            if (!_managedEntities.Contains(entity)) return;
+            if (entity && !_managedEntities.Contains(entity)) return;
             _managedEntities.Remove(entity);
         }
         
-        void Start()
-        {
-            EnemyController.OnDeath += ((sender, args) => UnregisterEntity((StateMachineBrain)sender));
-        }
         void Update()
         {
             /* In the future, we can use Parallel.ForEach to optimize the update process

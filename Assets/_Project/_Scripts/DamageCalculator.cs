@@ -4,6 +4,7 @@ namespace EternalDefenders
 {
     public static class DamageCalculator
     {
+        //TODO: Refactor this mess completely
         //later we will overload this method to accept different parameters
         public static void PerformAttack(TowerController attacker, EnemyController target) 
         {
