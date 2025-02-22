@@ -10,44 +10,44 @@ namespace EternalDefendersPrototype
         [SerializeField]
         private float torque;
 
-        private Rigidbody rigidbody;
+        private Rigidbody _rigidbody;
 
-        private string enemyTag;
+        private string _enemyTag;
 
-        private bool didHit;
+        private bool _didHit;
 
         void Awake()
         {
-            rigidbody = GetComponent<Rigidbody>();
+            _rigidbody = GetComponent<Rigidbody>();
         }
 
         public void SetEnemyTag(string enemyTag)
         {
-            this.enemyTag = enemyTag;
+            this._enemyTag = enemyTag;
         }
 
         public void Fly(Vector3 force)
         {
-            rigidbody.isKinematic = false;
-            rigidbody.AddForce(force, ForceMode.Impulse);
-            rigidbody.AddTorque(transform.right * torque);
+            _rigidbody.isKinematic = false;
+            _rigidbody.AddForce(force, ForceMode.Impulse);
+            _rigidbody.AddTorque(transform.right * torque);
             transform.SetParent(null);
             Debug.Log("No parent");
         }
 
         void OnTriggerEnter(Collider collider)
         {
-            if (didHit) return;
-            didHit = true;
+            if (_didHit) return;
+            _didHit = true;
 
-            if (collider.CompareTag(enemyTag))
+            if (collider.CompareTag(_enemyTag))
             {
                 //take damage - enemy
             }
 
-            rigidbody.linearVelocity = Vector3.zero;
-            rigidbody.angularVelocity = Vector3.zero;
-            rigidbody.isKinematic = true;
+            _rigidbody.linearVelocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
+            _rigidbody.isKinematic = true;
             transform.SetParent(collider.transform);
             Debug.Log("New parent");
         }

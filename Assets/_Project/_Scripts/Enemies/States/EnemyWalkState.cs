@@ -28,7 +28,9 @@ namespace EternalDefenders
         public override void OnUpdate()
         {
             base.OnUpdate();
-            brain.transform.forward = _navMeshAgent.velocity.normalized;
+            
+            if(_navMeshAgent.velocity.normalized != Vector3.zero)
+                brain.transform.forward = _navMeshAgent.velocity.normalized;
         }
 
         public bool HasReachedDestination() => !_navMeshAgent.pathPending &&

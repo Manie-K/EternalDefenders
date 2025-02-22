@@ -178,10 +178,12 @@ public class StatsModifiersTests
     {
         int value = 100;
         int flatModifierValue = 200;
-        float limitedTimeSec = 3;
-        Dictionary<StatType, Stats.Stat> initStats = new() { };
+        float limitedTimeSec = 3f;
+        Dictionary<StatType, Stats.Stat> initStats = new()
+        {
+            { StatType.Health, new Stats.Stat(value) }
+        };
 
-        initStats.Add(StatType.Health, new Stats.Stat(value));
         Stats stats = new(initStats);
 
         InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();

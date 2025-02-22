@@ -9,7 +9,7 @@ namespace EternalDefenders
         Coroutine _attackCoroutine;
         void OnDisable()
         {
-            FSMEntitiesManager.Instance.UnregisterEntity(this);
+            FSMEntitiesManager.Instance?.UnregisterEntity(this);
         }
 
         protected override void Start()

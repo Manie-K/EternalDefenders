@@ -19,10 +19,10 @@ namespace EternalDefenders
         [SerializeField] float turnSmoothTime = 0.01f;
 
         public UIDocument hud;
-        private HealthBar healthbar;
-        private HealthBar shieldbar;
+        private HealthBar _healthBar;
+        private HealthBar _shieldBar;
 
-        public Stats Stats { get; set; } //sorki ale interface musi byc zaimplementowany 
+        public Stats Stats { get; private set; } //sorki ale interface musi byc zaimplementowany 
         public event Action OnPlayerDeath;
         
         CharacterController _controller;
@@ -34,8 +34,9 @@ namespace EternalDefenders
         readonly int _idleHash = Animator.StringToHash("Idle");
         readonly int _runningHash = Animator.StringToHash("Running");
 
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _controller = GetComponent<CharacterController>();
             _playerTransform = transform.GetChild(0).GetComponent<Transform>();
             _animator = transform.GetChild(0).GetComponent<Animator>();
@@ -46,8 +47,8 @@ namespace EternalDefenders
             ChangeAnimation(_idleHash);
 
             var root = hud.rootVisualElement;
-            healthbar=root.Q<HealthBar>("HealthBar");
-            shieldbar = root.Q<HealthBar>("ShieldBar");
+            _healthBar = root.Q<HealthBar>("HealthBar");
+            _shieldBar = root.Q<HealthBar>("ShieldBar");
 
 
             var initialStats = new Dictionary<StatType, Stats.Stat>
@@ -58,20 +59,20 @@ namespace EternalDefenders
                 { StatType.MaxShield, new Stats.Stat(50) } 
             };
 
-            // Tworzymy obiekt Stats na podstawie powy¿szego s³ownika
+            // Tworzymy obiekt Stats na podstawie powyï¿½szego sï¿½ownika
             Stats = new Stats(initialStats);
 
-            if (healthbar != null && Stats.HasStat(StatType.Health))
+            if (_healthBar != null && Stats.HasStat(StatType.Health))
             {
                 int currentHealth = Stats.GetStat(StatType.Health);
                 int baseHealth = Stats.GetStat(StatType.MaxHealth);
-                healthbar.value = (float) currentHealth / baseHealth;
+                _healthBar.value = (float) currentHealth / baseHealth;
             }
-            if (shieldbar != null && Stats.HasStat(StatType.Shield))
+            if (_shieldBar != null && Stats.HasStat(StatType.Shield))
             {
                 int currentShield = Stats.GetStat(StatType.Shield);
                 int baseShield = Stats.GetStat(StatType.MaxShield);
-                shieldbar.value = (float) currentShield / baseShield;
+                _shieldBar.value = (float) currentShield / baseShield;
             }
         }
 
@@ -80,9 +81,9 @@ namespace EternalDefenders
             ChangeDirection();
             MovePlayer();
 
-            //if(_stats.GetStat(StatType.Health) <= 0) OnPlayerDeath?.Invoke();
-            if (healthbar != null) healthbar.value = (float) Stats.GetStat(StatType.Health) / Stats.GetStat(StatType.MaxHealth);           
-            if (shieldbar != null) shieldbar.value = (float) Stats.GetStat(StatType.Shield) / Stats.GetStat(StatType.MaxShield);
+            if(Stats.GetStat(StatType.Health) <= 0) OnPlayerDeath?.Invoke();
+            if (_healthBar != null) _healthBar.value = (float) Stats.GetStat(StatType.Health) / Stats.GetStat(StatType.MaxHealth);           
+            if (_shieldBar != null) _shieldBar.value = (float) Stats.GetStat(StatType.Shield) / Stats.GetStat(StatType.MaxShield);
         }
 
         void ChangeDirection()

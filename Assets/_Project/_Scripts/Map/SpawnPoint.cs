@@ -6,6 +6,11 @@ namespace EternalDefenders
     {
         public void Spawn(EnemyController prefab)
         {
+            if(prefab == null)
+            {
+                Debug.LogError("EnemyPrefab is null");
+                return;
+            }
             Instantiate(prefab, gameObject.transform.position, Quaternion.identity);
         }
     }

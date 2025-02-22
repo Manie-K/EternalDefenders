@@ -30,21 +30,26 @@ namespace EternalDefenders
                 }
                 set
                 {
+                    //TODO: check if value is within bounds, handle stat regeneration etc
+                    //Maybe use a custom modifier for changing value? Maybe it will work better for regen etc
+                    BaseValue = value;
+                    
                     _currentValue = value;
                     _isDirty = true;
                 }
             }
         
-            readonly List<Modifier> _modifiers;
             int _currentValue;
             int _baseValue;
+            
+            readonly List<Modifier> _modifiers;
             bool _isDirty;
             
             public Stat(int baseValue)
             {
                 BaseValue = baseValue;
                 CurrentValue = baseValue;
-                _modifiers = new List<Modifier>();
+                _modifiers = new List<Modifier>(8);
             }
 
             public void UpdateModifiers(float dt)
@@ -79,13 +84,15 @@ namespace EternalDefenders
             
             void RemoveModifier(Modifier modifier)
             {
-                //TODO: change value back to original ???
+                //TODO: Handle all types of modifiers and baseValue after their removal 
+                //change value back to original ???
                 if(modifier.persistAfterFinish)
                 {
                     _baseValue -= modifier.value;
                 }
                 _modifiers.Remove(modifier);
                 _isDirty = true;
+                CalculateStat();
             }
 
             void CalculateStat()
@@ -107,7 +114,7 @@ namespace EternalDefenders
                         percentage += mod.value;
                     }    
                 }
-                float tempVal = value + value * (percentage * 0.01f);
+                float tempVal = value + (value * (percentage * 0.01f));
                 value = Mathf.RoundToInt(tempVal);
                 
                 _currentValue = value;
