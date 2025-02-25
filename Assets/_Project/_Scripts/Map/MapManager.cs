@@ -9,28 +9,25 @@ namespace EternalDefenders
         //TODO make good data for containing spawning data
         //also should be singleton?
         [SerializeField] bool spawningEnabled = true;
-        [SerializeField] List<EnemyController> enemyPrefabs;
         
-        SpawnPoint[] _enemySpawnPoints;
         Coroutine _enemySpawnCoroutine;
+        SpawnManager _spawnManager;
 
         void Start()
         {
-            _enemySpawnPoints = FindObjectsByType<SpawnPoint>(FindObjectsSortMode.InstanceID);
-
+            _spawnManager = GetComponent<SpawnManager>();
             if (spawningEnabled)
                 _enemySpawnCoroutine = StartCoroutine(SpawnEnemies());
         }
 
         IEnumerator SpawnEnemies()
         {
-            yield return new WaitForSeconds(10);
+            yield return new WaitForSeconds(5);
             while (true)
             {
-                int enemyIndex = Random.Range(0, enemyPrefabs.Count);
-                int spawnerIndex = Random.Range(0, _enemySpawnPoints.Length);
-                _enemySpawnPoints[spawnerIndex].Spawn(enemyPrefabs[enemyIndex]);
-                yield return new WaitForSeconds(3);
+                yield return StartCoroutine(_spawnManager.SpawnWave());
+                yield return new WaitForSeconds(5);
+                GameManager.Instance.WavePower++;
             }
         }
     }
