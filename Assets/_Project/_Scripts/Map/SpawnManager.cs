@@ -15,7 +15,8 @@ namespace EternalDefenders
         MapSpawnPoint[] _enemySpawnPointsForLevelStart;
         List<int> _minWavePowerForTier;
         //TODO change enemy power to list for each tier or add individual power for each enemy
-        int singleEnemyWavePower = 1;
+        int _singleEnemyWavePower = 1;
+        float _timeBetweenEnemySpawns = 0.5f;
 
         void Start()
         {
@@ -33,7 +34,7 @@ namespace EternalDefenders
             {
                 int spawnerIndex = Random.Range(0, _enemySpawners.Length);
                 _enemySpawners[spawnerIndex].Spawn(enemy);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(_timeBetweenEnemySpawns);
             }
         }
 
@@ -54,10 +55,10 @@ namespace EternalDefenders
                 { 
                     case 1:
                         enemyIndex = Random.Range(0, enemyTier1Prefabs.Count);
-                        if (singleEnemyWavePower + enemiesWavePower <= GameManager.Instance.WavePower)
+                        if (_singleEnemyWavePower + enemiesWavePower <= GameManager.Instance.WavePower)
                         {
                             enemiesToSpawn.Add(enemyTier1Prefabs[enemyIndex]);
-                            enemiesWavePower += singleEnemyWavePower;
+                            enemiesWavePower += _singleEnemyWavePower;
                         }
                         else
                         { 
@@ -66,10 +67,10 @@ namespace EternalDefenders
                         break;
                     case 2:
                         enemyIndex = Random.Range(0, enemyTier2Prefabs.Count);
-                        if (singleEnemyWavePower + enemiesWavePower <= GameManager.Instance.WavePower)
+                        if (_singleEnemyWavePower + enemiesWavePower <= GameManager.Instance.WavePower)
                         {
                             enemiesToSpawn.Add(enemyTier2Prefabs[enemyIndex]);
-                            enemiesWavePower += singleEnemyWavePower;
+                            enemiesWavePower += _singleEnemyWavePower;
                         }
                         else
                         {
@@ -78,10 +79,10 @@ namespace EternalDefenders
                         break;
                     case 3:
                         enemyIndex = Random.Range(0, enemyTier3Prefabs.Count);
-                        if (singleEnemyWavePower + enemiesWavePower <= GameManager.Instance.WavePower)
+                        if (_singleEnemyWavePower + enemiesWavePower <= GameManager.Instance.WavePower)
                         {
                             enemiesToSpawn.Add(enemyTier3Prefabs[enemyIndex]);
-                            enemiesWavePower += singleEnemyWavePower;
+                            enemiesWavePower += _singleEnemyWavePower;
                         }
                         else
                         {
@@ -90,10 +91,10 @@ namespace EternalDefenders
                         break;
                     case 4:
                         enemyIndex = Random.Range(0, enemyTier4Prefabs.Count);
-                        if (singleEnemyWavePower + enemiesWavePower <= GameManager.Instance.WavePower)
+                        if (_singleEnemyWavePower + enemiesWavePower <= GameManager.Instance.WavePower)
                         {
                             enemiesToSpawn.Add(enemyTier4Prefabs[enemyIndex]);
-                            enemiesWavePower += singleEnemyWavePower;
+                            enemiesWavePower += _singleEnemyWavePower;
                         }
                         else
                         {
@@ -140,7 +141,18 @@ namespace EternalDefenders
 
         int GetMaxEnemyTier()
         {
-            return 1;
+            int maxEnemyTier = 0;
+            int currentWavePower = GameManager.Instance.WavePower;
+
+            foreach (int wavePower in _minWavePowerForTier)
+            {
+                if (currentWavePower >= wavePower)
+                {
+                    maxEnemyTier++;
+                }
+            }
+
+            return maxEnemyTier;
         }
     }
 }
