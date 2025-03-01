@@ -11,14 +11,6 @@ namespace EternalDefenders
         
         
         public bool CanBuild() => canBuild && Building is null;
-        public void BuildOnThisTile(TowerController building)
-        {
-            if (!CanBuild())
-            {
-                Debug.Log("Cannot build on this tile");
-                return;
-            }
-            Building = Instantiate(building, transform.position, Quaternion.identity);
-        }
+        public void SetBuilding(TowerController building) => Building = building;
     }
 }

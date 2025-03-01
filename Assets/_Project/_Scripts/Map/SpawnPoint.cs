@@ -11,7 +11,7 @@ namespace EternalDefenders
                 Debug.LogError("EnemyPrefab is null");
                 return;
             }
-            Instantiate(prefab, gameObject.transform.position, Quaternion.identity);
+            Instantiate(prefab, transform.position, Quaternion.identity, parent);
         }
     }
 }
