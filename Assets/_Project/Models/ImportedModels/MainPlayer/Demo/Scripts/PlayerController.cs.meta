@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: e9aa840a3854ebd47b920d1a5c7d693f
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 29559
+  packageName: Sci-Fi Soldier
+  packageVersion: 1.2
+  assetPath: Assets/Yurowm/Demo/Scripts/PlayerController.cs
+  uploadId: 62369

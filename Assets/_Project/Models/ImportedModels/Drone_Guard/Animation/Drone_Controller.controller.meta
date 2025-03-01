@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b73383ab2459f2643abe557b2d08dcd5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 175607
+  packageName: Drone Guard
+  packageVersion: 1.0
+  assetPath: Assets/Drone_Guard/Animation/Drone_Controller.controller
+  uploadId: 381488

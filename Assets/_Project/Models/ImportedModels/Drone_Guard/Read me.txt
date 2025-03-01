@@ -1,0 +1,17 @@
+Package contain Drone animated model for Your sci-fi game.
+
+Animation:
+- Idle
+- Wake up
+- Shut down
+- Destroyed
+
+Model:
+- PBR material
+- Textures resolution is 4096x4096
+- 3576 verticles, 6896 tris
+
+Demo scene:
+press "w" - play WakeUp animation
+press "s" - play ShutDown animation
+press "d" - play Destroyed animation
