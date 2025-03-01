@@ -7,6 +7,7 @@ namespace EternalDefenders
 {
     public class BuilderManager : Singleton<BuilderManager>
     {
+        [SerializeField] Transform towersParent;
         [SerializeField] List<TowerController> towers;
         
         bool _isEnabled = false;
@@ -29,9 +30,11 @@ namespace EternalDefenders
                     CameraController.Instance.GetWorldMousePosition()
                     );
 
-                if (tile.CanBuild())
+                if(tile.CanBuild())
                 {
-                    tile.BuildOnThisTile(towers[_currentIndex]);
+                    var tower = Instantiate(towers[_currentIndex], tile.transform.position, Quaternion.identity
+                        , towersParent);
+                    tile.SetBuilding(tower);
                 }
             }
         }
