@@ -10,6 +10,8 @@ namespace EternalDefenders.Editor
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
+            if(!Application.isPlaying) return;
+            
             GUIStyle richTextStyle = new GUIStyle(EditorStyles.label) { richText = true };
             EnemyController myScript = (EnemyController)target;
 
