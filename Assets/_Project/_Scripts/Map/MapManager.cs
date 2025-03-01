@@ -9,6 +9,7 @@ namespace EternalDefenders
         //TODO make good data for containing spawning data
         //also should be singleton?
         [SerializeField] bool spawningEnabled = true;
+        [SerializeField] Transform enemiesParent;
         [SerializeField] List<EnemyController> enemyPrefabs;
         
         SpawnPoint[] _enemySpawnPoints;
@@ -29,7 +30,7 @@ namespace EternalDefenders
             {
                 int enemyIndex = Random.Range(0, enemyPrefabs.Count);
                 int spawnerIndex = Random.Range(0, _enemySpawnPoints.Length);
-                _enemySpawnPoints[spawnerIndex].Spawn(enemyPrefabs[enemyIndex]);
+                _enemySpawnPoints[spawnerIndex].Spawn(enemyPrefabs[enemyIndex], enemiesParent);
                 yield return new WaitForSeconds(3);
             }
         }
