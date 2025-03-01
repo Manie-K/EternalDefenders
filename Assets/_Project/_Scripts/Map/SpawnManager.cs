@@ -6,6 +6,7 @@ namespace EternalDefenders
 {
     public class SpawnManager : MonoBehaviour
     {
+        [SerializeField] Transform enemiesParent;
         [SerializeField] List<EnemyController> enemyTier1Prefabs;
         [SerializeField] List<EnemyController> enemyTier2Prefabs;
         [SerializeField] List<EnemyController> enemyTier3Prefabs;
@@ -33,7 +34,7 @@ namespace EternalDefenders
             foreach (EnemyController enemy in enemiesToSpawn)
             {
                 int spawnerIndex = Random.Range(0, _enemySpawners.Length);
-                _enemySpawners[spawnerIndex].Spawn(enemy);
+                _enemySpawners[spawnerIndex].Spawn(enemy, enemiesParent);
                 yield return new WaitForSeconds(_timeBetweenEnemySpawns);
             }
         }
@@ -132,7 +133,7 @@ namespace EternalDefenders
                     if (Vector3.Distance(mainBase.transform.position, 
                         _enemySpawnPointsForLevelStart[spawnPointIndex].transform.position) >= minDistanceFromBase)
                     {
-                        _enemySpawnPointsForLevelStart[spawnPointIndex].Spawn(enemy);
+                        _enemySpawnPointsForLevelStart[spawnPointIndex].Spawn(enemy, enemiesParent);
                         spawned = true;
                     }
                 }

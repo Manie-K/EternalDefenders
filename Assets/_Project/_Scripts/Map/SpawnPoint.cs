@@ -4,7 +4,7 @@ namespace EternalDefenders
 {
     public abstract class SpawnPoint : MonoBehaviour
     {
-        public virtual void Spawn(EnemyController prefab)
+        public virtual void Spawn(EnemyController prefab, Transform parent)
         {
             if (prefab == null)
             {
