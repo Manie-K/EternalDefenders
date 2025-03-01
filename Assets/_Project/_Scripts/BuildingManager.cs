@@ -49,6 +49,8 @@ namespace EternalDefenders
             };
 
             BuildingConstructionManger.Instance.OnBuildingSelected += OnBuildingSelected_Delegate;
+            
+            OnBuildingModeExit?.Invoke();
         }
 
         void OnDisable()

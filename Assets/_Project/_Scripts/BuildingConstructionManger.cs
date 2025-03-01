@@ -44,10 +44,8 @@ namespace EternalDefenders
             {
                 GameObject button = Instantiate(buttonPrefab, panel);
                 button.GetComponent<Image>().sprite = towerBundle.icon;
-                button.GetComponent<Button>().onClick.AddListener(() =>
-                {
-                    OnBuildingSelected?.Invoke(towerBundle);
-                });
+                Button btn = button.GetComponent<Button>();
+                btn.onClick.AddListener(() => OnBuildingSelected?.Invoke(towerBundle));
             }
         }
     }
