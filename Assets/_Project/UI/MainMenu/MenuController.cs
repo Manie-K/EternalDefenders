@@ -16,6 +16,10 @@ namespace EternalDefenders
         private VisualTreeAsset _settingsButtonsTemplate;
         private VisualElement _settingsButtons;
 
+        [SerializeField]
+        private VisualTreeAsset _controllsPanelTemplate;
+        private VisualElement _controllsPanel;
+
         [Header("Mute Button")]
         [SerializeField]
         private Texture2D _mutedTexture;
@@ -41,6 +45,12 @@ namespace EternalDefenders
             _settingsButtons = _settingsButtonsTemplate.CloneTree();
             var backButton = _settingsButtons.Q<Button>("BackButton");
             backButton.clicked += BackButtonOnclicked;
+            var ControllsButton = _settingsButtons.Q<Button>("controlls");
+            ControllsButton.clicked += ControllsButtonOnClicked;
+
+            _controllsPanel = _controllsPanelTemplate.CloneTree();
+            var backControllsButton = _controllsPanel.Q<Button>("BackControllsButton");
+            backControllsButton.clicked += BackControllsButtonOnclicked;
         }
 
         private void PlayButtonOnClicked()
@@ -74,6 +84,18 @@ namespace EternalDefenders
             _muteButton.style.backgroundImage = bg;
 
             AudioListener.volume = _muted ? 0 : 1;
+        }
+
+        private void BackControllsButtonOnclicked()
+        {
+            _buttonsWrapper.Clear();
+            _buttonsWrapper.Add(_settingsButtons);
+        }
+
+        private void ControllsButtonOnClicked()
+        {
+            _buttonsWrapper.Clear();
+            _buttonsWrapper.Add(_controllsPanel);
         }
     }
 }

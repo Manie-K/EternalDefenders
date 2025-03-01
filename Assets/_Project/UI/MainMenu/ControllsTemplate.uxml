@@ -1,0 +1,11 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/MainMenu/MenuStyles.uss?fileID=7433441132597879392&amp;guid=b5c865e8413ff1b4db81640d14ccc593&amp;type=3#MenuStyles" />
+    <engine:VisualElement name="Wrapper" style="flex-grow: 1;">
+        <engine:VisualElement name="Controlls" style="flex-grow: 0; padding-top: 5%; align-self: stretch;">
+            <engine:Label text="Left Mouse                Shot" name="Shot" class="Text" />
+            <engine:Label text="GameMenu                Esc" name="GameMenu" class="Text" />
+            <engine:Label text="TowerPlacing             B" name="TowerPlacing" class="Text" />
+        </engine:VisualElement>
+        <engine:Button text="Back" name="BackControllsButton" class="menu-button" />
+    </engine:VisualElement>
+</engine:UXML>

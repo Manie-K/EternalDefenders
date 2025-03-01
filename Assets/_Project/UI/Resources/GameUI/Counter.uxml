@@ -1,0 +1,6 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement style="flex-grow: 1; width: auto; height: auto; top: 0; left: 0; right: 0; bottom: 0; flex-direction: row; background-color: rgba(0, 0, 0, 0);">
+        <engine:VisualElement name="Image" style="flex-grow: 0; width: 30%; background-position-x: center 0; background-position-y: center 0; background-image: none; background-size: 100% 100%;" />
+        <engine:Label text="Label" name="counter" style="width: 70%; height: auto; color: rgb(255, 255, 255); font-size: 40%; -unity-font-definition: resource(&apos;FlatSkin/Font/Roboto-Medium&apos;); -unity-font-style: normal; -unity-text-align: middle-left; white-space: nowrap;" />
+    </engine:VisualElement>
+</engine:UXML>
