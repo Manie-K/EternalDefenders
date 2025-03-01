@@ -13,9 +13,6 @@ namespace EternalDefenders
         [SerializeField] Color ghostInvalidColor;
         public event Action OnBuildingModeEnter;
         public event Action OnBuildingModeExit;
-     
-        //Optimization: Save it? So it doesn't have to be created every time
-        readonly Dictionary<TowerController, Mesh> _ghostMeshes = new();
         
         MeshFilter _ghostFilter;
         MeshRenderer _ghostRenderer;
@@ -83,20 +80,10 @@ namespace EternalDefenders
             }
         }
 
-        void OnBuildingSelected_Delegate(TowerController tower)
+        void OnBuildingSelected_Delegate(TowerBundle towerBundle)
         {
-            _selectedTower = tower;
-            if(_ghostMeshes.TryGetValue(tower, out var mesh))
-            {
-                _ghostFilter.mesh = mesh;
-            }
-            else
-            {
-                //We are programmatically creating a mesh for the ghost object
-                Mesh newMesh = MeshCombiner.CombineIntoMesh(tower.gameObject);
-                _ghostFilter.mesh = newMesh;
-                _ghostMeshes.Add(tower, newMesh);
-            }
+            _selectedTower = towerBundle.towerPrefab;
+            _ghostFilter.mesh = towerBundle.combinedMesh;
         }
 
         void BuildTower(HexTile tile)

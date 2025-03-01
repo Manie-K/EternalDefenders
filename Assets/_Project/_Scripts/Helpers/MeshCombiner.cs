@@ -2,13 +2,19 @@
 using System.Linq;
 using UnityEngine;
 using Unity;
+using UnityEditor;
 
 namespace EternalDefenders.Helpers
 {
-    public static class MeshCombiner
+    public class MeshCombiner : MonoBehaviour
     {
-        public static Mesh CombineIntoMesh(GameObject target)
+        [SerializeField] GameObject target; 
+        [SerializeField] string targetName; 
+        public void CombineIntoMesh()
         {
+            if(targetName == "")
+                targetName = target.name + "_combinedMesh";
+            
             List<MeshFilter> meshesToCombine = target.GetComponentsInChildren<MeshFilter>().ToList();
             var combine = new CombineInstance[meshesToCombine.Count];
 
@@ -23,7 +29,12 @@ namespace EternalDefenders.Helpers
 
             var mesh = new Mesh();
             mesh.CombineMeshes(combine);
-            return mesh;
+            
+            string path = $"Assets/_Project/Meshes/{targetName}.asset";
+            
+            AssetDatabase.CreateAsset(mesh, path);
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
         }
     }
 }

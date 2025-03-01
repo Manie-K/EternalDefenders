@@ -13,7 +13,7 @@ namespace EternalDefenders
         [SerializeField] RectTransform panel;
         [SerializeField] List<TowerBundle> towerBundles;
         
-        public event Action<TowerController> OnBuildingSelected;
+        public event Action<TowerBundle> OnBuildingSelected;
         
         void Start()
         {
@@ -46,7 +46,7 @@ namespace EternalDefenders
                 button.GetComponent<Image>().sprite = towerBundle.icon;
                 button.GetComponent<Button>().onClick.AddListener(() =>
                 {
-                    OnBuildingSelected?.Invoke(towerBundle.towerPrefab);
+                    OnBuildingSelected?.Invoke(towerBundle);
                 });
             }
         }

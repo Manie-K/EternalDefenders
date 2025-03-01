@@ -6,6 +6,7 @@ namespace EternalDefenders
     public class TowerBundle : ScriptableObject
     {
         public TowerController towerPrefab;
+        public Mesh combinedMesh;
         public Sprite icon;
         
         //TODO: Handle building cost
