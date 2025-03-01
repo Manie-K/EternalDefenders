@@ -20,12 +20,14 @@ namespace EternalDefenders
             GenerateButtons();
 
             BuildingManager.Instance.OnBuildingModeEnter += OnBuildingModeEnter_Delegate;
-            
             BuildingManager.Instance.OnBuildingModeExit += OnBuildingModeExit_Delegate;
         }
 
         void OnDisable()
         {
+            //TODO: Clean up this mess
+            BuildingManager buildingManager = BuildingManager.Instance;
+            if (buildingManager == null) return;
             BuildingManager.Instance.OnBuildingModeEnter -= OnBuildingModeEnter_Delegate;
             BuildingManager.Instance.OnBuildingModeExit -= OnBuildingModeExit_Delegate;
         }
@@ -44,6 +46,7 @@ namespace EternalDefenders
             {
                 GameObject button = Instantiate(buttonPrefab, panel);
                 button.GetComponent<Image>().sprite = towerBundle.icon;
+                
                 Button btn = button.GetComponent<Button>();
                 btn.onClick.AddListener(() => OnBuildingSelected?.Invoke(towerBundle));
             }
