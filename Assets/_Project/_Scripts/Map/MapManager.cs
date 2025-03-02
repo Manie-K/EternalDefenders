@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,29 +10,43 @@ namespace EternalDefenders
         //TODO make good data for containing spawning data
         //also should be singleton?
         [SerializeField] bool spawningEnabled = true;
-        [SerializeField] Transform enemiesParent;
-        [SerializeField] List<EnemyController> enemyPrefabs;
-        
-        SpawnPoint[] _enemySpawnPoints;
-        Coroutine _enemySpawnCoroutine;
+        [SerializeField] int wavePowerIncreasePerWave = 1;
+        [SerializeField] float timeToFisrtWave = 5;
+        [SerializeField] float minTimeBetweenWaves = 5;
+
+        Coroutine _enemyWavesCoroutine;
+        SpawnManager _spawnManager;
 
         void Start()
         {
-            _enemySpawnPoints = FindObjectsByType<SpawnPoint>(FindObjectsSortMode.InstanceID);
-
+            _spawnManager = GetComponent<SpawnManager>();
             if (spawningEnabled)
-                _enemySpawnCoroutine = StartCoroutine(SpawnEnemies());
+                _enemyWavesCoroutine = StartCoroutine(SpawnEnemyWaves());
         }
 
-        IEnumerator SpawnEnemies()
+        IEnumerator SpawnEnemyWaves()
         {
-            yield return new WaitForSeconds(10);
-            while (true)
+            yield return new WaitForSeconds(timeToFisrtWave);
+
+            while (spawningEnabled)
             {
-                int enemyIndex = Random.Range(0, enemyPrefabs.Count);
-                int spawnerIndex = Random.Range(0, _enemySpawnPoints.Length);
-                _enemySpawnPoints[spawnerIndex].Spawn(enemyPrefabs[enemyIndex], enemiesParent);
-                yield return new WaitForSeconds(3);
+                yield return StartCoroutine(_spawnManager.SpawnWave());
+                yield return new WaitForSeconds(CalcTimeBetweenWaves());
+                GameManager.Instance.WavePower += wavePowerIncreasePerWave;
+            }
+        }
+
+        float CalcTimeBetweenWaves()
+        {
+            float timeBetweenWaves = 5;
+
+            if (timeBetweenWaves > minTimeBetweenWaves)
+            {
+                return timeBetweenWaves;
+            }
+            else
+            { 
+                return minTimeBetweenWaves;
             }
         }
     }
