@@ -23,7 +23,7 @@ namespace EternalDefenders
         {
             TowerController.OnTowerDestroyed += _ => TowersDestroyed++;
             PlayerController.Instance.OnPlayerDeath += () => PlayerDeaths++;
-            EnemyController.OnDeath += () => EnemiesKilled++;
+            EnemyController.OnDeath += (_) => EnemiesKilled++;
         }
     }
 }

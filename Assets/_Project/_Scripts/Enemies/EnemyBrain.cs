@@ -19,8 +19,6 @@ namespace EternalDefenders
             
             navMeshAgent.speed = _enemyController.Stats.GetStat(StatType.Speed);
             FSMEntitiesManager.Instance.RegisterEntity(this);
-            
-            EnemyController.OnDeath += () => FSMEntitiesManager.Instance?.UnregisterEntity(this);
         }
         protected override void SetUpStateMachine()
         {
