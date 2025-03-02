@@ -14,7 +14,7 @@ namespace EternalDefenders
         public Effect Effect { get; private set; }
         public IEnemyTarget Target { get; private set; }
 
-        public static event Action<EnemyController> OnDeath;
+        public event Action OnDeath;
         
         CountdownTimer _cooldownTimer;
 
@@ -52,8 +52,11 @@ namespace EternalDefenders
         }
         public void Die()
         {
-            OnDeath?.Invoke(this);
             Debug.Log("I'm dead");
+            
+            OnDeath?.Invoke();
+            GameStatisticsManager.Instance?.NotifyEnemyKilled();
+            FSMEntitiesManager.Instance?.UnregisterEntity(GetComponent<EnemyBrain>());
             Destroy(gameObject);
         }
     }

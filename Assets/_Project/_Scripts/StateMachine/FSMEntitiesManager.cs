@@ -8,12 +8,7 @@ namespace EternalDefenders
     public class FSMEntitiesManager : Singleton<FSMEntitiesManager>
     {
         readonly List<StateMachineBrain> _managedEntities = new();
-
-        void Start()
-        {
-            EnemyController.OnDeath += enemy => UnregisterEntity(enemy.GetComponent<EnemyBrain>());
-        }
-
+        
         public void RegisterEntity(StateMachineBrain entity)
         {
             if(entity && _managedEntities.Contains(entity)) return;
