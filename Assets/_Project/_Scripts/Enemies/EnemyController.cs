@@ -26,17 +26,14 @@ namespace EternalDefenders
             Effect = attackEffect;
             
             _retargetingTimer = new CountdownTimer(retargetingInterval);
+            _retargetingTimer.Start();
         }
 
         void Start()
         {
             PickNewTarget();
             _retargetingTimer.OnTimerStop += PickNewTarget;
-            _retargetingTimer.OnTimerStop += () =>
-            {
-                OnRetarget?.Invoke();
-                _retargetingTimer.Start();
-            };
+            _retargetingTimer.OnTimerStop += () => _retargetingTimer.Start();
         }
 
         void OnDisable()
@@ -73,6 +70,8 @@ namespace EternalDefenders
         void PickNewTarget()
         {
             Target = targetStrategy.FindTarget(this);
+            OnRetarget?.Invoke();
+            Debug.Log("I've picked new target: " + Target);
         }
     }
 }

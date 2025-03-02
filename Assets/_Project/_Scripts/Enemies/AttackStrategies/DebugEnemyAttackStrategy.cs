@@ -8,6 +8,8 @@ namespace EternalDefenders
     {
         public override void Attack(EnemyController enemy, IEnemyTarget target)
         {
+            if(target == null) 
+                return;
             Debug.Log("Attacking target");
             switch(target)
             {
@@ -28,7 +30,7 @@ namespace EternalDefenders
 
         public override bool TargetIsValid(EnemyController enemy, IEnemyTarget target)
         {
-            if(target == null)
+            if(target == null || target.Equals(null)) //Unity marks it as destroyed in C++ under the hood, but in C# there is ref missing
                 return false;
             
             float distance = Vector3.Distance(((MonoBehaviour)target).transform.position, enemy.transform.position);

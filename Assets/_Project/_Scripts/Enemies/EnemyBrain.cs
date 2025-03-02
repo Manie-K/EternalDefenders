@@ -31,10 +31,10 @@ namespace EternalDefenders
             
             stateMachine.AddTransition(walkState, attackState, new FuncPredicate(walkState.HasReachedDestination));
             stateMachine.AddTransition(attackState, idleState, new FuncPredicate(() =>
-                _enemyController.Target.Stats.GetStat(StatType.Health) <= 0)
+                _enemyController.Target == null || _enemyController.Target.Equals(null))
             );
             stateMachine.AddTransition(idleState, walkState, new FuncPredicate(() =>
-                _enemyController.Target != null)
+                _enemyController.Target != null && !_enemyController.Target.Equals(null))
             );
             stateMachine.AddTransition(walkState, idleState, new EventPredicate("OnRetarget", _enemyController));
             
@@ -48,6 +48,11 @@ namespace EternalDefenders
         {
             _attackCoroutine = StartCoroutine(_enemyController.Attack());
         }
-        public void StopAttack(){StopCoroutine(_attackCoroutine);}
+
+        public void StopAttack()
+        {
+            if(_attackCoroutine != null)
+                StopCoroutine(_attackCoroutine);
+        }
     }
 }
