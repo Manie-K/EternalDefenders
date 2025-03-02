@@ -6,7 +6,7 @@ namespace EternalDefenders
     [CreateAssetMenu(fileName = "DebugStrategy", menuName = "EternalDefenders/Enemy/AttackStrategies/DebugStrategy")]
     public class DebugEnemyAttackStrategy : EnemyAttackStrategy
     {
-        public override void Attack(IEnemyTarget target)
+        public override void Attack(EnemyController enemy, IEnemyTarget target)
         {
             Debug.Log("Attacking target");
             switch(target)
@@ -26,12 +26,12 @@ namespace EternalDefenders
             }
         }
 
-        public override bool TargetIsValid(IEnemyTarget target)
+        public override bool TargetIsValid(EnemyController enemy, IEnemyTarget target)
         {
             if(target == null)
                 return false;
             
-            var distance = Vector3.Distance(((MonoBehaviour)target).transform.position, enemy.transform.position);
+            float distance = Vector3.Distance(((MonoBehaviour)target).transform.position, enemy.transform.position);
             return  distance <= enemy.Stats.GetStat(StatType.Range);
         }
     }

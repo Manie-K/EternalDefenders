@@ -15,6 +15,7 @@ namespace EternalDefenders
         SpawnerSpawnPoint[] _enemySpawners;
         MapSpawnPoint[] _enemySpawnPointsForLevelStart;
         List<int> _minWavePowerForTier;
+        
         //TODO change enemy power to list for each tier or add individual power for each enemy
         int _singleEnemyWavePower = 1;
         float _timeBetweenEnemySpawns = 0.5f;

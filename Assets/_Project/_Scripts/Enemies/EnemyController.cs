@@ -21,7 +21,6 @@ namespace EternalDefenders
         void Awake()
         {
             targetStrategy.Init(this);
-            attackStrategy.Init(this);
             Stats = new Stats(statsConfig.GetStats());
             Effect = attackEffect;
             
@@ -44,9 +43,9 @@ namespace EternalDefenders
         
         public IEnumerator Attack()
         {
-            while(attackStrategy.TargetIsValid(Target))
+            while(attackStrategy.TargetIsValid(this, Target))
             {
-                attackStrategy.Attack(Target);
+                attackStrategy.Attack(this, Target);
                 yield return new WaitForSeconds(Stats.GetStat(StatType.Cooldown));
             }
         }

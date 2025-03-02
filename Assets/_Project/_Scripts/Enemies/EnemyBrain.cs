@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace EternalDefenders
 {
@@ -39,8 +38,11 @@ namespace EternalDefenders
             
             stateMachine.SetState(walkState);
         }
-        
-        public void StartAttack(){_attackCoroutine = StartCoroutine(_enemyController.Attack());}
+
+        public void StartAttack()
+        {
+            _attackCoroutine = StartCoroutine(_enemyController.Attack());
+        }
         public void StopAttack(){StopCoroutine(_attackCoroutine);}
     }
 }

@@ -10,7 +10,7 @@ namespace EternalDefenders
         
         public override IEnemyTarget FindTarget()
         {
-            Debug.Log("Finding target");
+            //Debug.Log("Finding target");
             TowerController tower = null;
             switch(priorityTarget)
             {

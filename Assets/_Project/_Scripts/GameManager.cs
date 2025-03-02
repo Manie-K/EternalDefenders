@@ -6,6 +6,6 @@ namespace EternalDefenders
     public class GameManager : Singleton<GameManager>
     {
         //TODO everything 
-        public int WavePower = 3;
+        public int WavePower { get; set; } = 3;
     }
 }

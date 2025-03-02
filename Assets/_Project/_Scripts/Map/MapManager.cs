@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace EternalDefenders
 {
@@ -11,7 +12,7 @@ namespace EternalDefenders
         //also should be singleton?
         [SerializeField] bool spawningEnabled = true;
         [SerializeField] int wavePowerIncreasePerWave = 1;
-        [SerializeField] float timeToFisrtWave = 5;
+        [SerializeField] float timeToFirstWave = 5;
         [SerializeField] float minTimeBetweenWaves = 5;
 
         Coroutine _enemyWavesCoroutine;
@@ -26,7 +27,7 @@ namespace EternalDefenders
 
         IEnumerator SpawnEnemyWaves()
         {
-            yield return new WaitForSeconds(timeToFisrtWave);
+            yield return new WaitForSeconds(timeToFirstWave);
 
             while (spawningEnabled)
             {
