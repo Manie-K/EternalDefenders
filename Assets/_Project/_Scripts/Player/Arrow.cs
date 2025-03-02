@@ -32,7 +32,7 @@ namespace EternalDefendersPrototype
             _rigidbody.AddForce(force, ForceMode.Impulse);
             _rigidbody.AddTorque(transform.right * torque);
             transform.SetParent(null);
-            Debug.Log("No parent");
+            //Debug.Log("No parent");
         }
 
         void OnTriggerEnter(Collider collider)
@@ -49,7 +49,7 @@ namespace EternalDefendersPrototype
             _rigidbody.angularVelocity = Vector3.zero;
             _rigidbody.isKinematic = true;
             transform.SetParent(collider.transform);
-            Debug.Log("New parent");
+            //Debug.Log("New parent");
         }
     }
 }

@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace EternalDefenders
 {
-    public class SpawnPoint : MonoBehaviour
+    public abstract class SpawnPoint : MonoBehaviour
     {
-        public void Spawn(EnemyController prefab, Transform parent)
+        public virtual void Spawn(EnemyController prefab, Transform parent)
         {
-            if(prefab == null)
+            if (prefab == null)
             {
                 Debug.LogError("EnemyPrefab is null");
                 return;

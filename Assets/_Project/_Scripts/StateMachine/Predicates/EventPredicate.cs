@@ -23,7 +23,8 @@ namespace EternalDefenders
                 _eventMethod = new Action(SetFlag);
             }else if (eventHandlerType == typeof(EventHandler)){
                 _eventMethod = new EventHandler(SetFlag);
-            }else {
+            }
+            else {
                 Debug.LogError("Unsupported event type!");
             }
             

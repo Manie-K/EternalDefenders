@@ -8,24 +8,23 @@ namespace EternalDefenders
     {
         readonly Collider[] _colliders = new Collider[64];
         
-        public override IEnemyTarget FindTarget()
+        public override IEnemyTarget FindTarget(EnemyController enemy)
         {
-            Debug.Log("Finding target");
             TowerController tower = null;
             switch(priorityTarget)
             {
                 case PriorityTarget.MainBase:
-                    if(IsMainBaseValid())
+                    if(IsMainBaseValid(enemy))
                     {
                         return mainBase;
                     }
 
-                    if(IsPlayerValid())
+                    if(IsPlayerValid(enemy))
                     {
                         return player;
                     }
                     
-                    tower = AreTowersValid();
+                    tower = AreTowersValid(enemy);
                     if(tower != null)
                     {
                         return tower;
@@ -33,15 +32,15 @@ namespace EternalDefenders
 
                     return mainBase;
                 case PriorityTarget.Player:
-                    if(IsPlayerValid())
+                    if(IsPlayerValid(enemy))
                     {
                         return player;
                     }
-                    if(IsMainBaseValid())
+                    if(IsMainBaseValid(enemy))
                     {
                         return mainBase;
                     }
-                    tower = AreTowersValid();
+                    tower = AreTowersValid(enemy);
                     if(tower != null)
                     {
                         return tower;
@@ -49,17 +48,17 @@ namespace EternalDefenders
 
                     return mainBase;
                 case PriorityTarget.Tower:
-                    tower = AreTowersValid();
+                    tower = AreTowersValid(enemy);
                     if(tower != null)
                     {
                         return tower;
                     }
-                    if(IsMainBaseValid())
+                    if(IsMainBaseValid(enemy))
                     {
                         return mainBase;
                     }
 
-                    if(IsPlayerValid())
+                    if(IsPlayerValid(enemy))
                     {
                         return player;
                     }
@@ -69,13 +68,13 @@ namespace EternalDefenders
             }
         }
 
-        bool IsMainBaseValid() => Vector3.Distance(enemy.transform.position, mainBase.transform.position) <=
-                                  enemy.Stats.GetStat(StatType.SeekingRange);
+        bool IsMainBaseValid(EnemyController enemy) => Vector3.Distance(enemy.transform.position, mainBase.transform.position) <=
+                                                       enemy.Stats.GetStat(StatType.SeekingRange);
         
-        bool IsPlayerValid() => Vector3.Distance(enemy.transform.position, player.transform.position) <=
-                               enemy.Stats.GetStat(StatType.SeekingRange);
+        bool IsPlayerValid(EnemyController enemy) => Vector3.Distance(enemy.transform.position, player.transform.position) <=
+                                                     enemy.Stats.GetStat(StatType.SeekingRange);
         
-        TowerController AreTowersValid()
+        TowerController AreTowersValid(EnemyController enemy)
         { 
             int foundCount = Physics.OverlapSphereNonAlloc(enemy.transform.position,
                 enemy.Stats.GetStat(StatType.SeekingRange), _colliders);

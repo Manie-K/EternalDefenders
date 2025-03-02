@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace EternalDefenders
 {
@@ -19,8 +18,6 @@ namespace EternalDefenders
             
             navMeshAgent.speed = _enemyController.Stats.GetStat(StatType.Speed);
             FSMEntitiesManager.Instance.RegisterEntity(this);
-            
-            EnemyController.OnDeath += () => FSMEntitiesManager.Instance?.UnregisterEntity(this);
         }
         protected override void SetUpStateMachine()
         {
@@ -34,15 +31,28 @@ namespace EternalDefenders
             
             stateMachine.AddTransition(walkState, attackState, new FuncPredicate(walkState.HasReachedDestination));
             stateMachine.AddTransition(attackState, idleState, new FuncPredicate(() =>
-                _enemyController.Target.Stats.GetStat(StatType.Health) <= 0)
+                _enemyController.Target == null || _enemyController.Target.Equals(null))
             );
+            stateMachine.AddTransition(idleState, walkState, new FuncPredicate(() =>
+                _enemyController.Target != null && !_enemyController.Target.Equals(null))
+            );
+            stateMachine.AddTransition(walkState, idleState, new EventPredicate("OnRetarget", _enemyController));
+            
             
             stateMachine.AddAnyTransition(deathState, new EventPredicate("OnDeath", _enemyController));
             
-            stateMachine.SetState(walkState);
+            stateMachine.SetState(idleState);
         }
-        
-        public void StartAttack(){_attackCoroutine = StartCoroutine(_enemyController.Attack());}
-        public void StopAttack(){StopCoroutine(_attackCoroutine);}
+
+        public void StartAttack()
+        {
+            _attackCoroutine = StartCoroutine(_enemyController.Attack());
+        }
+
+        public void StopAttack()
+        {
+            if(_attackCoroutine != null)
+                StopCoroutine(_attackCoroutine);
+        }
     }
 }

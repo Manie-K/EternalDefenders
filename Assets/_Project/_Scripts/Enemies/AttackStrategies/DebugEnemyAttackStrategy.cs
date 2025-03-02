@@ -1,31 +1,39 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace EternalDefenders
 {    
     [CreateAssetMenu(fileName = "DebugStrategy", menuName = "EternalDefenders/Enemy/AttackStrategies/DebugStrategy")]
     public class DebugEnemyAttackStrategy : EnemyAttackStrategy
     {
-        public override void Attack(IEnemyTarget target)
+        public override void Attack(EnemyController enemy, IEnemyTarget target)
         {
+            if(target == null) 
+                return;
             Debug.Log("Attacking target");
-            MainBaseController mainBase = target as MainBaseController;
-            TowerController tower = target as TowerController;
-            if(mainBase != null)
+            switch(target)
             {
-                DamageCalculator.PerformAttack(enemy, mainBase);
-            }
-            else if(tower != null)
-            {
-                DamageCalculator.PerformAttack(enemy, tower);
+                case MainBaseController mainBase:
+                    DamageCalculator.EnemyAttackMainBase(enemy, mainBase);
+                    break;
+                case TowerController tower:
+                    DamageCalculator.EnemyAttackTower(enemy, tower);
+                    break;
+                case PlayerController player:
+                    DamageCalculator.EnemyAttackPlayer(enemy, player);
+                    break;
+                default:
+                    Debug.LogError("Unknown target type");
+                    break;
             }
         }
 
-        public override bool TargetIsValid(IEnemyTarget target)
+        public override bool TargetIsValid(EnemyController enemy, IEnemyTarget target)
         {
-            if(target == null)
+            if(target == null || target.Equals(null)) //Unity marks it as destroyed in C++ under the hood, but in C# there is ref missing
                 return false;
             
-            var distance = Vector3.Distance(((MonoBehaviour)target).transform.position, enemy.transform.position);
+            float distance = Vector3.Distance(((MonoBehaviour)target).transform.position, enemy.transform.position);
             return  distance <= enemy.Stats.GetStat(StatType.Range);
         }
     }

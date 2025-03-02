@@ -17,13 +17,14 @@ namespace EternalDefenders
             
             SubscribeToEvents();
         }
+
+        public void NotifyEnemyKilled() => EnemiesKilled++;
         
         //TODO manage cleanup (unlinking on destroy)
         void SubscribeToEvents()
         {
             TowerController.OnTowerDestroyed += _ => TowersDestroyed++;
             PlayerController.Instance.OnPlayerDeath += () => PlayerDeaths++;
-            EnemyController.OnDeath += () => EnemiesKilled++;
         }
     }
 }

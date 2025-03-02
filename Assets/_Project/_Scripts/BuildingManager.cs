@@ -55,7 +55,9 @@ namespace EternalDefenders
 
         void OnDisable()
         {
-            BuildingConstructionManger.Instance.OnBuildingSelected -= OnBuildingSelected_Delegate;
+            BuildingConstructionManger bcm = BuildingConstructionManger.Instance;
+            if(bcm == null) return;
+            bcm.OnBuildingSelected -= OnBuildingSelected_Delegate;
         }
         void Update()
         {
