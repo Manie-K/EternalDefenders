@@ -33,10 +33,15 @@ namespace EternalDefenders
             stateMachine.AddTransition(attackState, idleState, new FuncPredicate(() =>
                 _enemyController.Target.Stats.GetStat(StatType.Health) <= 0)
             );
+            stateMachine.AddTransition(idleState, walkState, new FuncPredicate(() =>
+                _enemyController.Target != null)
+            );
+            stateMachine.AddTransition(walkState, idleState, new EventPredicate("OnRetarget", _enemyController));
+            
             
             stateMachine.AddAnyTransition(deathState, new EventPredicate("OnDeath", _enemyController));
             
-            stateMachine.SetState(walkState);
+            stateMachine.SetState(idleState);
         }
 
         public void StartAttack()
