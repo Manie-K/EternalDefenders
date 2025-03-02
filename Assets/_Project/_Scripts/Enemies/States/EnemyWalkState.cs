@@ -36,8 +36,12 @@ namespace EternalDefenders
             //TODO: After some time, check if there is no better target etc.
         }
 
-        public bool HasReachedDestination() => !_navMeshAgent.pathPending &&
-                                               _navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance &&
-                                               (!_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude == 0.0f);
+        public bool HasReachedDestination()
+        {
+            bool val = !_navMeshAgent.pathPending &&
+                       _navMeshAgent.remainingDistance <= _navMeshAgent.stoppingDistance &&
+                       (!_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude <= 0.1f);
+            return val;
+        }
     }
 }

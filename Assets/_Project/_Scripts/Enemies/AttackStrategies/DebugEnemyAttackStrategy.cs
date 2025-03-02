@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace EternalDefenders
 {    
@@ -8,15 +9,20 @@ namespace EternalDefenders
         public override void Attack(IEnemyTarget target)
         {
             Debug.Log("Attacking target");
-            MainBaseController mainBase = target as MainBaseController;
-            TowerController tower = target as TowerController;
-            if(mainBase != null)
+            switch(target)
             {
-                DamageCalculator.PerformAttack(enemy, mainBase);
-            }
-            else if(tower != null)
-            {
-                DamageCalculator.PerformAttack(enemy, tower);
+                case MainBaseController mainBase:
+                    DamageCalculator.EnemyAttackMainBase(enemy, mainBase);
+                    break;
+                case TowerController tower:
+                    DamageCalculator.EnemyAttackTower(enemy, tower);
+                    break;
+                case PlayerController player:
+                    DamageCalculator.EnemyAttackPlayer(enemy, player);
+                    break;
+                default:
+                    Debug.LogError("Unknown target type");
+                    break;
             }
         }
 

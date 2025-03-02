@@ -6,7 +6,7 @@ namespace EternalDefenders
     {
         //TODO: Refactor this mess completely
         //later we will overload this method to accept different parameters
-        public static void PerformAttack(TowerController attacker, EnemyController target) 
+        public static void TowerAttackEnemy(TowerController attacker, EnemyController target) 
         {
             Stats towerStats = attacker.Stats;
             Stats enemyStats = target.Stats;
@@ -30,7 +30,7 @@ namespace EternalDefenders
             }
         }
         
-        public static void PerformAttack(EnemyController attacker, TowerController target) 
+        public static void EnemyAttackTower(EnemyController attacker, TowerController target) 
         {
             Stats towerStats = target.Stats;
             Stats enemyStats = attacker.Stats;
@@ -50,9 +50,14 @@ namespace EternalDefenders
             //check if tower is dead
         }
         
-        public static void PerformAttack(EnemyController attacker, MainBaseController target) 
+        public static void EnemyAttackMainBase(EnemyController attacker, MainBaseController target) 
         {
-            Debug.Log("Base is being attacked!");
+            Debug.Log("Attacking BASE!");
+        }
+
+        public static void EnemyAttackPlayer(EnemyController attacker, PlayerController player)
+        {
+            Debug.Log("Attacking PLAYER!");
         }
     }
 }
