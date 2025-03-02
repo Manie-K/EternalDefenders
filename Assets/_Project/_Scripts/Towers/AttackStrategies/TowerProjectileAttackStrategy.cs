@@ -6,7 +6,7 @@ namespace EternalDefenders
     public class TowerProjectileAttackStrategy : TowerAttackStrategy
     {
         public ProjectileController projectilePrefab;
-        public override void Attack(EnemyController target)
+        public override void Attack(TowerController tower, EnemyController target)
         {
             Debug.Log("Projectile attack!");
             

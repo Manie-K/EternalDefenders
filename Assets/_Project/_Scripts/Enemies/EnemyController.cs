@@ -20,7 +20,7 @@ namespace EternalDefenders
 
         void Awake()
         {
-            targetStrategy.Init(this);
+            targetStrategy.Init();
             Stats = new Stats(statsConfig.GetStats());
             Effect = attackEffect;
             
@@ -38,7 +38,7 @@ namespace EternalDefenders
         //Don't know when to call this method xd
         public void PickNewTarget()
         {
-            Target = targetStrategy.FindTarget();
+            Target = targetStrategy.FindTarget(this);
         }
         
         public IEnumerator Attack()

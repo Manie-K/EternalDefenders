@@ -13,8 +13,6 @@ namespace EternalDefenders
         
         [SerializeField] protected PriorityTarget priorityTarget;
         
-        protected EnemyController enemy;
-        
         protected PlayerController player;
         protected MainBaseController mainBase;
 
@@ -22,13 +20,12 @@ namespace EternalDefenders
         protected const string PlayerTag = "Player";
         
 
-        public virtual void Init(EnemyController controller)
+        public virtual void Init()
         {
-            enemy = controller;
             player = GameObject.FindGameObjectWithTag(PlayerTag).GetComponent<PlayerController>();
             mainBase = GameObject.FindGameObjectWithTag(MainBaseTag).GetComponent<MainBaseController>();
         }
 
-        public abstract IEnemyTarget FindTarget();
+        public abstract IEnemyTarget FindTarget(EnemyController enemy);
     }
 }
