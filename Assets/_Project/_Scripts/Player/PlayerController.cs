@@ -78,7 +78,7 @@ namespace EternalDefenders
 
         void Update()
         {
-            ChangeDirection();
+            //ChangeDirection();
             MovePlayer();
 
             if(Stats.GetStat(StatType.Health) <= 0) OnPlayerDeath?.Invoke();
@@ -86,15 +86,15 @@ namespace EternalDefenders
             if (_shieldBar != null) _shieldBar.value = (float) Stats.GetStat(StatType.Shield) / Stats.GetStat(StatType.MaxShield);
         }
 
-        void ChangeDirection()
+        void ChangeDirection(Vector3 movementDirection)
         {
             //TODO possible 3d terrain issiues
-            Vector3 mouseWorldPosition = CameraController.Instance.GetWorldMousePosition();
-            Vector3 lookDirection = (mouseWorldPosition - _playerTransform.position).normalized;
+            //Vector3 mouseWorldPosition = CameraController.Instance.GetWorldMousePosition();
+            //Vector3 lookDirection = (mouseWorldPosition - _playerTransform.position).normalized;
             
-            if (lookDirection.magnitude >= 0.1f)
+            if (movementDirection.magnitude >= 0.1f)
             {
-                float targetAngle = Mathf.Atan2(lookDirection.x, lookDirection.z) * Mathf.Rad2Deg;
+                float targetAngle = Mathf.Atan2(movementDirection.x, movementDirection.z) * Mathf.Rad2Deg;
                 float angle = Mathf.SmoothDampAngle(_playerTransform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, turnSmoothTime);
                 _playerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
                 cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
@@ -108,10 +108,11 @@ namespace EternalDefenders
 
             Vector3 forward = _playerTransform.forward;
             Vector3 right = _playerTransform.right;
-            Vector3 movementDirection = (forward * vertical + right * horizontal).normalized;
+            Vector3 movementDirection = new Vector3(horizontal, 0f, vertical).normalized;
 
             if (movementDirection.magnitude >= 0.1f)
             {
+                ChangeDirection(movementDirection);
                 ChangeAnimation(_runningHash);
                 _controller.Move(movementDirection * (speed * Time.deltaTime));
             }
