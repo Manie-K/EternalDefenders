@@ -82,6 +82,7 @@ namespace EternalDefenders
         private void ToggleMenu()
         {
             _isMenuVisible = !_isMenuVisible;
+            if (!_isMenuVisible) BackButtonOnClicked(); 
             _doc.rootVisualElement.style.display = _isMenuVisible ? DisplayStyle.Flex : DisplayStyle.None;
         }
 

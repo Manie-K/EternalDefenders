@@ -1,0 +1,47 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/TowerBuildingPanel/Tower_Building_Style.uss?fileID=7433441132597879392&amp;guid=c3ac15013ffc9544dacf02817c2fe99f&amp;type=3#Tower_Building_Style" />
+    <engine:VisualElement name="TowerBuildingPanel" style="flex-grow: 0; width: 50%; height: 70%; align-items: stretch; align-self: center; top: 15%; background-image: url(&quot;project://database/Assets/_Project/UI/pobrane.jpg?fileID=2800000&amp;guid=01c434d16458403499fa0b84e73f3ef1&amp;type=3#pobrane&quot;); border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-top-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 25px; border-bottom-left-radius: 25px;">
+        <engine:VisualElement name="FireTower" style="flex-grow: 1; flex-direction: row; margin-left: 10%;">
+            <engine:VisualElement name="FireTower_Icon" style="flex-grow: 0; width: 20%; height: 80%; align-self: center; margin-left: 5%; background-image: url(&quot;project://database/Assets/_Project/UI/TowerBuildingPanel/TowerIcons/Icon_Fire_Tower.png?fileID=2800000&amp;guid=297fb7f95d4d5ec49a64a3364c80a1e5&amp;type=3#Icon_Fire_Tower&quot;); background-size: 80% 100%;" />
+            <engine:VisualElement name="MaterialsInfo" style="flex-grow: 0; width: 30%;">
+                <engine:VisualElement name="Fire_Wood" style="flex-grow: 1; flex-direction: row;">
+                    <engine:VisualElement name="Wood_Icon" style="flex-grow: 0; width: 25%; height: 60%; align-self: flex-end; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/logs.png?fileID=2800000&amp;guid=e232efa096f10134a91bdf0ff689e302&amp;type=3#logs&quot;);" />
+                    <engine:Label text="100" name="Fire_Wood_Price" style="align-self: flex-end; color: rgb(255, 255, 255); font-size: 35%;" />
+                </engine:VisualElement>
+                <engine:VisualElement name="Fire_Stone" style="flex-grow: 1; flex-direction: row;">
+                    <engine:VisualElement name="Stone_Icon" style="flex-grow: 0; width: 25%; height: 60%; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/stone.png?fileID=2800000&amp;guid=4fbc211cc2acbde409318a8ddad95353&amp;type=3#stone&quot;);" />
+                    <engine:Label text="100" name="Fire_Stone_Price" style="align-self: flex-start; color: rgb(255, 255, 255); font-size: 35%;" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+            <engine:Button text="Buy" name="Fire_Tower_Button" class="menu-button2" />
+        </engine:VisualElement>
+        <engine:VisualElement name="ElectricTower" style="flex-grow: 1; flex-direction: row; margin-left: 10%; -unity-text-align: upper-left; align-self: auto;">
+            <engine:VisualElement name="ElectricTower_Icon" style="flex-grow: 0; align-self: center; width: 20%; height: 86%; margin-left: 5%; background-image: url(&quot;project://database/Assets/_Project/UI/TowerBuildingPanel/TowerIcons/Icon_Electric_Tower.png?fileID=2800000&amp;guid=bac845deaf4bc37408a7c24d55daae81&amp;type=3#Icon_Electric_Tower&quot;); background-size: 81% 100%;" />
+            <engine:VisualElement name="MaterialsInfo2" style="flex-grow: 0; width: 30%;">
+                <engine:VisualElement name="Electric_Wood" style="flex-grow: 1; flex-direction: row;">
+                    <engine:VisualElement name="Wood_Icon" style="flex-grow: 0; width: 25%; height: 60%; align-self: flex-end; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/logs.png?fileID=2800000&amp;guid=e232efa096f10134a91bdf0ff689e302&amp;type=3#logs&quot;);" />
+                    <engine:Label text="100" name="Electric_Wood_Price" style="color: rgb(255, 255, 255); align-self: flex-end; font-size: 35%;" />
+                </engine:VisualElement>
+                <engine:VisualElement name="Electric_Stone" style="flex-grow: 1; flex-direction: row;">
+                    <engine:VisualElement name="Stone_Icon" style="flex-grow: 0; width: 25%; height: 60%; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/stone.png?fileID=2800000&amp;guid=4fbc211cc2acbde409318a8ddad95353&amp;type=3#stone&quot;);" />
+                    <engine:Label text="100" name="Electric_Stone_Price" style="align-self: flex-start; color: rgb(255, 255, 255); font-size: 35%;" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+            <engine:Button text="Buy" name="Electric_Tower_Button" class="menu-button2" />
+        </engine:VisualElement>
+        <engine:VisualElement name="IceTower" style="flex-grow: 1; flex-direction: row; margin-left: 10%;">
+            <engine:VisualElement name="IceTower_Icon" style="flex-grow: 0; width: 20%; height: 85%; margin-left: 5%; background-image: url(&quot;project://database/Assets/_Project/UI/TowerBuildingPanel/TowerIcons/Icon_Ice_Tower.png?fileID=2800000&amp;guid=af29da7c35e3f36439fa58127bf34451&amp;type=3#Icon_Ice_Tower&quot;); background-size: 80% 100%;" />
+            <engine:VisualElement name="MaterialsInfo3" style="flex-grow: 0; width: 30%;">
+                <engine:VisualElement name="Ice_Wood" style="flex-grow: 1; flex-direction: row;">
+                    <engine:VisualElement name="Wood_Icon" style="flex-grow: 0; width: 25%; height: 60%; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/logs.png?fileID=2800000&amp;guid=e232efa096f10134a91bdf0ff689e302&amp;type=3#logs&quot;); -unity-text-align: upper-left; align-self: flex-end;" />
+                    <engine:Label text="100" name="Ice_Wood_Price" style="color: rgb(255, 255, 255); align-self: flex-end; font-size: 35%; -unity-text-align: upper-left;" />
+                </engine:VisualElement>
+                <engine:VisualElement name="Ice_Stone" style="flex-grow: 1; flex-direction: row; margin-bottom: 15%;">
+                    <engine:VisualElement name="Stone_Icon" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/stone.png?fileID=2800000&amp;guid=4fbc211cc2acbde409318a8ddad95353&amp;type=3#stone&quot;); width: 25%; height: 80%; align-self: flex-start; justify-content: center;" />
+                    <engine:Label text="100" name="Ice_Stone_Price" style="height: 26px; color: rgb(255, 255, 255); font-size: 35%;" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+            <engine:Button text="Buy" name="Ice_Tower_Button" class="menu-button menu-button2" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>
