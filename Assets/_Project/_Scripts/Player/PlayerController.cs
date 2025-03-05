@@ -32,7 +32,7 @@ namespace EternalDefenders
         float _turnSmoothVelocity;
         int _currentAnimationHash = 0;
         readonly int _idleHash = Animator.StringToHash("Idle");
-        readonly int _runningHash = Animator.StringToHash("Running");
+        readonly int _runningHash = Animator.StringToHash("Run");
 
         protected override void Awake()
         {
@@ -78,7 +78,6 @@ namespace EternalDefenders
 
         void Update()
         {
-            //ChangeDirection();
             MovePlayer();
 
             if(Stats.GetStat(StatType.Health) <= 0) OnPlayerDeath?.Invoke();
@@ -87,11 +86,7 @@ namespace EternalDefenders
         }
 
         void ChangeDirection(Vector3 movementDirection)
-        {
-            //TODO possible 3d terrain issiues
-            //Vector3 mouseWorldPosition = CameraController.Instance.GetWorldMousePosition();
-            //Vector3 lookDirection = (mouseWorldPosition - _playerTransform.position).normalized;
-            
+        {         
             if (movementDirection.magnitude >= 0.1f)
             {
                 float targetAngle = Mathf.Atan2(movementDirection.x, movementDirection.z) * Mathf.Rad2Deg;
@@ -122,7 +117,7 @@ namespace EternalDefenders
             }
         }
 
-        void ChangeAnimation(int animationHash, float crossFadeDuration = 0.2f, float time = 0) 
+        void ChangeAnimation(int animationHash, float crossFadeDuration = 0.05f, float time = 0) 
         {
             if (time > 0)
             {
@@ -140,7 +135,7 @@ namespace EternalDefenders
             {
                 if(_currentAnimationHash != animationHash)
                 {
-                    //Debug.Log($"Changing animation from {_currentAnimationHash} to {animationHash}");
+                    Debug.Log($"Changing animation from {_currentAnimationHash} to {animationHash}");
                     _currentAnimationHash = animationHash;
                     _animator.CrossFade(animationHash, crossFadeDuration);
                 }
