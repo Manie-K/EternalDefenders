@@ -12,6 +12,8 @@ namespace EternalDefenders
         private Button _FireTowerBuy;
         private Button _ElectricTowerBuy;
         private Button _IceTowerBuy;
+        private Button _WoodMillBuy;
+        private Button _StoneMillBuy;
 
         [SerializeField] List<TowerBundle> towerBundles;
         public event Action<TowerBundle> OnBuildingSelected;
@@ -29,6 +31,12 @@ namespace EternalDefenders
 
             _IceTowerBuy = _doc.rootVisualElement.Q<Button>("Ice_Tower_Button");
             _IceTowerBuy.clicked += () => IceTowerBuyButtonOnClicked();
+
+            _WoodMillBuy = _doc.rootVisualElement.Q<Button>("WoodMill_Button");
+            _WoodMillBuy.clicked += () => WoodMillBuyButtonOnClicked();
+
+            _StoneMillBuy = _doc.rootVisualElement.Q<Button>("StoneMill_Button");
+            _StoneMillBuy.clicked += () => StoneMillBuyButtonOnClicked();
 
             _doc.rootVisualElement.style.display = DisplayStyle.None;
 
@@ -71,6 +79,16 @@ namespace EternalDefenders
         {
             OnBuildingModeExit_Delegate();
             OnBuildingSelected?.Invoke(towerBundles[2]);
+        }
+
+        void StoneMillBuyButtonOnClicked()
+        {
+            Debug.Log("WoodMill bought");
+        }
+
+        void WoodMillBuyButtonOnClicked()
+        {
+            Debug.Log("WoodMill bought");
         }
     }
 }
