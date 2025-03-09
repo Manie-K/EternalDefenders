@@ -33,6 +33,10 @@ namespace EternalDefenders
         int _currentAnimationHash = 0;
         readonly int _idleHash = Animator.StringToHash("Idle");
         readonly int _runningHash = Animator.StringToHash("Run");
+        readonly int _runningRifleHash = Animator.StringToHash("Run Rifle");
+        readonly int _idleRifleHash = Animator.StringToHash("Idle Rifle");
+        readonly int _aimingSniperRifleHash = Animator.StringToHash("Aiming SniperRifle");
+        readonly int _fireSniperRifleHash = Animator.StringToHash("Fire SniperRifle");
 
         protected override void Awake()
         {
@@ -44,7 +48,7 @@ namespace EternalDefenders
 
         void Start()
         {
-            ChangeAnimation(_idleHash);
+            ChangeAnimation(_idleRifleHash);
 
             var root = hud.rootVisualElement;
             _healthBar = root.Q<HealthBar>("HealthBar");
@@ -78,11 +82,29 @@ namespace EternalDefenders
 
         void Update()
         {
-            MovePlayer();
+            PlayerInput();
 
             if(Stats.GetStat(StatType.Health) <= 0) OnPlayerDeath?.Invoke();
             if (_healthBar != null) _healthBar.value = (float) Stats.GetStat(StatType.Health) / Stats.GetStat(StatType.MaxHealth);           
             if (_shieldBar != null) _shieldBar.value = (float) Stats.GetStat(StatType.Shield) / Stats.GetStat(StatType.MaxShield);
+        }
+
+        void PlayerInput()
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                ChangeAnimation(_aimingSniperRifleHash);
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                ChangeAnimation(_fireSniperRifleHash);
+                ChangeAnimation(_idleRifleHash);
+            }
+            else
+            {
+                MovePlayer();
+            }
+
         }
 
         void ChangeDirection(Vector3 movementDirection)
@@ -108,12 +130,12 @@ namespace EternalDefenders
             if (movementDirection.magnitude >= 0.1f)
             {
                 ChangeDirection(movementDirection);
-                ChangeAnimation(_runningHash);
+                ChangeAnimation(_runningRifleHash);
                 _controller.Move(movementDirection * (speed * Time.deltaTime));
             }
             else
             {
-                ChangeAnimation(_idleHash);
+                ChangeAnimation(_idleRifleHash);
             }
         }
 
