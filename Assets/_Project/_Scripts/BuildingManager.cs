@@ -81,6 +81,7 @@ namespace EternalDefenders
             if(Input.GetMouseButtonDown(0) && tile.CanBuild())
             {
                 BuildTower(tile);
+                OnBuildingModeExit?.Invoke();
             }
         }
 
@@ -101,6 +102,11 @@ namespace EternalDefenders
             var tower = Instantiate(_selectedTower, tile.transform.position, Quaternion.identity
                 , towersParent);
             tile.SetBuilding(tower);
+        }
+
+        public void ExitBuildingMode()
+        {
+            OnBuildingModeExit?.Invoke();
         }
     }
 }

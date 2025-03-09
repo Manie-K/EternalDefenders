@@ -1,7 +1,7 @@
 .menu-button2:hover {
-    font-size: 250%;
+    font-size: 300%;
     color: rgb(148, 182, 232);
-    rotate: -7deg;
+    rotate: 0;
     transition-duration: 0.3s;
 }
 
