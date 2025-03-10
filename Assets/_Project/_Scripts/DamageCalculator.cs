@@ -52,12 +52,28 @@ namespace EternalDefenders
         
         public static void EnemyAttackMainBase(EnemyController attacker, MainBaseController target) 
         {
-            Debug.Log("Attacking BASE!");
+            Stats mainBaseStats = target.Stats;
+            Stats enemyStats = attacker.Stats;
+            Effect effect = attacker.Effect;
+            
+            mainBaseStats.ChangeStat(StatType.Health, -enemyStats.GetStat(StatType.Damage));
+            foreach(var modifier in effect.modifiers)
+            {
+                mainBaseStats.ApplyModifier(modifier);
+            }
         }
 
         public static void EnemyAttackPlayer(EnemyController attacker, PlayerController player)
         {
-            Debug.Log("Attacking PLAYER!");
+            Stats playerStats = player.Stats;
+            Stats enemyStats = attacker.Stats;
+            Effect effect = attacker.Effect;
+            
+            playerStats.ChangeStat(StatType.Health, -enemyStats.GetStat(StatType.Damage));
+            foreach(var modifier in effect.modifiers)
+            {
+                playerStats.ApplyModifier(modifier);
+            }
         }
     }
 }

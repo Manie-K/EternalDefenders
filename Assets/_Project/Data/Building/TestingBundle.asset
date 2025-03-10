@@ -15,4 +15,8 @@ MonoBehaviour:
   towerPrefab: {fileID: 8032507202923606528, guid: 89e85c9831c788043b3b6efb6f50a285, type: 3}
   combinedMesh: {fileID: 4300000, guid: 28a89d5f61590af40845efd084f59dca, type: 2}
   icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  cost: 0
+  cost:
+  - resource: {fileID: 11400000, guid: fd41a69815d404d45a2295472ef0266d, type: 2}
+    amount: 50
+  - resource: {fileID: 11400000, guid: bfa98661e90d8dd4ca62abd0c758c6e2, type: 2}
+    amount: 50
