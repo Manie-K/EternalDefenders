@@ -6,6 +6,6 @@ namespace EternalDefenders
     public class ResourceSO : ScriptableObject
     {
         public string Name;
-        public Sprite sprite;
+        public Sprite Sprite;
     }
 }

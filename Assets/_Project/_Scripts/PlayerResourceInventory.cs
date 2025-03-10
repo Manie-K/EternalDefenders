@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MG_Utilities;
 using UnityEngine;
 
@@ -6,8 +7,23 @@ namespace EternalDefenders
 {
     public class PlayerResourceInventory : Singleton<PlayerResourceInventory>
     {
+        [SerializeField] List<ResourceSO> startingResources = new();
+        [SerializeField] int startingResourceAmount = 100;
+        
         readonly Dictionary<ResourceSO, int> _resources = new();
-     
+
+        void Start()
+        {
+            foreach(var resourceSO in startingResources)
+            {
+                AddResource(resourceSO, startingResourceAmount);
+            }
+        }
+
+        public Dictionary<ResourceSO, int> GetAllResources()
+        {
+            return new Dictionary<ResourceSO, int>(_resources);
+        }
         public int GetResourceAmount(ResourceSO resourceType)
         {
             return _resources.ContainsKey(resourceType) ? _resources[resourceType] : 0;
