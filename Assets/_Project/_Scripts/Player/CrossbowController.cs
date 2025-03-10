@@ -34,8 +34,8 @@ namespace EternalDefendersPrototype
 
         void Start()
         {
-            crossbow.SetEnemyTag(enemyTag);
-            crossbow.Reload();
+           // crossbow.SetEnemyTag(enemyTag);
+           // crossbow.Reload();
         }
 
         void Update()
