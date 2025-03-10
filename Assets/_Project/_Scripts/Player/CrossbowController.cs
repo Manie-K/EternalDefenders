@@ -50,7 +50,7 @@ namespace EternalDefendersPrototype
                 firePower += Time.deltaTime * firePowerSpeed;
             }
 
-            if (fire && Input.GetMouseButtonUp(0))
+            if (fire && Input.GetMouseButtonUp(0) && false)
             {
                 crossbow.Fire(firePower);
                 firePower = 0;

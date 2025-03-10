@@ -16,6 +16,6 @@ MonoBehaviour:
   modifierType: 0
   persistAfterFinish: 1
   limitedDurationTime: 12.5
-  value: 5
+  value: -15
   tickRate: 3
-  tickValue: 5
+  tickValue: -5

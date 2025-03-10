@@ -10,7 +10,7 @@ namespace EternalDefenders
         {
             if(target == null) 
                 return;
-            Debug.Log("Attacking target");
+            //Debug.Log("Attacking target");
             switch(target)
             {
                 case MainBaseController mainBase:

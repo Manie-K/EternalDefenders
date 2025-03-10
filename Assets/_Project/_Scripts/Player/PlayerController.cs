@@ -153,7 +153,7 @@ namespace EternalDefenders
             {
                 if(_currentAnimationHash != animationHash)
                 {
-                    Debug.Log($"Changing animation from {_currentAnimationHash} to {animationHash}");
+                    //Debug.Log($"Changing animation from {_currentAnimationHash} to {animationHash}");
                     _currentAnimationHash = animationHash;
                     _animator.CrossFade(animationHash, crossFadeDuration);
                 }

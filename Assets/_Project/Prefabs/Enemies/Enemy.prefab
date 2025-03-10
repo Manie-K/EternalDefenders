@@ -208,7 +208,7 @@ MonoBehaviour:
   attackEffect: {fileID: 11400000, guid: 8e71a668601e5424fa33d6a77c449c4c, type: 2}
   targetStrategy: {fileID: 11400000, guid: d2e7f46423fb01f498e3400fa29e7e33, type: 2}
   attackStrategy: {fileID: 11400000, guid: 4277bac39257c35419b7b660807d8c2a, type: 2}
-  retargetingInterval: 2.5
+  retargetingInterval: 3.25
 --- !u!114 &1995334456691489260
 MonoBehaviour:
   m_ObjectHideFlags: 0

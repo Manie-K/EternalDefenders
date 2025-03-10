@@ -1,5 +1,6 @@
 using System;
 using MG_Utilities;
+using UnityEditor;
 using UnityEngine;
 
 namespace EternalDefenders
@@ -18,6 +19,7 @@ namespace EternalDefenders
         {
             Debug.Log("======= Game Over =======");
             PauseTime();
+            EditorApplication.isPaused = true;
         }
         
         public void PauseTime() => Time.timeScale = 0f;
