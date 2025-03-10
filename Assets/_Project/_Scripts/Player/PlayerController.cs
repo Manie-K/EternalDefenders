@@ -1,14 +1,10 @@
 using System;
 using MG_Utilities;
 using System.Collections;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using HudElements;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
-using Codice.Client.BaseCommands;
 
 namespace EternalDefenders
 {
@@ -22,7 +18,7 @@ namespace EternalDefenders
         private HealthBar _healthBar;
         private HealthBar _shieldBar;
 
-        public Stats Stats { get; private set; } //sorki ale interface musi byc zaimplementowany 
+        public Stats Stats { get; private set; }
         public event Action OnPlayerDeath;
         
         CharacterController _controller;

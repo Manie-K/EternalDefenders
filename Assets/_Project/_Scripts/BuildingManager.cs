@@ -19,8 +19,7 @@ namespace EternalDefenders
         GameObject _ghost;
         TowerController _selectedTower;
         bool _isEnabled = false;
-
-
+        
         void Start()
         {
             _ghost = transform.GetChild(0).gameObject;
@@ -50,7 +49,6 @@ namespace EternalDefenders
             };
 
             Tower_Building_Panel_Controller.Instance.OnBuildingSelected += OnBuildingSelected_Delegate;
-
         }
 
         void OnDisable()
@@ -102,11 +100,6 @@ namespace EternalDefenders
             var tower = Instantiate(_selectedTower, tile.transform.position, Quaternion.identity
                 , towersParent);
             tile.SetBuilding(tower);
-        }
-
-        public void ExitBuildingMode()
-        {
-            OnBuildingModeExit?.Invoke();
         }
     }
 }
