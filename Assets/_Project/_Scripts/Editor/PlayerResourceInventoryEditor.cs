@@ -25,7 +25,7 @@ namespace EternalDefenders.Editor
             foreach((var resourceSo, int amount) in resources)
             {
                 GUILayout.BeginHorizontal();
-                GUILayout.Box(resourceSo.Sprite.texture, GUILayout.Width(32), GUILayout.Height(32));
+                GUILayout.Box(resourceSo.Sprite.texture, GUILayout.Width(26), GUILayout.Height(26));
                 GUILayout.Label($"{resourceSo.Name}: \t {amount}");
                 GUILayout.EndHorizontal();
             }
