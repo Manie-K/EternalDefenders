@@ -1,6 +1,6 @@
+using System;
 using HudElements;
 using MG_Utilities;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -8,37 +8,33 @@ namespace EternalDefenders
 {
     public class MainBaseController : Singleton<MainBaseController>, IEnemyTarget
     {
+        [SerializeField] MainBaseStats statsConfig;
 
-        public UIDocument hud;
-        private HealthBar BaseHeartBar;
+        public event Action OnMainBaseDestroyed;
+        public Stats Stats
+        {
+            get => _stats;
+            set => _stats = value;
+        }
 
-        public Stats Stats { get; set; }
-
+        Stats _stats;
+        
         void Start()
         {
-            var root = hud.rootVisualElement;
-            BaseHeartBar = root.Q<HealthBar>("BaseHeartBar");
-
-            var initialStats = new Dictionary<StatType, Stats.Stat>
-            {
-                { StatType.Health, new Stats.Stat(100) },
-                { StatType.MaxHealth, new Stats.Stat(100) }
-            };
-
-            Stats = new Stats(initialStats);
-
-            if (BaseHeartBar != null && Stats.HasStat(StatType.Health))
-            {
-                int currentHealth = Stats.GetStat(StatType.Health);
-                int baseHealth = Stats.GetStat(StatType.MaxHealth);
-                BaseHeartBar.value = (float)currentHealth / baseHealth;
-            }
+            _stats = new Stats(statsConfig.GetStats());
         }
 
         void Update()
         {
-            if (BaseHeartBar != null) BaseHeartBar.value = (float) Stats.GetStat(StatType.Health) / Stats.GetStat(StatType.MaxHealth);
+            if(_stats.GetStat(StatType.Health) <= 0)
+            {
+                Die();
+            }
         }
 
+        void Die()
+        {
+            OnMainBaseDestroyed?.Invoke();
+        }
     }
 }

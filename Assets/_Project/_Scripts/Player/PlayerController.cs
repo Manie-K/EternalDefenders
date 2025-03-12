@@ -1,14 +1,10 @@
 using System;
 using MG_Utilities;
 using System.Collections;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using HudElements;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
-using Codice.Client.BaseCommands;
 
 namespace EternalDefenders
 {
@@ -22,7 +18,7 @@ namespace EternalDefenders
         private HealthBar _healthBar;
         private HealthBar _shieldBar;
 
-        public Stats Stats { get; private set; } //sorki ale interface musi byc zaimplementowany 
+        public Stats Stats { get; private set; }
         public event Action OnPlayerDeath;
         
         CharacterController _controller;
@@ -37,6 +33,8 @@ namespace EternalDefenders
         readonly int _idleRifleHash = Animator.StringToHash("Idle Rifle");
         readonly int _aimingSniperRifleHash = Animator.StringToHash("Aiming SniperRifle");
         readonly int _fireSniperRifleHash = Animator.StringToHash("Fire SniperRifle");
+
+        private bool isFighting = false;
 
         protected override void Awake()
         {
@@ -91,18 +89,27 @@ namespace EternalDefenders
 
         void PlayerInput()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(1))
             {
+                isFighting = true;
                 ChangeAnimation(_aimingSniperRifleHash);
+            }
+            else if (Input.GetMouseButtonDown(0))
+            {
+                ChangeAnimation(_fireSniperRifleHash);
             }
             else if (Input.GetMouseButtonUp(0))
             {
-                ChangeAnimation(_fireSniperRifleHash);
-                ChangeAnimation(_idleRifleHash);
+                ChangeAnimation(_aimingSniperRifleHash);
             }
-            else
+            else if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
             {
+                isFighting = false;
                 MovePlayer();
+            }
+            else if (!isFighting)
+            {
+                ChangeAnimation(_idleRifleHash);
             }
 
         }
@@ -133,10 +140,6 @@ namespace EternalDefenders
                 ChangeAnimation(_runningRifleHash);
                 _controller.Move(movementDirection * (speed * Time.deltaTime));
             }
-            else
-            {
-                ChangeAnimation(_idleRifleHash);
-            }
         }
 
         void ChangeAnimation(int animationHash, float crossFadeDuration = 0.05f, float time = 0) 
@@ -157,7 +160,7 @@ namespace EternalDefenders
             {
                 if(_currentAnimationHash != animationHash)
                 {
-                    Debug.Log($"Changing animation from {_currentAnimationHash} to {animationHash}");
+                    //Debug.Log($"Changing animation from {_currentAnimationHash} to {animationHash}");
                     _currentAnimationHash = animationHash;
                     _animator.CrossFade(animationHash, crossFadeDuration);
                 }

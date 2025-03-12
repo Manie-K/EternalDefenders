@@ -10,7 +10,7 @@ namespace EternalDefenders
         [SerializeField] Effect attackEffect;
         [SerializeField] EnemyTargetStrategy targetStrategy;
         [SerializeField] EnemyAttackStrategy attackStrategy;
-        [SerializeField] float retargetingInterval = 10f;
+        [SerializeField] float retargetingInterval = 2f;
         public Stats Stats { get; private set; }
         public Effect Effect { get; private set; }
         public IEnemyTarget Target { get; private set; }
@@ -71,7 +71,7 @@ namespace EternalDefenders
         {
             Target = targetStrategy.FindTarget(this);
             OnRetarget?.Invoke();
-            Debug.Log("I've picked new target: " + Target);
+            //Debug.Log("I've picked new target: " + Target);
         }
     }
 }
