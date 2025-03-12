@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 8732d563a511d834e823ac895b8a4004
+timeCreated: 1504785534
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 99479
+  packageName: LowPoly Environment Pack
+  packageVersion: 1.0
+  assetPath: Assets/LowPoly Environment Pack/Prefabs/Mounting_2.prefab
+  uploadId: 200756

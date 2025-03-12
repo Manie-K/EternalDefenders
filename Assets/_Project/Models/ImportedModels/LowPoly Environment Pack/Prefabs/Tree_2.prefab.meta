@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: dc00aab85b301f242896a77c4b442ec0
+timeCreated: 1504785587
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 99479
+  packageName: LowPoly Environment Pack
+  packageVersion: 1.0
+  assetPath: Assets/LowPoly Environment Pack/Prefabs/Tree_2.prefab
+  uploadId: 200756

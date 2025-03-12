@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 93acc49b5a9f4e84b89aa62e0282a2a3
+timeCreated: 1504785523
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 99479
+  packageName: LowPoly Environment Pack
+  packageVersion: 1.0
+  assetPath: Assets/LowPoly Environment Pack/Prefabs/Environment_1.prefab
+  uploadId: 200756

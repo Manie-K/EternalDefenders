@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d82a0024cf3346b4695544dd461fb02b
+timeCreated: 1504785519
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 99479
+  packageName: LowPoly Environment Pack
+  packageVersion: 1.0
+  assetPath: Assets/LowPoly Environment Pack/Prefabs/Bush_1.prefab
+  uploadId: 200756

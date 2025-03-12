@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 4de868b1c656aa948a9734db55fa6df7
+timeCreated: 1504768174
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 99479
+  packageName: LowPoly Environment Pack
+  packageVersion: 1.0
+  assetPath: Assets/LowPoly Environment Pack/FBX/Materials/Pink.1.mat
+  uploadId: 200756

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 8117e74ca190335479975c5dd8a73f62
+timeCreated: 1505039045
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 99479
+  packageName: LowPoly Environment Pack
+  packageVersion: 1.0
+  assetPath: Assets/LowPoly Environment Pack/FBX/Materials/Brown.10.mat
+  uploadId: 200756
