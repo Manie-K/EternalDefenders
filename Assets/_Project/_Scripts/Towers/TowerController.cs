@@ -12,7 +12,7 @@ namespace EternalDefenders
         [SerializeField] TowerTargetStrategy targetStrategy;
         [SerializeField] TowerAttackStrategy attackStrategy;
         
-        public static event Action<TowerController, TowerEventArgs> OnTowerDestroyed;
+        public static event Action<TowerController> OnTowerDestroyed;
 
         public Stats Stats
         {
@@ -68,18 +68,14 @@ namespace EternalDefenders
         //TODO decide what to do in here
         void Die()
         {
-            TowerEventArgs args = new()
+            if (ItemManager.Instance.IsTowerProtected(this))
             {
-                ShouldPreventDestruction = false
-            };
-
-            OnTowerDestroyed?.Invoke(this, args);
-
-            if (!args.ShouldPreventDestruction)
-            {
-                Debug.Log("Tower destroyed");
-                Destroy(gameObject);
+                return;
             }
+
+            OnTowerDestroyed?.Invoke(this);
+            Debug.Log("Tower destroyed");
+            Destroy(gameObject);
         }
     }
 }
