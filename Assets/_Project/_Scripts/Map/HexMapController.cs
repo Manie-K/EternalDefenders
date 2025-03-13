@@ -10,8 +10,8 @@ namespace EternalDefenders
     {
         [SerializeField] Transform mapTransform;
         public static float HexSize => 6f;
-        public static int MapWidthChunks => 10;
-        public static int MapHeightChunks => 10;
+        public static int MapWidthChunks => 20;
+        public static int MapHeightChunks => 15;
 
         readonly HexTile[,] _map = new HexTile[MapWidthChunks * HexPerChunkX, MapHeightChunks*HexPerChunkY];
 
@@ -148,8 +148,7 @@ namespace EternalDefenders
                     
                     int chunkIndex = chunkX * MapHeightChunks + chunkY;
                     
-                    List<HexTile> hexes = chunks[chunkIndex].GetChild(0)
-                        .GetComponentsInChildren<HexTile>().ToList();
+                    List<HexTile> hexes = chunks[chunkIndex].GetComponentsInChildren<HexTile>().ToList();
                     int hexIndex = -1;
                     if (even)
                     {
