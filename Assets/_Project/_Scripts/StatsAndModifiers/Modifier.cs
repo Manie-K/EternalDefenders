@@ -16,6 +16,21 @@ namespace EternalDefenders
         CountdownTimer _durationTimer;
         bool _isFinished = false;
         bool _isDirty = true;
+
+        protected virtual void InitOnCreation(StatType statType, ModifierType modifierType, bool persistAfterFinish, 
+            float limitedDurationTime, int value)
+        {
+            this.statType = statType;
+            this.modifierType = modifierType;
+            this.persistAfterFinish = persistAfterFinish;
+            this.limitedDurationTime = limitedDurationTime;
+            this.value = value;
+            _isFinished = false;
+            _isDirty = true;
+            _durationTimer = null;
+        }
+        
+        public abstract Modifier CreateCopy();
         
         public virtual void InitModifer()
         {

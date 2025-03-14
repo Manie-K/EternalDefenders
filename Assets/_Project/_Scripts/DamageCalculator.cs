@@ -74,6 +74,8 @@ namespace EternalDefenders
             {
                 playerStats.ApplyModifier(modifier);
             }
+            
+            
         }
     }
 }

@@ -42,8 +42,9 @@ namespace EternalDefenders
 
         void SetDestination()
         {
+            Vector3 dir = (brain.transform.position - ((MonoBehaviour)_enemyController.Target).transform.position).normalized;
             Vector3 destination = ((MonoBehaviour)_enemyController.Target).transform.position + 
-                                  (Random.insideUnitSphere.With(y:0) * _enemyController.Stats.GetStat(StatType.Range));
+                                  (dir * _enemyController.Stats.GetStat(StatType.Range));
             _navMeshAgent.SetDestination(destination);
         }
     }

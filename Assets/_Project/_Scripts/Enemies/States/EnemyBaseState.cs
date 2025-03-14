@@ -9,7 +9,7 @@ namespace EternalDefenders
         public string Id { get; }
         protected readonly Animator animator;
         protected readonly EnemyBrain brain;
-        protected const float CrossFadeDuration = 0.15f;
+        protected const float CrossFadeDuration = 0.05f;
         
         protected EnemyBaseState(string name, EnemyBrain brain)
         {

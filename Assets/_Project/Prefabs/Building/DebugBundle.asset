@@ -9,13 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e448a252057b4629959555601568f430, type: 3}
-  m_Name: FireModifier
+  m_Script: {fileID: 11500000, guid: 0084076e88314363a2dc0c68d49bbce7, type: 3}
+  m_Name: DebugBundle
   m_EditorClassIdentifier: 
-  statType: 0
-  modifierType: 0
-  persistAfterFinish: 1
-  limitedDurationTime: 12.5
-  value: -30
-  tickRate: 3
-  tickValue: -5
+  towerPrefab: {fileID: 0}
+  icon: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  cost: 0

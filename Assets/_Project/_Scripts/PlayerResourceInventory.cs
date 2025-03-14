@@ -12,12 +12,15 @@ namespace EternalDefenders
         
         readonly Dictionary<ResourceSO, int> _resources = new();
 
+        public event Action OnInventoryChanged;
+        
         void Start()
         {
             foreach(var resourceSO in startingResources)
             {
                 AddResource(resourceSO, startingResourceAmount);
             }
+            OnInventoryChanged?.Invoke();
         }
 
         public Dictionary<ResourceSO, int> GetAllResources()
@@ -36,6 +39,7 @@ namespace EternalDefenders
             {
                 _resources[resourceType] += amount;
             }
+            OnInventoryChanged?.Invoke();
         }
         
         public int RemoveResource(ResourceSO resourceType, int amount)
@@ -51,6 +55,7 @@ namespace EternalDefenders
             {
                 _resources.Remove(resourceType);
             }
+            OnInventoryChanged?.Invoke();
             return amountToRemove;
         }
         
