@@ -35,6 +35,9 @@ namespace EternalDefenders
         readonly int _fireSniperRifleHash = Animator.StringToHash("Fire SniperRifle");
 
         private bool isFighting = false;
+        private Vector3 velocity;
+        private bool isGrounded;
+        public float gravity = -9.81f;
 
         protected override void Awake()
         {
@@ -85,22 +88,30 @@ namespace EternalDefenders
             if(Stats.GetStat(StatType.Health) <= 0) OnPlayerDeath?.Invoke();
             if (_healthBar != null) _healthBar.value = (float) Stats.GetStat(StatType.Health) / Stats.GetStat(StatType.MaxHealth);           
             if (_shieldBar != null) _shieldBar.value = (float) Stats.GetStat(StatType.Shield) / Stats.GetStat(StatType.MaxShield);
+
+            //Gravity
+            isGrounded = _controller.isGrounded;
+
+            if (isGrounded && velocity.y <0)
+            {
+                velocity.y = -2f;
+            }
+
+            velocity.y += gravity * Time.deltaTime;
+            _controller.Move(velocity * Time.deltaTime);
         }
 
         void PlayerInput()
         {
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButton(1))
             {
                 isFighting = true;
                 ChangeAnimation(_aimingSniperRifleHash);
             }
-            else if (Input.GetMouseButtonDown(0))
+            else if (Input.GetMouseButton(0))
             {
                 ChangeAnimation(_fireSniperRifleHash);
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                ChangeAnimation(_aimingSniperRifleHash);
+                //ChangeAnimation(_aimingSniperRifleHash, 0.05f, 1);
             }
             else if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
             {

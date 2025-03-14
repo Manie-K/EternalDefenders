@@ -118,7 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gun: {fileID: 3628266541113372701}
   enemyTag: Enemy
-  maxFirePower: 200
+  maxFirePower: 50
   firePowerSpeed: 30
   rotateSpeed: 5
   minRotation: -50

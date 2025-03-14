@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 namespace EternalDefendersPrototype
 {
@@ -33,6 +34,7 @@ namespace EternalDefendersPrototype
             _rigidbody.AddTorque(transform.right * torque);
             transform.SetParent(null);
             //Debug.Log("No parent");
+            //StartCoroutine(DestroyAdterDelay(5f));
         }
 
         void OnTriggerEnter(Collider collider)
@@ -49,7 +51,15 @@ namespace EternalDefendersPrototype
             _rigidbody.angularVelocity = Vector3.zero;
             _rigidbody.isKinematic = true;
             transform.SetParent(collider.transform);
-            //Debug.Log("New parent");
+            Debug.Log("New parent");
+
+            //StartCoroutine(DestroyAdterDelay(1f));
+        }
+
+        IEnumerator DestroyAdterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            Destroy(gameObject);
         }
     }
 }
