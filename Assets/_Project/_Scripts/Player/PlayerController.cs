@@ -106,12 +106,15 @@ namespace EternalDefenders
             if (Input.GetMouseButton(1))
             {
                 isFighting = true;
-                ChangeAnimation(_aimingSniperRifleHash);
+                ChangeAnimation(_aimingSniperRifleHash, 0.02f);
             }
-            else if (Input.GetMouseButton(0))
+            else if (Input.GetMouseButtonDown(0))
             {
-                ChangeAnimation(_fireSniperRifleHash);
-                //ChangeAnimation(_aimingSniperRifleHash, 0.05f, 1);
+                ChangeAnimation(_fireSniperRifleHash, 0.03f);   
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                ChangeAnimation(_aimingSniperRifleHash, 0.5f);
             }
             else if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
             {

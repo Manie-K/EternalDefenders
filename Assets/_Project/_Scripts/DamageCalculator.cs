@@ -77,5 +77,13 @@ namespace EternalDefenders
             
             
         }
+
+        public static void BulletHitEnemy(Bullet bullet, EnemyController enemy)
+        {
+            Stats bulletStats = bullet.Stats;
+            Stats enemyStats = enemy.Stats;
+
+            enemyStats.ChangeStat(StatType.Health, -bulletStats.GetStat(StatType.Damage));
+        }
     }
 }

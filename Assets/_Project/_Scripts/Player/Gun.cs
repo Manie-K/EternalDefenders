@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace EternalDefendersPrototype
+namespace EternalDefenders
 {
     public class Gun : MonoBehaviour
     {
@@ -19,6 +19,14 @@ namespace EternalDefendersPrototype
         private string enemyTag;
 
         private bool isReloading;
+
+        public void Update()
+        {
+            if (currentBullet == null)
+            {
+                Reload();
+            }
+        }
 
         public void SetEnemyTag(string enemyTag)
         {
@@ -48,6 +56,7 @@ namespace EternalDefendersPrototype
             currentBullet.Fly(force);
             currentBullet = null;
             Reload();
+            //Debug.Log("Fire");
         }
 
         public bool IsReady()

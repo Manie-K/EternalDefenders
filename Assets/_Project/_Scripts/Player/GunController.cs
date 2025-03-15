@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace EternalDefendersPrototype
+namespace EternalDefenders
 {
     public class GunController : MonoBehaviour
     {
