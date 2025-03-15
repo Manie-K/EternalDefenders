@@ -14,10 +14,6 @@ namespace EternalDefenders
         [SerializeField] float speed = 6f;
         [SerializeField] float turnSmoothTime = 0.01f;
 
-        public UIDocument hud;
-        private HealthBar _healthBar;
-        private HealthBar _shieldBar;
-
         public Stats Stats { get; private set; }
         public event Action OnPlayerDeath;
         public event Action<float> OnPlayerAiming;
@@ -54,11 +50,6 @@ namespace EternalDefenders
         {
             ChangeAnimation(_idleRifleHash);
 
-            var root = hud.rootVisualElement;
-            _healthBar = root.Q<HealthBar>("HealthBar");
-            _shieldBar = root.Q<HealthBar>("ShieldBar");
-
-
             var initialStats = new Dictionary<StatType, Stats.Stat>
             {
                 { StatType.Health, new Stats.Stat(100) }, 
@@ -67,21 +58,8 @@ namespace EternalDefenders
                 { StatType.MaxShield, new Stats.Stat(50) } 
             };
 
-            // Tworzymy obiekt Stats na podstawie powy�szego s�ownika
             Stats = new Stats(initialStats);
 
-            if (_healthBar != null && Stats.HasStat(StatType.Health))
-            {
-                int currentHealth = Stats.GetStat(StatType.Health);
-                int baseHealth = Stats.GetStat(StatType.MaxHealth);
-                _healthBar.value = (float) currentHealth / baseHealth;
-            }
-            if (_shieldBar != null && Stats.HasStat(StatType.Shield))
-            {
-                int currentShield = Stats.GetStat(StatType.Shield);
-                int baseShield = Stats.GetStat(StatType.MaxShield);
-                _shieldBar.value = (float) currentShield / baseShield;
-            }
         }
 
         void Update()
@@ -89,8 +67,6 @@ namespace EternalDefenders
             PlayerInput();
 
             if(Stats.GetStat(StatType.Health) <= 0) OnPlayerDeath?.Invoke();
-            if (_healthBar != null) _healthBar.value = (float) Stats.GetStat(StatType.Health) / Stats.GetStat(StatType.MaxHealth);           
-            if (_shieldBar != null) _shieldBar.value = (float) Stats.GetStat(StatType.Shield) / Stats.GetStat(StatType.MaxShield);
 
             //Gravity
             _isGrounded = _controller.isGrounded;

@@ -8,7 +8,7 @@ namespace EternalDefenders
     public class PlayerResourceInventory : Singleton<PlayerResourceInventory>
     {
         [SerializeField] List<ResourceSO> startingResources = new();
-        [SerializeField] int startingResourceAmount = 100;
+        [SerializeField] int startingResourceAmount = 1000;
         
         readonly Dictionary<ResourceSO, int> _resources = new();
 
@@ -16,7 +16,7 @@ namespace EternalDefenders
         
         void Start()
         {
-            foreach(var resourceSO in startingResources)
+            foreach (var resourceSO in startingResources)
             {
                 AddResource(resourceSO, startingResourceAmount);
             }
