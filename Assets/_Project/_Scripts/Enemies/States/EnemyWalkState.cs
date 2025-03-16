@@ -53,6 +53,10 @@ namespace EternalDefenders
             bool val = !_navMeshAgent.pathPending &&
                        _navMeshAgent.remainingDistance <= 0.01f &&
                        (!_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude <= 0.1f);
+            if(val)
+            {
+                Debug.Log("Reached destination");
+            }
             return val;
         }
 
@@ -60,7 +64,7 @@ namespace EternalDefenders
         {
             Vector3 dir = (brain.transform.position - ((MonoBehaviour)_enemyController.Target).transform.position).normalized;
             Vector3 destination = ((MonoBehaviour)_enemyController.Target).transform.position + 
-                                  (dir * _enemyController.Stats.GetStat(StatType.Range));
+                                  (dir * (_enemyController.Stats.GetStat(StatType.Range) * 0.9f));
             _navMeshAgent.SetDestination(destination);
         }
     }

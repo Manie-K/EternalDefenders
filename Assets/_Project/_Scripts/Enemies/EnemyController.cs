@@ -77,5 +77,12 @@ namespace EternalDefenders
             OnRetarget?.Invoke();
             //Debug.Log("I've picked new target: " + Target);
         }
+
+        void OnDrawGizmosSelected()
+        {
+            if(!Application.isPlaying) return;
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, Stats.GetStat(StatType.Range));
+        }
     }
 }
