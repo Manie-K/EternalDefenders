@@ -19,8 +19,12 @@ namespace EternalDefenders
             {
                 enemyStats.ApplyModifier(modifier);
             }
-            
-            //effect.particleSystem.Play();
+
+            if(effect.particleSystem != null)
+            {
+                var particles = Object.Instantiate(effect.particleSystem, target.transform);
+                particles?.Play();
+            }
             
             //Example usage ^ shown above
             
