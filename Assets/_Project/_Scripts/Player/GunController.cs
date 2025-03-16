@@ -1,3 +1,6 @@
+using Codice.Client.Common;
+using System.Collections;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,20 +35,23 @@ namespace EternalDefenders
 
         private bool fire;
 
+        private float aimingTime;
+
         void Start()
         {
             gun.SetEnemyTag(enemyTag);
             gun.Reload();
+            aimingTime = 0f;
+            PlayerController playerController = GetComponentInParent<PlayerController>();
+            playerController.OnPlayerAiming += ChangePlayerAimingTime;
         }
+
 
         void Update()
         {
             if (Input.GetMouseButton(0))
             {
-                //fire = true;
-                firePower = maxFirePower;
-                gun.Fire(firePower);
-                firePower = 0;
+                StartCoroutine(WaitForFightAndFire());
             }
 
             //if (fire && firePower < maxFirePower)
@@ -64,6 +70,22 @@ namespace EternalDefenders
             //{
             //    firePowerText.text = firePower.ToString();
             //}
+        }
+
+        private IEnumerator WaitForFightAndFire()
+        {
+            yield return new WaitForSeconds(aimingTime);
+
+            firePower = maxFirePower;
+            gun.Fire(firePower);
+            firePower = 0;
+            aimingTime = 0f;
+            //Debug.Log("fire");
+        }
+
+        private void ChangePlayerAimingTime(float time)
+        {
+            aimingTime = time;
         }
     }
 }

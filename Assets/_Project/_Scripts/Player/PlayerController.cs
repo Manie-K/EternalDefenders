@@ -20,7 +20,8 @@ namespace EternalDefenders
 
         public Stats Stats { get; private set; }
         public event Action OnPlayerDeath;
-        
+        public event Action<float> OnPlayerAiming;
+
         CharacterController _controller;
         Transform _playerTransform;
         Animator _animator;
@@ -103,18 +104,22 @@ namespace EternalDefenders
 
         void PlayerInput()
         {
-            if (Input.GetMouseButton(1))
+            if (Input.GetMouseButtonDown(0) && !isFighting)
             {
                 isFighting = true;
-                ChangeAnimation(_aimingSniperRifleHash, 0.02f);
+                ChangeAnimation(_aimingSniperRifleHash, 0.04f);
+                OnPlayerAiming?.Invoke(0.4f);
+                ChangeAnimation(_fireSniperRifleHash, 0.03f, 0.04f);
+                ChangeDirection();
             }
-            else if (Input.GetMouseButtonDown(0))
+            else if (Input.GetMouseButtonDown(0) && isFighting)
             {
-                ChangeAnimation(_fireSniperRifleHash, 0.03f);   
+                ChangeAnimation(_fireSniperRifleHash, 0.03f);
+                ChangeDirection();
             }
             else if (Input.GetMouseButtonUp(0))
             {
-                ChangeAnimation(_aimingSniperRifleHash, 0.5f);
+                ChangeAnimation(_aimingSniperRifleHash, 0.4f);
             }
             else if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
             {
@@ -125,17 +130,32 @@ namespace EternalDefenders
             {
                 ChangeAnimation(_idleRifleHash);
             }
+            else if (isFighting)
+            {
+                ChangeDirection();
+            }
 
         }
 
         void ChangeDirection(Vector3 movementDirection)
         {         
-            if (movementDirection.magnitude >= 0.1f)
+            float targetAngle = Mathf.Atan2(movementDirection.x, movementDirection.z) * Mathf.Rad2Deg;
+            float angle = Mathf.SmoothDampAngle(_playerTransform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, turnSmoothTime);
+            _playerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
+            //cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
+        }
+
+        void ChangeDirection()
+        {
+            Vector3 mouseWorldPosition = CameraController.Instance.GetWorldMousePosition();
+            Vector3 lookDirection = (mouseWorldPosition - _playerTransform.position).normalized;
+
+            if (lookDirection.magnitude >= 0.1f)
             {
-                float targetAngle = Mathf.Atan2(movementDirection.x, movementDirection.z) * Mathf.Rad2Deg;
+                float targetAngle = Mathf.Atan2(lookDirection.x, lookDirection.z) * Mathf.Rad2Deg;
                 float angle = Mathf.SmoothDampAngle(_playerTransform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, turnSmoothTime);
                 _playerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
-                cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
+                //cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
             }
         }
 

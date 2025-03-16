@@ -32,7 +32,7 @@ namespace EternalDefenders
 
         public void SetEnemyTag(string enemyTag)
         {
-            this._enemyTag = enemyTag;
+            _enemyTag = enemyTag;
         }
 
         public void Fly(Vector3 force)
@@ -52,7 +52,7 @@ namespace EternalDefenders
 
             if (collider.CompareTag(_enemyTag))
             {
-                //take damage - enemy
+                //Enemy take damage
                 EnemyController enemyController = collider.GetComponent<EnemyController>();
                 if (enemyController != null)
                 {
@@ -67,10 +67,10 @@ namespace EternalDefenders
                 
             }
 
-            _rigidbody.linearVelocity = Vector3.zero;
-            _rigidbody.angularVelocity = Vector3.zero;
-            _rigidbody.isKinematic = true;
             transform.SetParent(collider.transform);
+            _rigidbody.isKinematic = true;
+            //_rigidbody.linearVelocity = Vector3.zero;
+            //_rigidbody.angularVelocity = Vector3.zero;
             //Debug.Log("New parent");
 
             StartCoroutine(DestroyAfterDelay(1f));
