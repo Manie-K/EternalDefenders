@@ -34,8 +34,19 @@ namespace EternalDefenders
                 _enemyController.Target == null || _enemyController.Target.Equals(null))
             );
             stateMachine.AddTransition(idleState, walkState, new FuncPredicate(() =>
-                _enemyController.Target != null && !_enemyController.Target.Equals(null))
+                _enemyController.Target != null && !_enemyController.Target.Equals(null)
+                    && (Vector3.Distance(((MonoBehaviour)_enemyController.Target).transform.position, transform.position)) 
+                    > _enemyController.Stats.GetStat(StatType.Range)
+                )
             );
+            stateMachine.AddTransition(idleState, attackState, new FuncPredicate(() =>
+                    _enemyController.Target != null && !_enemyController.Target.Equals(null) 
+                                                    && (Vector3.Distance(
+                                                        ((MonoBehaviour)_enemyController.Target).transform.position, transform.position)) 
+                                                    <= _enemyController.Stats.GetStat(StatType.Range)
+                )
+            );
+            
             stateMachine.AddTransition(walkState, idleState, new EventPredicate("OnRetarget", _enemyController));
             
             

@@ -43,5 +43,11 @@ namespace EternalDefenders
         {
             //noop
         }
+        
+        protected void ChangeAnimation(int hash, float crossFadeDuration = CrossFadeDuration)
+        {
+            animator.StopPlayback();
+            animator.Play(hash, 0, 0);
+        }
     }
 }

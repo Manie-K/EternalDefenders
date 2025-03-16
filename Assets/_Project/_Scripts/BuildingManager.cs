@@ -97,7 +97,7 @@ namespace EternalDefenders
                 return;
             }
             
-            var tower = Instantiate(_selectedTower, tile.transform.position, Quaternion.identity
+            var tower = Instantiate(_selectedTower, tile.transform.position.With(y: tile.BuildingHeight), Quaternion.identity
                 , towersParent);
             tile.SetBuilding(tower);
         }
