@@ -8,8 +8,6 @@ namespace EternalDefenders
         public ProjectileController projectilePrefab;
         public override void Attack(TowerController tower, EnemyController target)
         {
-            //Debug.Log("Projectile attack!");
-            
             var projectile = Instantiate(projectilePrefab, tower.AttackPoint.position, Quaternion.identity);
             projectile.Launch(target);
             
