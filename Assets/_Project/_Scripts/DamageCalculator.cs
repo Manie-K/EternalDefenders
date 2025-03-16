@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using MG_Utilities;
+using UnityEngine;
 
 namespace EternalDefenders
 {
@@ -25,8 +26,7 @@ namespace EternalDefenders
                 var particles = Object.Instantiate(effect.particleSystem, target.transform);
                 particles?.Play();
             }
-            
-            //Example usage ^ shown above
+            DamagePopupText.Create(target.transform.position.With(y:1f), towerStats.GetStat(StatType.Damage));
             
             if(enemyStats.GetStat(StatType.Health) <= 0)
             {
@@ -46,10 +46,7 @@ namespace EternalDefenders
             {
                 towerStats.ApplyModifier(modifier);
             }
-            
-            //effect.particleSystem.Play();
-            
-            //Example usage ^ shown above
+            DamagePopupText.Create(target.transform.position.With(y:3f), enemyStats.GetStat(StatType.Damage));
             
             //check if tower is dead
         }

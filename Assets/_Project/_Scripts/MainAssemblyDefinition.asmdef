@@ -2,7 +2,8 @@
     "name": "MainAssemblyDefinition",
     "rootNamespace": "EternalDefenders",
     "references": [
-        "GUID:b9ade9c6b600ffb4a97496af7cac4421"
+        "GUID:b9ade9c6b600ffb4a97496af7cac4421",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

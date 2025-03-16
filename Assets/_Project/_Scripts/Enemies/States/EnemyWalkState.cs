@@ -55,7 +55,7 @@ namespace EternalDefenders
                        (!_navMeshAgent.hasPath || _navMeshAgent.velocity.sqrMagnitude <= 0.1f);
             if(val)
             {
-                Debug.Log("Reached destination");
+                //Debug.Log("Reached destination");
             }
             return val;
         }
