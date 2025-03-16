@@ -53,6 +53,7 @@ namespace EternalDefenders
             counterStoneLabel = rockCounterContainer.Q<Label>("counter");
             counterWaveLabel = waveTimerContainer.Q<Label>("counter");
 
+            counterWaveLabel.text = "0";
             AddImageToContainer(woodCounterContainer, woodIcon);
             AddImageToContainer(rockCounterContainer, stoneIcon);
 
