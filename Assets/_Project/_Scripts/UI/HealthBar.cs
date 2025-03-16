@@ -46,17 +46,22 @@ namespace HudElements
             Horizontal,
             Vertical
         }
-        public Color FillColor { get; set; }   
+        public Color FillColor { get; set; }
 
         public FillType fillType;
         private VisualElement hbParent;
         private VisualElement hbBackGround;
         private VisualElement hbForeGround;
+
+        [System.Obsolete]
         public new class UxmlFactory : UxmlFactory<HealthBar, UxmlTraits> { }
-        public new class UxmlTraits : VisualElement.UxmlTraits{
+
+        [System.Obsolete]
+        public new class UxmlTraits : VisualElement.UxmlTraits
+        {
 
             UxmlIntAttributeDescription m_width = new UxmlIntAttributeDescription() { name = "width", defaultValue = 300 };
-            UxmlIntAttributeDescription m_height=new UxmlIntAttributeDescription() { name = "height", defaultValue = 50 };
+            UxmlIntAttributeDescription m_height = new UxmlIntAttributeDescription() { name = "height", defaultValue = 50 };
             UxmlFloatAttributeDescription m_value = new UxmlFloatAttributeDescription() { name = "value", defaultValue = 1 };
             UxmlEnumAttributeDescription<HealthBar.FillType> m_fillType = new UxmlEnumAttributeDescription<FillType>() { name = "fill-type", defaultValue = 0 };
             UxmlColorAttributeDescription m_fillColor = new UxmlColorAttributeDescription() { name = "fill-color", defaultValue = Color.red };
@@ -70,10 +75,10 @@ namespace HudElements
                 base.Init(ve, bag, cc);
                 var ate = ve as HealthBar;
                 ate.Width = m_width.GetValueFromBag(bag, cc);
-                ate.Height=m_height.GetValueFromBag(bag,cc);
+                ate.Height = m_height.GetValueFromBag(bag, cc);
                 ate.value = m_value.GetValueFromBag(bag, cc);
-                ate.fillType=m_fillType.GetValueFromBag(bag, cc);
-                ate.FillColor=m_fillColor.GetValueFromBag(bag, cc);
+                ate.fillType = m_fillType.GetValueFromBag(bag, cc);
+                ate.FillColor = m_fillColor.GetValueFromBag(bag, cc);
 
                 ate.Clear();
                 VisualTreeAsset vt = Resources.Load<VisualTreeAsset>("GameUI/healthbar");
@@ -91,7 +96,7 @@ namespace HudElements
                 ate.RegisterValueChangedCallback(ate.UpdateHealth);
                 ate.FillHealth();
             }
-        
+
         }
 
         public void UpdateHealth(ChangeEvent<float> evt)

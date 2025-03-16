@@ -18,7 +18,7 @@ namespace EternalDefenders
         }
 
         Stats _stats;
-        
+
         void Start()
         {
             _stats = new Stats(statsConfig.GetStats());
@@ -26,7 +26,7 @@ namespace EternalDefenders
 
         void Update()
         {
-            if(_stats.GetStat(StatType.Health) <= 0)
+            if (_stats.GetStat(StatType.Health) <= 0)
             {
                 Die();
             }

@@ -35,6 +35,7 @@ namespace EternalDefenders
             _healthBar = hudRootElement.Q<HealthBar>("HealthBar");
             _shieldBar = hudRootElement.Q<HealthBar>("ShieldBar");
 
+
             woodCounterContainer = hudRootElement.Q<VisualElement>("WoodCounter");
             rockCounterContainer = hudRootElement.Q<VisualElement>("StoneCounter");
             waveTimerContainer = hudRootElement.Q<VisualElement>("WaveTimer");
