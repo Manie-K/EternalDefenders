@@ -5,24 +5,17 @@ namespace EternalDefenders
 {
     public class Gun : MonoBehaviour
     {
-        [SerializeField]
-        private float reloadTime;
+        [SerializeField] float reloadTime;
+        [SerializeField] Bullet bulletPrefab;
+        [SerializeField] Transform spawnPoint;
 
-        [SerializeField]
-        private Bullet bulletPrefab;
+        private Bullet _currentBullet;
+        private string _enemyTag;
+        private bool _isReloading;
 
-        [SerializeField]
-        private Transform spawnPoint;
-
-        private Bullet currentBullet;
-
-        private string enemyTag;
-
-        private bool isReloading;
-
-        public void Update()
+        void Update()
         {
-            if (currentBullet == null)
+            if (_currentBullet == null)
             {
                 Reload();
             }
@@ -30,38 +23,38 @@ namespace EternalDefenders
 
         public void SetEnemyTag(string enemyTag)
         {
-            this.enemyTag = enemyTag;
+            _enemyTag = enemyTag;
         }
 
         public void Reload()
         {
-            if (isReloading || currentBullet != null) return;
-            isReloading = true;
+            if (_isReloading || _currentBullet != null) return;
+            _isReloading = true;
             StartCoroutine(ReloadAfterTime());
         }
 
-        private IEnumerator ReloadAfterTime()
+        IEnumerator ReloadAfterTime()
         {
             yield return new WaitForSeconds(reloadTime);
-            currentBullet = Instantiate(bulletPrefab, spawnPoint);
-            currentBullet.transform.localPosition = Vector3.zero;
-            currentBullet.SetEnemyTag(enemyTag);
-            isReloading = false;
+            _currentBullet = Instantiate(bulletPrefab, spawnPoint);
+            _currentBullet.SetEnemyTag(_enemyTag);
+            _currentBullet.transform.localPosition = Vector3.zero;
+            _isReloading = false;
         }
 
         public void Fire(float firePower)
         {
-            if (isReloading || currentBullet == null) return;
+            if (_isReloading || _currentBullet == null) return;
             var force = spawnPoint.TransformDirection(Vector3.forward * firePower);
-            currentBullet.Fly(force);
-            currentBullet = null;
+            _currentBullet.Fly(force);
+            _currentBullet = null;
             Reload();
             //Debug.Log("Fire");
         }
 
-        public bool IsReady()
+        bool IsReady()
         {
-            return (!isReloading && currentBullet != null);
+            return (!_isReloading && _currentBullet != null);
         }
     }
 }

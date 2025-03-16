@@ -8,40 +8,31 @@ namespace EternalDefenders
 {
     public class GunController : MonoBehaviour
     {
-        [SerializeField]
-        private Gun gun;
+        [SerializeField] Gun gun;
+        [SerializeField] string enemyTag;
+        [SerializeField] float maxFirePower;
+        [SerializeField] float firePowerSpeed;
+        [SerializeField] float rotateSpeed;
+        [SerializeField] float minRotation;
+        [SerializeField] float maxRotation;
 
-        [SerializeField]
-        private string enemyTag;
+        private float _firePower;
 
-        [SerializeField]
-        private float maxFirePower;
+        private float _mouseY;
 
-        [SerializeField]
-        private float firePowerSpeed;
+        private bool _fire;
 
-        private float firePower;
+        private float _aimingTime;
 
-        [SerializeField]
-        private float rotateSpeed;
-
-        [SerializeField]
-        private float minRotation;
-
-        [SerializeField]
-        private float maxRotation;
-
-        private float mouseY;
-
-        private bool fire;
-
-        private float aimingTime;
-
-        void Start()
+        void Awake()
         {
             gun.SetEnemyTag(enemyTag);
             gun.Reload();
-            aimingTime = 0f;
+            _aimingTime = 0f;
+        }
+
+        void Start()
+        {
             PlayerController playerController = GetComponentInParent<PlayerController>();
             playerController.OnPlayerAiming += ChangePlayerAimingTime;
         }
@@ -54,38 +45,38 @@ namespace EternalDefenders
                 StartCoroutine(WaitForFightAndFire());
             }
 
-            //if (fire && firePower < maxFirePower)
+            //if (_fire && _firePower < maxFirePower)
             //{
-            //    firePower += Time.deltaTime * firePowerSpeed;
+            //    _firePower += Time.deltaTime * firePowerSpeed;
             //}
 
-            //if (fire && Input.GetMouseButtonUp(0))
+            //if (_fire && Input.GetMouseButtonUp(0))
             //{
-            //    gun.Fire(firePower);
-            //    firePower = 0;
-            //    fire = false;
+            //    gun.Fire(_firePower);
+            //    _firePower = 0;
+            //    _fire = false;
             //}
 
-            //if (fire)
+            //if (_fire)
             //{
-            //    firePowerText.text = firePower.ToString();
+            //    firePowerText.text = _firePower.ToString();
             //}
         }
 
         private IEnumerator WaitForFightAndFire()
         {
-            yield return new WaitForSeconds(aimingTime);
+            yield return new WaitForSeconds(_aimingTime);
 
-            firePower = maxFirePower;
-            gun.Fire(firePower);
-            firePower = 0;
-            aimingTime = 0f;
-            //Debug.Log("fire");
+            _firePower = maxFirePower;
+            gun.Fire(_firePower);
+            _firePower = 0;
+            _aimingTime = 0f;
+            //Debug.Log("_fire");
         }
 
         private void ChangePlayerAimingTime(float time)
         {
-            aimingTime = time;
+            _aimingTime = time;
         }
     }
 }

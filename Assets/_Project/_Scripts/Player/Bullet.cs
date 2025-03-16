@@ -6,11 +6,8 @@ namespace EternalDefenders
 {
     public class Bullet : MonoBehaviour
     {
-        [SerializeField]
-        private int damage;
-
-        [SerializeField]
-        private float torque;
+        [SerializeField] int damage;
+        [SerializeField] float torque;
 
         private Rigidbody _rigidbody;
         private string _enemyTag;
@@ -41,7 +38,7 @@ namespace EternalDefenders
             _rigidbody.AddForce(force, ForceMode.Impulse);
             _rigidbody.AddTorque(transform.right * torque);
             transform.SetParent(null);
-            //Debug.Log("No parent");
+
             StartCoroutine(DestroyAfterDelay(5f));
         }
 
@@ -50,28 +47,35 @@ namespace EternalDefenders
             if (_didHit) return;
             _didHit = true;
 
-            if (collider.CompareTag(_enemyTag))
+            if (collider != null && !string.IsNullOrEmpty(collider.tag) && !string.IsNullOrEmpty(_enemyTag))
             {
-                //Enemy take damage
-                EnemyController enemyController = collider.GetComponent<EnemyController>();
-                if (enemyController != null)
+                if (collider.CompareTag(_enemyTag))
                 {
-                    Bullet bullet = gameObject.GetComponent<Bullet>();
-                    DamageCalculator.BulletHitEnemy(bullet, enemyController);
-                    Debug.Log("Enemy hit");
-                }
-                else
-                {
-                    Debug.LogWarning("Enemy without EnemyController");
+                    //Enemy take damage
+                    EnemyController enemyController = collider.GetComponent<EnemyController>();
+                    if (enemyController != null)
+                    {
+                        Bullet bullet = gameObject.GetComponent<Bullet>();
+                        DamageCalculator.BulletHitEnemy(bullet, enemyController);
+                        //Debug.Log("Enemy hit");
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Enemy without EnemyController");
+                    }
+
                 }
                 
+            }
+            else
+            {
+                //Debug.Log("No enemy hit");
             }
 
             transform.SetParent(collider.transform);
             _rigidbody.isKinematic = true;
             //_rigidbody.linearVelocity = Vector3.zero;
             //_rigidbody.angularVelocity = Vector3.zero;
-            //Debug.Log("New parent");
 
             StartCoroutine(DestroyAfterDelay(1f));
         }
