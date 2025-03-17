@@ -10,6 +10,7 @@ namespace EternalDefenders
 {
     public class PlayerController : Singleton<PlayerController>, IEnemyTarget
     {
+        [SerializeField] PlayerStats playerStats;
         [SerializeField] Transform cameraTransform;
         [SerializeField] float speed = 6f;
         [SerializeField] float turnSmoothTime = 0.01f;
@@ -40,7 +41,7 @@ namespace EternalDefenders
 
         private Vector3 _velocity;
         private bool _isGrounded;
-        private float _gravity = -9.81f;
+        private readonly float _gravity = -9.81f;
 
         protected override void Awake()
         {
@@ -57,18 +58,9 @@ namespace EternalDefenders
             var root = hud.rootVisualElement;
             _healthBar = root.Q<HealthBar>("HealthBar");
             _shieldBar = root.Q<HealthBar>("ShieldBar");
-
-
-            var initialStats = new Dictionary<StatType, Stats.Stat>
-            {
-                { StatType.Health, new Stats.Stat(100) }, 
-                { StatType.MaxHealth, new Stats.Stat(100) }, 
-                { StatType.Shield, new Stats.Stat(50) },   
-                { StatType.MaxShield, new Stats.Stat(50) } 
-            };
-
+            
             // Tworzymy obiekt Stats na podstawie powy�szego s�ownika
-            Stats = new Stats(initialStats);
+            Stats = new Stats(playerStats.GetStats());
 
             if (_healthBar != null && Stats.HasStat(StatType.Health))
             {
@@ -82,8 +74,16 @@ namespace EternalDefenders
                 int baseShield = Stats.GetStat(StatType.MaxShield);
                 _shieldBar.value = (float) currentShield / baseShield;
             }
-        }
 
+            OnPlayerDeath += OnPlayerDeathDelegate;
+        }
+        
+        void OnPlayerDeathDelegate()
+        {
+            Debug.Log("Player is dead");
+            //TODO: Implement player death logic, respawn etc.
+            //@FranciszekGwarek
+        }
         void Update()
         {
             PlayerInput();

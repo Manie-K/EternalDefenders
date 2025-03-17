@@ -46,9 +46,8 @@ namespace EternalDefenders
             {
                 towerStats.ApplyModifier(modifier);
             }
-            DamagePopupText.Create(target.transform.position.With(y:3f), enemyStats.GetStat(StatType.Damage));
-            
-            //check if tower is dead
+
+            DamagePopupText.Create(target.transform.position.With(y: 3f), enemyStats.GetStat(StatType.Damage));
         }
         
         public static void EnemyAttackMainBase(EnemyController attacker, MainBaseController target) 
@@ -75,16 +74,15 @@ namespace EternalDefenders
             {
                 playerStats.ApplyModifier(modifier);
             }
-            
-            
+            DamagePopupText.Create(player.transform.position.With(y: 1.75f), enemyStats.GetStat(StatType.Damage));
         }
 
-        public static void BulletHitEnemy(Bullet bullet, EnemyController enemy)
+        public static void BulletHitEnemy(EnemyController enemy)
         {
-            Stats bulletStats = bullet.Stats;
+            Stats playerStats = PlayerController.Instance.Stats;
             Stats enemyStats = enemy.Stats;
 
-            enemyStats.ChangeStat(StatType.Health, -bulletStats.GetStat(StatType.Damage));
+            enemyStats.ChangeStat(StatType.Health, -playerStats.GetStat(StatType.Damage));
         }
     }
 }

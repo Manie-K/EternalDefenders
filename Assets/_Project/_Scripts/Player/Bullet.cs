@@ -6,25 +6,15 @@ namespace EternalDefenders
 {
     public class Bullet : MonoBehaviour
     {
-        [SerializeField] int damage;
         [SerializeField] float torque;
 
         private Rigidbody _rigidbody;
         private string _enemyTag;
         private bool _didHit;
 
-        public Stats Stats { get; private set; }
-
         void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
-
-            var initialStats = new Dictionary<StatType, Stats.Stat>
-            {
-                { StatType.Damage, new Stats.Stat(this.damage) }
-            };
-
-            Stats = new Stats(initialStats);
         }
 
         public void SetEnemyTag(string enemyTag)
@@ -55,8 +45,7 @@ namespace EternalDefenders
                     EnemyController enemyController = collider.GetComponent<EnemyController>();
                     if (enemyController != null)
                     {
-                        Bullet bullet = gameObject.GetComponent<Bullet>();
-                        DamageCalculator.BulletHitEnemy(bullet, enemyController);
+                        DamageCalculator.BulletHitEnemy(enemyController);
                         //Debug.Log("Enemy hit");
                     }
                     else
