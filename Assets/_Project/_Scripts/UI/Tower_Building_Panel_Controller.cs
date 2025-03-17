@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using MG_Utilities;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static EternalDefenders.TowerBundle;
 
 namespace EternalDefenders
 {
@@ -22,7 +23,6 @@ namespace EternalDefenders
         private Label _IceWoodPrice;
         private Label _IceStonePrice;
 
-
         private Button _WoodMillBuy;
         private Label _WoodMillWoodPrice;
         private Label _WoodMillStonePrice;
@@ -30,10 +30,6 @@ namespace EternalDefenders
         private Button _StoneMillBuy;
         private Label _StoneMillWoodPrice;
         private Label _StoneMillStonePrice;
-
-
-        [SerializeField] private int _playerWood = 100;
-        [SerializeField] private int _playerStone = 100;
 
         [SerializeField] private List<TowerBundle> towerBundles;
         public event Action<TowerBundle> OnBuildingSelected;
@@ -45,182 +41,134 @@ namespace EternalDefenders
             _FireTowerBuy = _doc.rootVisualElement.Q<Button>("Fire_Tower_Button");
             _FireWoodPrice = _doc.rootVisualElement.Q<Label>("Fire_Wood_Price");
             _FireStonePrice = _doc.rootVisualElement.Q<Label>("Fire_Stone_Price");
-
-            _FireTowerBuy.clicked += () => FireTowerBuyButtonOnClicked();
+            _FireTowerBuy.clicked += () => TryBuyBuilding(towerBundles[0], _FireWoodPrice, _FireStonePrice);
 
             _ElectricTowerBuy = _doc.rootVisualElement.Q<Button>("Electric_Tower_Button");
-            _ElectricTowerBuy.clicked += () => ElectricTowerBuyButtonOnClicked();
             _ElectricWoodPrice = _doc.rootVisualElement.Q<Label>("Electric_Wood_Price");
             _ElectricStonePrice = _doc.rootVisualElement.Q<Label>("Electric_Stone_Price");
-
+            _ElectricTowerBuy.clicked += () => TryBuyBuilding(towerBundles[1], _ElectricWoodPrice, _ElectricStonePrice);
 
             _IceTowerBuy = _doc.rootVisualElement.Q<Button>("Ice_Tower_Button");
-            _IceTowerBuy.clicked += () => IceTowerBuyButtonOnClicked();
-
             _IceWoodPrice = _doc.rootVisualElement.Q<Label>("Ice_Wood_Price");
             _IceStonePrice = _doc.rootVisualElement.Q<Label>("Ice_Stone_Price");
-
+            _IceTowerBuy.clicked += () => TryBuyBuilding(towerBundles[2], _IceWoodPrice, _IceStonePrice);
 
             _WoodMillBuy = _doc.rootVisualElement.Q<Button>("WoodMill_Button");
-            _WoodMillBuy.clicked += () => WoodMillBuyButtonOnClicked();
-
             _WoodMillWoodPrice = _doc.rootVisualElement.Q<Label>("WoodMill_Wood_Price");
             _WoodMillStonePrice = _doc.rootVisualElement.Q<Label>("WoodMill_Stone_Price");
-
+            _WoodMillBuy.clicked += () => TryBuyBuilding(towerBundles[3], _WoodMillWoodPrice, _WoodMillStonePrice);
 
             _StoneMillBuy = _doc.rootVisualElement.Q<Button>("StoneMill_Button");
-            _StoneMillBuy.clicked += () => StoneMillBuyButtonOnClicked();
-
             _StoneMillWoodPrice = _doc.rootVisualElement.Q<Label>("StoneMill_Wood_Price");
             _StoneMillStonePrice = _doc.rootVisualElement.Q<Label>("StoneMill_Stone_Price");
+            _StoneMillBuy.clicked += () => TryBuyBuilding(towerBundles[4], _StoneMillWoodPrice, _StoneMillStonePrice);
+
             _doc.rootVisualElement.style.display = DisplayStyle.None;
 
             BuildingManager.Instance.OnBuildingModeEnter += OnBuildingModeEnter_Delegate;
             BuildingManager.Instance.OnBuildingModeExit += OnBuildingModeExit_Delegate;
 
-            InvokeRepeating(nameof(UpdatePriceColors), 0f, 0.1f); 
+            SetTowerPrices();
+
+            InvokeRepeating(nameof(UpdatePriceColors), 0f, 0.1f);
         }
 
         void OnDisable()
         {
             BuildingManager buildingManager = BuildingManager.Instance;
             if (buildingManager == null) return;
-            BuildingManager.Instance.OnBuildingModeEnter -= OnBuildingModeEnter_Delegate;
-            BuildingManager.Instance.OnBuildingModeExit -= OnBuildingModeExit_Delegate;
+            buildingManager.OnBuildingModeEnter -= OnBuildingModeEnter_Delegate;
+            buildingManager.OnBuildingModeExit -= OnBuildingModeExit_Delegate;
         }
 
-        void OnBuildingModeExit_Delegate()
-        {
-            _doc.rootVisualElement.style.display = DisplayStyle.None;
-        }
+        void OnBuildingModeExit_Delegate() => _doc.rootVisualElement.style.display = DisplayStyle.None;
 
-        void OnBuildingModeEnter_Delegate()
-        {
-            _doc.rootVisualElement.style.display = DisplayStyle.Flex;
-        }
+        void OnBuildingModeEnter_Delegate() => _doc.rootVisualElement.style.display = DisplayStyle.Flex;
 
-        void FireTowerBuyButtonOnClicked()
+        void TryBuyBuilding(TowerBundle tower, Label woodPriceLabel, Label stonePriceLabel)
         {
-            int woodCost = int.Parse(_FireWoodPrice.text);
-            int stoneCost = int.Parse(_FireStonePrice.text);
+            int woodCost = tower.cost[0].amount;
+            int stoneCost = tower.cost[1].amount;
 
-            if (_playerWood >= woodCost && _playerStone >= stoneCost)
+            PlayerResourceInventory inventory = PlayerResourceInventory.Instance;
+
+            if (inventory.HasEnoughOfResource(tower.cost[1].resource, woodCost) && inventory.HasEnoughOfResource(tower.cost[0].resource, stoneCost))
             {
-                _playerWood -= woodCost;
-                _playerStone -= stoneCost;
+                inventory.RemoveResource(tower.cost[1].resource, woodCost);
+                inventory.RemoveResource(tower.cost[0].resource, stoneCost);
+
                 OnBuildingModeExit_Delegate();
-                OnBuildingSelected?.Invoke(towerBundles[0]);
+
+                OnBuildingSelected?.Invoke(tower);
+
             }
             else
             {
                 Debug.Log("Nie masz wystarczaj¹cych zasobów!");
             }
         }
-
-        void ElectricTowerBuyButtonOnClicked()
+        void SetTowerPrices()
         {
-
-            int woodCost = int.Parse(_ElectricWoodPrice.text);
-            int stoneCost = int.Parse(_ElectricStonePrice.text);
-
-            if (_playerWood >= woodCost && _playerStone >= stoneCost)
+            if (towerBundles.Count > 0)
             {
-                _playerWood -= woodCost;
-                _playerStone -= stoneCost;
-                OnBuildingModeExit_Delegate();
-                OnBuildingSelected?.Invoke(towerBundles[1]);
+                var fireTower = towerBundles[0];
+                _FireWoodPrice.text = fireTower.cost[0].amount.ToString();
+                _FireStonePrice.text = fireTower.cost[1].amount.ToString();
             }
-            else
-            {
-                Debug.Log("Nie masz wystarczaj¹cych zasobów!");
-            }
-        }
 
-        void IceTowerBuyButtonOnClicked()
-        {
-            int woodCost = int.Parse(_IceWoodPrice.text);
-            int stoneCost = int.Parse(_IceStonePrice.text);
-
-            if (_playerWood >= woodCost && _playerStone >= stoneCost)
+            if (towerBundles.Count > 1)
             {
-                _playerWood -= woodCost;
-                _playerStone -= stoneCost;
-                OnBuildingModeExit_Delegate();
-                OnBuildingSelected?.Invoke(towerBundles[2]);
+                var electricTower = towerBundles[1];
+                _ElectricWoodPrice.text = electricTower.cost[0].amount.ToString();
+                _ElectricStonePrice.text = electricTower.cost[1].amount.ToString();
             }
-            else
-            {
-                Debug.Log("Nie masz wystarczaj¹cych zasobów!");
-            }
-        }
 
-        void StoneMillBuyButtonOnClicked()
-        {
-            int woodCost = int.Parse(_StoneMillWoodPrice.text);
-            int stoneCost = int.Parse(_StoneMillStonePrice.text);
-
-            if (_playerWood >= woodCost && _playerStone >= stoneCost)
+            if (towerBundles.Count > 2)
             {
-                _playerWood -= woodCost;
-                _playerStone -= stoneCost;
-                OnBuildingModeExit_Delegate();
-                Debug.Log("StoneMill Bought");
+                var iceTower = towerBundles[2];
+                _IceWoodPrice.text = iceTower.cost[0].amount.ToString();
+                _IceStonePrice.text = iceTower.cost[1].amount.ToString();
             }
-            else
-            {
-                Debug.Log("Nie masz wystarczaj¹cych zasobów!");
-            }
-        }
 
-        void WoodMillBuyButtonOnClicked()
-        {
-            int woodCost = int.Parse(_WoodMillWoodPrice.text);
-            int stoneCost = int.Parse(_WoodMillStonePrice.text);
-
-            if (_playerWood >= woodCost && _playerStone >= stoneCost)
+            if (towerBundles.Count > 3)
             {
-                _playerWood -= woodCost;
-                _playerStone -= stoneCost;
-                OnBuildingModeExit_Delegate();
-                Debug.Log("WoodMill Bought");
+                var woodMill = towerBundles[3];
+                _WoodMillWoodPrice.text = woodMill.cost[0].amount.ToString();
+                _WoodMillStonePrice.text = woodMill.cost[1].amount.ToString();
             }
-            else
+
+            if (towerBundles.Count > 4)
             {
-                Debug.Log("Nie masz wystarczaj¹cych zasobów!");
+                var stoneMill = towerBundles[4];
+                _StoneMillWoodPrice.text = stoneMill.cost[0].amount.ToString();
+                _StoneMillStonePrice.text = stoneMill.cost[1].amount.ToString();
             }
         }
 
         void UpdatePriceColors()
         {
-            int woodCost = int.Parse(_FireWoodPrice.text);
-            int stoneCost = int.Parse(_FireStonePrice.text);
+            PlayerResourceInventory inventory = PlayerResourceInventory.Instance;
 
-            _FireWoodPrice.style.color = _playerWood >= woodCost ? Color.white : Color.red;
-            _FireStonePrice.style.color = _playerStone >= stoneCost ? Color.white : Color.red;
+            UpdateLabelColor(towerBundles[0].cost[0], _FireWoodPrice, inventory, towerBundles[0].cost[0].resource);
+            UpdateLabelColor(towerBundles[0].cost[1], _FireStonePrice, inventory, towerBundles[0].cost[1].resource);
+/*
+            UpdateLabelColor(towerBundles[1].cost[0], _ElectricWoodPrice, inventory, towerBundles[1].cost[0].resource);
+            UpdateLabelColor(towerBundles[1].cost[1], _ElectricStonePrice, inventory, towerBundles[1].cost[1].resource);
 
-            woodCost = int.Parse(_ElectricWoodPrice.text);
-            stoneCost = int.Parse(_ElectricStonePrice.text);
+            UpdateLabelColor(towerBundles[2].cost[0], _IceWoodPrice, inventory, towerBundles[2].cost[0].resource);
+            UpdateLabelColor(towerBundles[2].cost[1], _IceStonePrice, inventory, towerBundles[2].cost[1].resource);
 
-            _ElectricWoodPrice.style.color = _playerWood >= woodCost ? Color.white : Color.red;
-            _ElectricStonePrice.style.color = _playerStone >= stoneCost ? Color.white : Color.red;
+            UpdateLabelColor(towerBundles[3].cost[0], _StoneMillWoodPrice, inventory, towerBundles[3].cost[0].resource);
+            UpdateLabelColor(towerBundles[3].cost[1],_StoneMillStonePrice, inventory, towerBundles[3].cost[1].resource);
 
-            woodCost = int.Parse(_IceWoodPrice.text);
-            stoneCost = int.Parse(_IceStonePrice.text);
+            UpdateLabelColor(towerBundles[4].cost[0], _WoodMillWoodPrice, inventory, towerBundles[4].cost[0].resource);
+            UpdateLabelColor(towerBundles[4].cost[1], _WoodMillStonePrice, inventory, towerBundles[4].cost[1].resource);
+            */
+        }
 
-            _IceWoodPrice.style.color = _playerWood >= woodCost ? Color.white : Color.red;
-            _IceStonePrice.style.color = _playerStone >= stoneCost ? Color.white : Color.red;
-
-            woodCost = int.Parse(_StoneMillWoodPrice.text);
-            stoneCost = int.Parse(_StoneMillStonePrice.text);
-
-            _StoneMillWoodPrice.style.color = _playerWood >= woodCost ? Color.white : Color.red;
-            _StoneMillStonePrice.style.color = _playerStone >= stoneCost ? Color.white : Color.red;
-
-            woodCost = int.Parse(_WoodMillWoodPrice.text);
-            stoneCost = int.Parse(_WoodMillStonePrice.text);
-
-            _WoodMillWoodPrice.style.color = _playerWood >= woodCost ? Color.white : Color.red;
-            _WoodMillStonePrice.style.color = _playerStone >= stoneCost ? Color.white : Color.red;
+        void UpdateLabelColor(ResourceCost cost, Label label, PlayerResourceInventory inventory, ResourceSO resource)
+        {
+            label.style.color = inventory.HasEnoughOfResource(resource, cost.amount) ? Color.white : Color.red;
         }
     }
 }
