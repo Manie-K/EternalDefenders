@@ -151,13 +151,13 @@ namespace EternalDefenders
 
             UpdateLabelColor(towerBundles[0].cost[0], _FireWoodPrice, inventory, towerBundles[0].cost[0].resource);
             UpdateLabelColor(towerBundles[0].cost[1], _FireStonePrice, inventory, towerBundles[0].cost[1].resource);
-/*
+
             UpdateLabelColor(towerBundles[1].cost[0], _ElectricWoodPrice, inventory, towerBundles[1].cost[0].resource);
             UpdateLabelColor(towerBundles[1].cost[1], _ElectricStonePrice, inventory, towerBundles[1].cost[1].resource);
 
             UpdateLabelColor(towerBundles[2].cost[0], _IceWoodPrice, inventory, towerBundles[2].cost[0].resource);
             UpdateLabelColor(towerBundles[2].cost[1], _IceStonePrice, inventory, towerBundles[2].cost[1].resource);
-
+            /*
             UpdateLabelColor(towerBundles[3].cost[0], _StoneMillWoodPrice, inventory, towerBundles[3].cost[0].resource);
             UpdateLabelColor(towerBundles[3].cost[1],_StoneMillStonePrice, inventory, towerBundles[3].cost[1].resource);
 
