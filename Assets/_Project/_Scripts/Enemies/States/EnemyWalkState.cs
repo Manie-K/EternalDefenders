@@ -33,7 +33,7 @@ namespace EternalDefenders
         public override void OnUpdate()
         {
             base.OnUpdate();
-
+            _navMeshAgent.speed = _enemyController.Stats.GetStat(StatType.Speed);
             //TODO: Uncomment this after implementing attacking player logic
             //Update target position (i.e player moves)
             
