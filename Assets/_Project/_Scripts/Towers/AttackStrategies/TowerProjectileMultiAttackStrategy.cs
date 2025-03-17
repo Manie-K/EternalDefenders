@@ -28,7 +28,7 @@ namespace EternalDefenders
                     EnemyController enemyController = collider.gameObject.GetComponent<EnemyController>();
                     if(enemyController != null)
                     {
-                        DamageCalculator.TowerAttackEnemy(tower, enemyController);
+                        DamageCalculator.Instance.TowerAttackEnemy(tower, enemyController);
                     }
                 }
             };

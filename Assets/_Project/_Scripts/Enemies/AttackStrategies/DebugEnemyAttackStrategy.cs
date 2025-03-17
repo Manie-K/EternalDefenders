@@ -14,13 +14,13 @@ namespace EternalDefenders
             switch(target)
             {
                 case MainBaseController mainBase:
-                    DamageCalculator.EnemyAttackMainBase(enemy, mainBase);
+                    DamageCalculator.Instance.EnemyAttackMainBase(enemy, mainBase);
                     break;
                 case TowerController tower:
-                    DamageCalculator.EnemyAttackTower(enemy, tower);
+                    DamageCalculator.Instance.EnemyAttackTower(enemy, tower);
                     break;
                 case PlayerController player:
-                    DamageCalculator.EnemyAttackPlayer(enemy, player);
+                    DamageCalculator.Instance.EnemyAttackPlayer(enemy, player);
                     break;
                 default:
                     Debug.LogError("Unknown target type");

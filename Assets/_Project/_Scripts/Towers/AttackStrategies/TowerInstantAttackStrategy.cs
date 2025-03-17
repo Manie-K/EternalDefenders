@@ -9,7 +9,7 @@ namespace EternalDefenders
         public override void Attack(TowerController tower, EnemyController target)
         {
             Debug.Log("Instant attack!");
-            DamageCalculator.TowerAttackEnemy(tower, target);
+            DamageCalculator.Instance.TowerAttackEnemy(tower, target);
         }
     }
 }

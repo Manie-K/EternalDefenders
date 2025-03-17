@@ -15,7 +15,7 @@ namespace EternalDefenders
             //but let's leave it for now
             projectile.OnTargetHit += (enemy) =>
             {
-                DamageCalculator.TowerAttackEnemy(tower, enemy);
+                DamageCalculator.Instance.TowerAttackEnemy(tower, enemy);
             };
         }
         

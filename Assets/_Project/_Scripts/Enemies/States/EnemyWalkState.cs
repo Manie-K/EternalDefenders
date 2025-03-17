@@ -36,13 +36,13 @@ namespace EternalDefenders
 
             //TODO: Uncomment this after implementing attacking player logic
             //Update target position (i.e player moves)
-            /*
+            
             frameCounter++;
             if(frameCounter >= UpdateTargetPositionFrameInterval)
             {
                 SetDestination();
                 frameCounter = 0;
-            }*/
+            }
             
             if(_navMeshAgent.velocity.normalized != Vector3.zero)
                 brain.transform.forward = _navMeshAgent.velocity.normalized;
@@ -62,6 +62,9 @@ namespace EternalDefenders
 
         void SetDestination()
         {
+            if(brain == null || _enemyController.Target.Equals(null))
+                return;
+            
             Vector3 dir = (brain.transform.position - ((MonoBehaviour)_enemyController.Target).transform.position).normalized;
             Vector3 destination = ((MonoBehaviour)_enemyController.Target).transform.position + 
                                   (dir * (_enemyController.Stats.GetStat(StatType.Range) * 0.9f));

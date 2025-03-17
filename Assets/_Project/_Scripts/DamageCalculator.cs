@@ -1,13 +1,20 @@
-﻿using MG_Utilities;
+﻿using System.Collections;
+using System.Collections.Generic;
+using EternalDefenders.Helpers;
+using MG_Utilities;
 using UnityEngine;
 
 namespace EternalDefenders
 {
-    public static class DamageCalculator
+    public class DamageCalculator : Singleton<DamageCalculator>
     {
-        //TODO: Refactor this mess completely
-        //later we will overload this method to accept different parameters
-        public static void TowerAttackEnemy(TowerController attacker, EnemyController target) 
+        void PlayParticleSystem(ParticleSystem system, Vector3 position)
+        {
+            if(system == null) return;
+            ParticleSystem particles = Instantiate(system, position, Quaternion.identity);
+            particles.Play();
+        }
+        public void TowerAttackEnemy(TowerController attacker, EnemyController target) 
         {
             Stats towerStats = attacker.Stats;
             Stats enemyStats = target.Stats;
@@ -20,12 +27,8 @@ namespace EternalDefenders
             {
                 enemyStats.ApplyModifier(modifier);
             }
-
-            if(effect.particleSystem != null)
-            {
-                var particles = Object.Instantiate(effect.particleSystem, target.transform);
-                particles?.Play();
-            }
+            
+            PlayParticleSystem(effect.particleSystem, target.transform.position);
             DamagePopupText.Create(target.transform.position.With(y:1f), towerStats.GetStat(StatType.Damage));
             
             if(enemyStats.GetStat(StatType.Health) <= 0)
@@ -34,7 +37,7 @@ namespace EternalDefenders
             }
         }
         
-        public static void EnemyAttackTower(EnemyController attacker, TowerController target) 
+        public void EnemyAttackTower(EnemyController attacker, TowerController target) 
         {
             Stats towerStats = target.Stats;
             Stats enemyStats = attacker.Stats;
@@ -50,7 +53,7 @@ namespace EternalDefenders
             DamagePopupText.Create(target.transform.position.With(y: 3f), enemyStats.GetStat(StatType.Damage));
         }
         
-        public static void EnemyAttackMainBase(EnemyController attacker, MainBaseController target) 
+        public void EnemyAttackMainBase(EnemyController attacker, MainBaseController target) 
         {
             Stats mainBaseStats = target.Stats;
             Stats enemyStats = attacker.Stats;
@@ -63,7 +66,7 @@ namespace EternalDefenders
             }
         }
 
-        public static void EnemyAttackPlayer(EnemyController attacker, PlayerController player)
+        public void EnemyAttackPlayer(EnemyController attacker, PlayerController player)
         {
             Stats playerStats = player.Stats;
             Stats enemyStats = attacker.Stats;
@@ -74,15 +77,17 @@ namespace EternalDefenders
             {
                 playerStats.ApplyModifier(modifier);
             }
+            
             DamagePopupText.Create(player.transform.position.With(y: 1.75f), enemyStats.GetStat(StatType.Damage));
         }
 
-        public static void BulletHitEnemy(EnemyController enemy)
+        public void BulletHitEnemy(EnemyController enemy)
         {
             Stats playerStats = PlayerController.Instance.Stats;
             Stats enemyStats = enemy.Stats;
 
             enemyStats.ChangeStat(StatType.Health, -playerStats.GetStat(StatType.Damage));
+            DamagePopupText.Create(enemy.transform.position.With(y: 1.75f), playerStats.GetStat(StatType.Damage));
         }
     }
 }
