@@ -41,27 +41,27 @@ namespace EternalDefenders
             _FireTowerBuy = _doc.rootVisualElement.Q<Button>("Fire_Tower_Button");
             _FireWoodPrice = _doc.rootVisualElement.Q<Label>("Fire_Wood_Price");
             _FireStonePrice = _doc.rootVisualElement.Q<Label>("Fire_Stone_Price");
-            _FireTowerBuy.clicked += () => TryBuyBuilding(towerBundles[0], _FireWoodPrice, _FireStonePrice);
+            _FireTowerBuy.clicked += () => TryBuyBuilding(towerBundles[0], towerBundles[0].cost[0].amount, towerBundles[0].cost[1].amount);
 
             _ElectricTowerBuy = _doc.rootVisualElement.Q<Button>("Electric_Tower_Button");
             _ElectricWoodPrice = _doc.rootVisualElement.Q<Label>("Electric_Wood_Price");
             _ElectricStonePrice = _doc.rootVisualElement.Q<Label>("Electric_Stone_Price");
-            _ElectricTowerBuy.clicked += () => TryBuyBuilding(towerBundles[1], _ElectricWoodPrice, _ElectricStonePrice);
+            _ElectricTowerBuy.clicked += () => TryBuyBuilding(towerBundles[1], towerBundles[1].cost[0].amount, towerBundles[1].cost[1].amount);
 
             _IceTowerBuy = _doc.rootVisualElement.Q<Button>("Ice_Tower_Button");
             _IceWoodPrice = _doc.rootVisualElement.Q<Label>("Ice_Wood_Price");
             _IceStonePrice = _doc.rootVisualElement.Q<Label>("Ice_Stone_Price");
-            _IceTowerBuy.clicked += () => TryBuyBuilding(towerBundles[2], _IceWoodPrice, _IceStonePrice);
+            _IceTowerBuy.clicked += () => TryBuyBuilding(towerBundles[2], towerBundles[2].cost[0].amount, towerBundles[2].cost[1].amount);
 
             _WoodMillBuy = _doc.rootVisualElement.Q<Button>("WoodMill_Button");
             _WoodMillWoodPrice = _doc.rootVisualElement.Q<Label>("WoodMill_Wood_Price");
             _WoodMillStonePrice = _doc.rootVisualElement.Q<Label>("WoodMill_Stone_Price");
-            _WoodMillBuy.clicked += () => TryBuyBuilding(towerBundles[3], _WoodMillWoodPrice, _WoodMillStonePrice);
+            _WoodMillBuy.clicked += () => TryBuyBuilding(towerBundles[3], towerBundles[3].cost[0].amount, towerBundles[3].cost[1].amount);
 
             _StoneMillBuy = _doc.rootVisualElement.Q<Button>("StoneMill_Button");
             _StoneMillWoodPrice = _doc.rootVisualElement.Q<Label>("StoneMill_Wood_Price");
             _StoneMillStonePrice = _doc.rootVisualElement.Q<Label>("StoneMill_Stone_Price");
-            _StoneMillBuy.clicked += () => TryBuyBuilding(towerBundles[4], _StoneMillWoodPrice, _StoneMillStonePrice);
+            _StoneMillBuy.clicked += () => TryBuyBuilding(towerBundles[4], towerBundles[4].cost[0].amount, towerBundles[4].cost[1].amount);
 
             _doc.rootVisualElement.style.display = DisplayStyle.None;
 
@@ -85,17 +85,15 @@ namespace EternalDefenders
 
         void OnBuildingModeEnter_Delegate() => _doc.rootVisualElement.style.display = DisplayStyle.Flex;
 
-        void TryBuyBuilding(TowerBundle tower, Label woodPriceLabel, Label stonePriceLabel)
+        void TryBuyBuilding(TowerBundle tower, int woodCost, int stoneCost)
         {
-            int woodCost = tower.cost[0].amount;
-            int stoneCost = tower.cost[1].amount;
 
             PlayerResourceInventory inventory = PlayerResourceInventory.Instance;
 
-            if (inventory.HasEnoughOfResource(tower.cost[1].resource, woodCost) && inventory.HasEnoughOfResource(tower.cost[0].resource, stoneCost))
+            if (inventory.HasEnoughOfResource(tower.cost[1].resource, stoneCost) && inventory.HasEnoughOfResource(tower.cost[0].resource, woodCost))
             {
-                inventory.RemoveResource(tower.cost[1].resource, woodCost);
-                inventory.RemoveResource(tower.cost[0].resource, stoneCost);
+                inventory.RemoveResource(tower.cost[1].resource, stoneCost);
+                inventory.RemoveResource(tower.cost[0].resource, woodCost);
 
                 OnBuildingModeExit_Delegate();
 

@@ -1,5 +1,5 @@
 .Item_Image {
-    width: 50%;
+    width: 45%;
     height: 75%;
     align-self: center;
     align-items: center;

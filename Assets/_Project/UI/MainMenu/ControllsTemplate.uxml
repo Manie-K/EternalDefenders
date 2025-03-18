@@ -5,6 +5,7 @@
             <engine:Label text="Left Mouse                Shot" name="Shot" class="Text" />
             <engine:Label text="GameMenu                Esc" name="GameMenu" class="Text" />
             <engine:Label text="TowerPlacing             B" name="TowerPlacing" class="Text" />
+            <engine:Label text="Items Panel                I" name="ItemsPanel" class="Text" />
         </engine:VisualElement>
         <engine:Button text="Back" name="BackControllsButton" class="menu-button" />
     </engine:VisualElement>

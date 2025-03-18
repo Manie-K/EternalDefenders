@@ -11,6 +11,13 @@
     transition-duration: 0.2s;
 }
 
+.menu-button:hover {
+    font-size: 500%;
+    color: rgb(148, 182, 232);
+    rotate: -7deg;
+    transition-duration: 0.3s;
+}
+
 .Text {
     font-size: 300%;
     padding-left: 0;
@@ -19,11 +26,4 @@
     margin-right: 0;
     align-self: flex-start;
     -unity-text-align: upper-center;
-}
-
-.menu-button:hover {
-    font-size: 500%;
-    color: rgb(148, 182, 232);
-    rotate: -7deg;
-    transition-duration: 0.3s;
 }
