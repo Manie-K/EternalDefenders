@@ -68,6 +68,11 @@ namespace EternalDefenders
         //TODO decide what to do in here
         void Die()
         {
+            if (ItemManager.Instance.IsTowerProtected(this))
+            {
+                return;
+            }
+
             OnTowerDestroyed?.Invoke(this);
             Debug.Log("Tower destroyed");
             Destroy(gameObject);

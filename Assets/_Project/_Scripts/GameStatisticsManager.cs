@@ -23,7 +23,7 @@ namespace EternalDefenders
         //TODO manage cleanup (unlinking on destroy)
         void SubscribeToEvents()
         {
-            TowerController.OnTowerDestroyed += _ => TowersDestroyed++;
+            TowerController.OnTowerDestroyed += (_) => TowersDestroyed++;
             PlayerController.Instance.OnPlayerDeath += () => PlayerDeaths++;
         }
     }
