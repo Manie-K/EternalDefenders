@@ -1,14 +1,13 @@
-using Codice.Client.Common;
-using System.Collections;
-using System.Threading;
 using UnityEngine;
-using UnityEngine.UI;
+using System.Collections;
 
 namespace EternalDefenders
 {
     public class GunController : MonoBehaviour
     {
-        [SerializeField] Gun gun;
+        [SerializeField] float reloadTime;
+        [SerializeField] Bullet bulletPrefab;
+        [SerializeField] Transform spawnPoint;
         [SerializeField] string enemyTag;
         [SerializeField] float maxFirePower;
         [SerializeField] float firePowerSpeed;
@@ -16,67 +15,104 @@ namespace EternalDefenders
         [SerializeField] float minRotation;
         [SerializeField] float maxRotation;
 
+        private Bullet _currentBullet;
+        private string _enemyTag;
+        private bool _isReloading;
+        private PlayerController _playerController;
         private float _firePower;
-
-        private float _mouseY;
-
         private bool _fire;
+        private bool _isFighting = false;
 
-        private float _aimingTime;
+        readonly int _fireSniperRifleHash = Animator.StringToHash("Fire SniperRifle");
+        readonly int _aimingSniperRifleHash = Animator.StringToHash("Aiming SniperRifle");
 
         void Awake()
         {
-            gun.SetEnemyTag(enemyTag);
-            gun.Reload();
-            _aimingTime = 0f;
+            _isFighting = false;
+            Reload();
         }
 
         void Start()
         {
-            PlayerController playerController = GetComponentInParent<PlayerController>();
-            playerController.OnPlayerAiming += ChangePlayerAimingTime;
+            _playerController = GetComponentInParent<PlayerController>();
+            _playerController.OnPlayerFight += ChangeFightState;
         }
-
 
         void Update()
         {
-            if (Input.GetMouseButton(0))
+            if (_currentBullet == null)
             {
-                StartCoroutine(WaitForFightAndFire());
+                Reload();
             }
 
-            //if (_fire && _firePower < maxFirePower)
-            //{
-            //    _firePower += Time.deltaTime * firePowerSpeed;
-            //}
-
-            //if (_fire && Input.GetMouseButtonUp(0))
-            //{
-            //    gun.Fire(_firePower);
-            //    _firePower = 0;
-            //    _fire = false;
-            //}
-
-            //if (_fire)
-            //{
-            //    firePowerText.text = _firePower.ToString();
-            //}
+            PlayerInput();
         }
 
-        private IEnumerator WaitForFightAndFire()
+        void PlayerInput()
         {
-            yield return new WaitForSeconds(_aimingTime);
+            if (Input.GetMouseButton(0) && _isFighting)
+            {
+                StartCoroutine(WaitForFightAndFire(0f));
+            }
+            else if (Input.GetMouseButton(0) && !_isFighting)
+            {
+                _playerController.ChangeDirection();
+                _playerController.ChangeAnimation(_aimingSniperRifleHash, 0.03f);
+                StartCoroutine(WaitForFightAndFire(0.3f));
+            }
+
+        }
+
+        private IEnumerator WaitForFightAndFire(float waitingTime)
+        {
+            yield return new WaitForSeconds(waitingTime);
+
+            _isFighting = true;
 
             _firePower = maxFirePower;
-            gun.Fire(_firePower);
+            Fire(_firePower);
             _firePower = 0;
-            _aimingTime = 0f;
-            //Debug.Log("_fire");
         }
 
-        private void ChangePlayerAimingTime(float time)
+        private void ChangeFightState(bool isFighting)
         {
-            _aimingTime = time;
+            _isFighting = isFighting;
+        }
+
+        public void Reload()
+        {
+            if (_isReloading || _currentBullet != null) return;
+            _isReloading = true;
+            StartCoroutine(ReloadAfterTime());
+        }
+
+        IEnumerator ReloadAfterTime()
+        {
+            yield return new WaitForSeconds(reloadTime);
+            _currentBullet = Instantiate(bulletPrefab, spawnPoint);
+            _currentBullet.SetEnemyTag(_enemyTag);
+            _currentBullet.transform.localPosition = Vector3.zero;
+            _isReloading = false;
+        }
+
+        public void Fire(float firePower)
+        {
+            if (_isReloading || _currentBullet == null) return;
+
+            _playerController.ChangeDirection();
+            
+            var force = spawnPoint.TransformDirection(Vector3.forward * firePower);
+            _playerController.ChangeAnimation(_fireSniperRifleHash, 0.03f, 0, true);
+
+            _currentBullet.Fly(force);
+            _currentBullet = null;
+            
+            Reload();
+        }
+
+        bool IsReady()
+        {
+            return (!_isReloading && _currentBullet != null);
         }
     }
 }

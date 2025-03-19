@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3300000}
   - component: {fileID: 2300000}
   - component: {fileID: 3628266541113372701}
-  - component: {fileID: 8170511285626187356}
   m_Layer: 0
   m_Name: SciFiRifle
   m_TagString: Weapon
@@ -101,22 +100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 955ab3c366d2da44b91195e39b5ef46b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  reloadTime: 0.5
+  reloadTime: 1
   bulletPrefab: {fileID: 5116010623590738800, guid: 55e1f26cf5203384ba5c4301f7725e0b, type: 3}
   spawnPoint: {fileID: 7037933930492901423}
---- !u!114 &8170511285626187356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4462b40be585c540bf517b2c38036b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gun: {fileID: 3628266541113372701}
   enemyTag: Enemy
   maxFirePower: 40
   firePowerSpeed: 0

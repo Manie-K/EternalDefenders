@@ -12,12 +12,11 @@ namespace EternalDefenders
     {
         [SerializeField] PlayerStats playerStats;
         [SerializeField] Transform cameraTransform;
-        [SerializeField] float speed = 6f;
         [SerializeField] float turnSmoothTime = 0.01f;
 
         public Stats Stats { get; private set; }
         public event Action OnPlayerDeath;
-        public event Action<float> OnPlayerAiming;
+        public event Action<bool> OnPlayerFight;
 
         CharacterController _controller;
         Transform _playerTransform;
@@ -50,8 +49,9 @@ namespace EternalDefenders
         void Start()
         {
             ChangeAnimation(_idleRifleHash);
-            // Tworzymy obiekt Stats na podstawie powy�szego s�ownika
+
             Stats = new Stats(playerStats.GetStats());
+            
             OnPlayerDeath += OnPlayerDeathDelegate;
         }
         
@@ -63,6 +63,7 @@ namespace EternalDefenders
         }
         void Update()
         {
+            
             PlayerInput();
 
             if(Stats.GetStat(StatType.Health) <= 0) OnPlayerDeath?.Invoke();
@@ -81,31 +82,21 @@ namespace EternalDefenders
 
         void PlayerInput()
         {
-            if (Input.GetMouseButtonDown(0) && !_isFighting)
+            if (Input.GetMouseButton(0) && !_isFighting)
             {
                 _isFighting = true;
-                ChangeAnimation(_aimingSniperRifleHash, 0.04f);
-                OnPlayerAiming?.Invoke(0.4f);
-                ChangeAnimation(_fireSniperRifleHash, 0.03f, 0.04f);
-                ChangeDirection();
-            }
-            else if (Input.GetMouseButtonDown(0) && _isFighting)
-            {
-                ChangeAnimation(_fireSniperRifleHash, 0.03f);
-                ChangeDirection();
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                ChangeAnimation(_aimingSniperRifleHash, 0.4f);
+                //OnPlayerFight?.Invoke(_isFighting);
             }
             else if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
             {
                 _isFighting = false;
                 MovePlayer();
+                OnPlayerFight?.Invoke(_isFighting);
             }
             else if (!_isFighting)
             {
                 ChangeAnimation(_idleRifleHash);
+                OnPlayerFight?.Invoke(_isFighting);
             }
             else if (_isFighting)
             {
@@ -122,7 +113,7 @@ namespace EternalDefenders
             //cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
         }
 
-        void ChangeDirection()
+        public void ChangeDirection()
         {
             Vector3 mouseWorldPosition = CameraController.Instance.GetWorldMousePosition();
             Vector3 lookDirection = (mouseWorldPosition - _playerTransform.position).normalized;
@@ -149,11 +140,11 @@ namespace EternalDefenders
             {
                 ChangeDirection(movementDirection);
                 ChangeAnimation(_runningRifleHash);
-                _controller.Move(movementDirection * (speed * Time.deltaTime));
+                _controller.Move(movementDirection * (playerStats.speed * Time.deltaTime));
             }
         }
 
-        void ChangeAnimation(int animationHash, float crossFadeDuration = 0.05f, float time = 0) 
+        public void ChangeAnimation(object animation, float crossFadeDuration = 0.05f, float time = 0, bool canLoop = false) 
         {
             if (time > 0)
             {
@@ -169,14 +160,23 @@ namespace EternalDefenders
 
             void Validate()
             {
-                if(_currentAnimationHash != animationHash)
+                int animationHash;
+                if (animation is string) animationHash = Animator.StringToHash((string)animation);
+                else animationHash = (int)animation;
+
+                if (_currentAnimationHash != animationHash && !canLoop)
                 {
-                    //Debug.Log($"Changing animation from {_currentAnimationHash} to {animationHash}");
+                    _currentAnimationHash = animationHash;
+                    _animator.CrossFade(animationHash, crossFadeDuration);
+                }
+                else if (_currentAnimationHash != animationHash && canLoop)
+                {
                     _currentAnimationHash = animationHash;
                     _animator.CrossFade(animationHash, crossFadeDuration);
                 }
             }
         }
+
 
     }
 }
