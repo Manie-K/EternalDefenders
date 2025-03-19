@@ -15,20 +15,26 @@ namespace EternalDefenders
         /// <summary>
         /// Unique identifier for every item
         /// </summary>
-        private int _itemID;
-
-        private ItemType _itemType;
+        private int _ID;
 
         /// <summary>
         /// Item rarity value between 1-4: higher value means better quality.
         /// </summary>
-        private int _itemRarity;
+        private int _rarity;
 
         /// <summary>
         /// Higher value means higher priority, base value - 5.
         /// </summary>
-        private int _itemPriority;
+        private int _priority;
 
+        /// <summary>
+        /// Value in seconds
+        /// </summary>
+        private float _cooldownDuration;
+        private float _cooldownRemaining;
+
+        private ItemType _itemType;
+        private ItemTarget _itemTarget;
         private List<ItemEffect> _itemEffects;
 
         #endregion
@@ -47,9 +53,33 @@ namespace EternalDefenders
             protected set { _description = value; }
         }
 
-        public int ItemID
+        public int ID
         {
-            get { return _itemID; }
+            get { return _ID; }
+        }
+
+        public int Rarity
+        {
+            get { return _rarity; }
+            protected set { _rarity = value; }
+        }
+
+        public int Priority
+        {
+            get { return _priority; }
+            protected set { _priority = value; }
+        }
+
+        public float CooldownDuration
+        {
+            get { return _cooldownDuration; }
+        }
+
+        public float CooldownRemaining
+        {
+            get { return _cooldownRemaining; }
+            protected set { _cooldownRemaining = value; }
+
         }
 
         public ItemType ItemType
@@ -57,16 +87,9 @@ namespace EternalDefenders
             get { return _itemType; }
         }
 
-        public int ItemRarity
-        {
-            get { return _itemRarity; }
-            protected set { _itemRarity = value; }
-        }
-
-        public int ItemPriority
-        {
-            get { return _itemPriority; }
-            protected set { _itemPriority = value; }
+        public ItemTarget ItemTarget 
+        { 
+            get { return _itemTarget; } 
         }
 
         public List<ItemEffect> ItemEffects
@@ -79,16 +102,27 @@ namespace EternalDefenders
 
 
         public void Initialize(
-            string name, string description, int itemID, ItemType itemType,
-            int itemRarity, int ItemPriority = 5)
+            string name, string description, int ID, int rarity, 
+            int priority, float cooldownDuration, float cooldownRemaining,
+            ItemType itemType, ItemTarget itemTarget)
         {
             this._name = name;
             this._description = description;
-            this._itemID = itemID;
+            this._ID = ID;
+            this._rarity = rarity;
+            this._priority = priority;
+            this._cooldownDuration = cooldownDuration;
+            this._cooldownRemaining = cooldownRemaining;
             this._itemType = itemType;
-            this._itemRarity = itemRarity;
-            this._itemPriority = ItemPriority;
+            this._itemTarget = itemTarget;
             this._itemEffects = new List<ItemEffect>();
         }
+
+        public abstract void UnSubscribe();
+
+        public virtual void Use() { return; }
+
+        public virtual void Update() {  return; }
+
     }
 }

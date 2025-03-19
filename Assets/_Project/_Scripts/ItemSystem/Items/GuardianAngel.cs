@@ -6,15 +6,15 @@ using UnityEngine;
 
 namespace EternalDefenders
 {
-    [CreateAssetMenu(fileName = "ExampleItem", menuName = "EternalDefenders/ItemSystem/Items/ExampleItem")]
-    public class ExampleItem : Item
+    [CreateAssetMenu(fileName = "GuardianAngel", menuName = "EternalDefenders/ItemSystem/Items/GuardianAngel")]
+    public class GuardianAngel : Item
     {
         /// <summary>
         /// List of last protected towers with their cooldown time
         /// </summary>
         private List<ProtectedTowerCooldown> _protectedTowers;
         /// <summary>
-        /// In seconds
+        /// Value in seconds
         /// </summary>
         private float _protectionCooldown; 
 
@@ -28,20 +28,25 @@ namespace EternalDefenders
             }
         }
     
-        public ExampleItem()
+        public GuardianAngel()
         {
             Initialize(
-                name: "Name",
-                description: "Description",
-                itemID: 0,
+                name: "Guardian Angel",
+                description: "Revives fallen tower",
+                ID: 0,
+                rarity: 1,
+                priority: 5,
+                cooldownDuration: 0,
+                cooldownRemaining: 0,
                 itemType: ItemType.Passive,
-                itemRarity: 1
+                itemTarget: ItemTarget.Tower
+
             );
 
             ItemEffects.Add(ItemEffect.OnDeath);
             ItemEffects.Add(ItemEffect.PreventsDeath);
 
-            ItemManager.ProtectTower += HandleTowerDestroyed;
+            ItemManager.Instance.ProtectTower += HandleTowerDestroyed;
 
             _protectedTowers = new List<ProtectedTowerCooldown>();
             _protectionCooldown = 30;
@@ -52,25 +57,27 @@ namespace EternalDefenders
             float currentTime = Time.time;
             _protectedTowers.RemoveAll(t => t.TriggerTime + _protectionCooldown < currentTime);
         }
-        private void HandleTowerDestroyed(Item item, TowerController towerController, Wrapper<bool> isProtected)
+
+        private bool HandleTowerDestroyed(Item item, TowerController towerController)
         {
             UpdateCooldowns();
 
             if (item == this && !_protectedTowers.Any(ptc => ptc.Tower == towerController))
             {
-                towerController.Stats.SetStat(StatType.Health, 1000);
-                towerController.Stats.SetStat(StatType.Cooldown, 1);
                 
                 _protectedTowers.Add(new ProtectedTowerCooldown(towerController, Time.time));
-                isProtected.Value = true;
                 
                 Debug.Log("Tower dustruction prevented");
-                return;
+                return true;
             }
 
-            isProtected.Value = false;
             Debug.Log("Tower dustruction allready prevented");
+            return false;
         }
 
+        public override void UnSubscribe()
+        {
+            ItemManager.Instance.ProtectTower -= HandleTowerDestroyed;
+        }
     }
 }
