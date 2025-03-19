@@ -9,7 +9,7 @@ namespace EternalDefenders
         public string Id { get; }
         protected readonly Animator animator;
         protected readonly EnemyBrain brain;
-        protected const float CrossFadeDuration = 0.15f;
+        protected const float CrossFadeDuration = 0.05f;
         
         protected EnemyBaseState(string name, EnemyBrain brain)
         {
@@ -42,6 +42,12 @@ namespace EternalDefenders
         public virtual void OnExit()
         {
             //noop
+        }
+        
+        protected void ChangeAnimation(int hash, float crossFadeDuration = CrossFadeDuration)
+        {
+            animator.StopPlayback();
+            animator.Play(hash, 0, 0);
         }
     }
 }

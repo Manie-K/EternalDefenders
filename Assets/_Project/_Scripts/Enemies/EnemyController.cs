@@ -10,7 +10,7 @@ namespace EternalDefenders
         [SerializeField] Effect attackEffect;
         [SerializeField] EnemyTargetStrategy targetStrategy;
         [SerializeField] EnemyAttackStrategy attackStrategy;
-        [SerializeField] float retargetingInterval = 10f;
+        [SerializeField] float retargetingInterval = 2f;
         public Stats Stats { get; private set; }
         public Effect Effect { get; private set; }
         public IEnemyTarget Target { get; private set; }
@@ -49,6 +49,10 @@ namespace EternalDefenders
             {
                 Die();
             }
+            else if(Stats.GetStat(StatType.Health) > 300)
+            {
+                Debug.LogError("Enemy gaining health instead of losing it");
+            }
         }
         public IEnumerator Attack()
         {
@@ -71,7 +75,14 @@ namespace EternalDefenders
         {
             Target = targetStrategy.FindTarget(this);
             OnRetarget?.Invoke();
-            Debug.Log("I've picked new target: " + Target);
+            //Debug.Log("I've picked new target: " + Target);
+        }
+
+        void OnDrawGizmosSelected()
+        {
+            if(!Application.isPlaying) return;
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, Stats.GetStat(StatType.Range));
         }
     }
 }

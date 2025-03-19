@@ -17,3 +17,13 @@
     rotate: -7deg;
     transition-duration: 0.3s;
 }
+
+.Text {
+    font-size: 300%;
+    padding-left: 0;
+    color: rgb(255, 255, 255);
+    padding-right: 0;
+    margin-right: 0;
+    align-self: flex-start;
+    -unity-text-align: upper-center;
+}

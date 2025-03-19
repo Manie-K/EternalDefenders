@@ -8,8 +8,6 @@ namespace EternalDefenders
         public ProjectileController projectilePrefab;
         public override void Attack(TowerController tower, EnemyController target)
         {
-            Debug.Log("Projectile attack!");
-            
             var projectile = Instantiate(projectilePrefab, tower.AttackPoint.position, Quaternion.identity);
             projectile.Launch(target);
             
@@ -17,7 +15,7 @@ namespace EternalDefenders
             //but let's leave it for now
             projectile.OnTargetHit += (enemy) =>
             {
-                DamageCalculator.TowerAttackEnemy(tower, enemy);
+                DamageCalculator.Instance.TowerAttackEnemy(tower, enemy);
             };
         }
         

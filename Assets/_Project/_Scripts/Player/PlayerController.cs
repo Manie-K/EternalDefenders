@@ -1,38 +1,42 @@
 using System;
 using MG_Utilities;
 using System.Collections;
-using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using HudElements;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
-using Codice.Client.BaseCommands;
 
 namespace EternalDefenders
 {
     public class PlayerController : Singleton<PlayerController>, IEnemyTarget
     {
+        [SerializeField] PlayerStats playerStats;
         [SerializeField] Transform cameraTransform;
-        [SerializeField] float speed = 6f;
         [SerializeField] float turnSmoothTime = 0.01f;
 
-        public UIDocument hud;
-        private HealthBar _healthBar;
-        private HealthBar _shieldBar;
-
-        public Stats Stats { get; private set; } //sorki ale interface musi byc zaimplementowany 
+        public Stats Stats { get; private set; }
         public event Action OnPlayerDeath;
-        
+        public event Action<bool> OnPlayerFight;
+
         CharacterController _controller;
         Transform _playerTransform;
         Animator _animator;
 
-        float _turnSmoothVelocity;
-        int _currentAnimationHash = 0;
         readonly int _idleHash = Animator.StringToHash("Idle");
-        readonly int _runningHash = Animator.StringToHash("Running");
+        readonly int _runningHash = Animator.StringToHash("Run");
+        readonly int _runningRifleHash = Animator.StringToHash("Run Rifle");
+        readonly int _idleRifleHash = Animator.StringToHash("Idle Rifle");
+        readonly int _aimingSniperRifleHash = Animator.StringToHash("Aiming SniperRifle");
+        readonly int _fireSniperRifleHash = Animator.StringToHash("Fire SniperRifle");
+
+        private float _turnSmoothVelocity;
+        private int _currentAnimationHash = 0;
+
+        private bool _isFighting = false;
+
+        private Vector3 _velocity;
+        private bool _isGrounded;
+        private readonly float _gravity = -9.81f;
 
         protected override void Awake()
         {
@@ -44,60 +48,82 @@ namespace EternalDefenders
 
         void Start()
         {
-            ChangeAnimation(_idleHash);
+            ChangeAnimation(_idleRifleHash);
 
-            var root = hud.rootVisualElement;
-            _healthBar = root.Q<HealthBar>("HealthBar");
-            _shieldBar = root.Q<HealthBar>("ShieldBar");
-
-
-            var initialStats = new Dictionary<StatType, Stats.Stat>
-            {
-                { StatType.Health, new Stats.Stat(100) }, 
-                { StatType.MaxHealth, new Stats.Stat(100) }, 
-                { StatType.Shield, new Stats.Stat(50) },   
-                { StatType.MaxShield, new Stats.Stat(50) } 
-            };
-
-            // Tworzymy obiekt Stats na podstawie powy�szego s�ownika
-            Stats = new Stats(initialStats);
-
-            if (_healthBar != null && Stats.HasStat(StatType.Health))
-            {
-                int currentHealth = Stats.GetStat(StatType.Health);
-                int baseHealth = Stats.GetStat(StatType.MaxHealth);
-                _healthBar.value = (float) currentHealth / baseHealth;
-            }
-            if (_shieldBar != null && Stats.HasStat(StatType.Shield))
-            {
-                int currentShield = Stats.GetStat(StatType.Shield);
-                int baseShield = Stats.GetStat(StatType.MaxShield);
-                _shieldBar.value = (float) currentShield / baseShield;
-            }
+            Stats = new Stats(playerStats.GetStats());
+            
+            OnPlayerDeath += OnPlayerDeathDelegate;
         }
-
+        
+        void OnPlayerDeathDelegate()
+        {
+            Debug.Log("Player is dead");
+            //TODO: Implement player death logic, respawn etc.
+            //@FranciszekGwarek
+        }
         void Update()
         {
-            //ChangeDirection();
-            MovePlayer();
+            
+            PlayerInput();
 
             if(Stats.GetStat(StatType.Health) <= 0) OnPlayerDeath?.Invoke();
-            if (_healthBar != null) _healthBar.value = (float) Stats.GetStat(StatType.Health) / Stats.GetStat(StatType.MaxHealth);           
-            if (_shieldBar != null) _shieldBar.value = (float) Stats.GetStat(StatType.Shield) / Stats.GetStat(StatType.MaxShield);
+
+            //Gravity
+            _isGrounded = _controller.isGrounded;
+
+            if (_isGrounded && _velocity.y <0)
+            {
+                _velocity.y = -2f;
+            }
+
+            _velocity.y += _gravity * Time.deltaTime;
+            _controller.Move(_velocity * Time.deltaTime);
+        }
+
+        void PlayerInput()
+        {
+            if (Input.GetMouseButton(0) && !_isFighting)
+            {
+                _isFighting = true;
+                //OnPlayerFight?.Invoke(_isFighting);
+            }
+            else if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+            {
+                _isFighting = false;
+                MovePlayer();
+                OnPlayerFight?.Invoke(_isFighting);
+            }
+            else if (!_isFighting)
+            {
+                ChangeAnimation(_idleRifleHash);
+                OnPlayerFight?.Invoke(_isFighting);
+            }
+            else if (_isFighting)
+            {
+                ChangeDirection();
+            }
+
         }
 
         void ChangeDirection(Vector3 movementDirection)
+        {         
+            float targetAngle = Mathf.Atan2(movementDirection.x, movementDirection.z) * Mathf.Rad2Deg;
+            float angle = Mathf.SmoothDampAngle(_playerTransform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, turnSmoothTime);
+            _playerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
+            //cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
+        }
+
+        public void ChangeDirection()
         {
-            //TODO possible 3d terrain issiues
-            //Vector3 mouseWorldPosition = CameraController.Instance.GetWorldMousePosition();
-            //Vector3 lookDirection = (mouseWorldPosition - _playerTransform.position).normalized;
-            
-            if (movementDirection.magnitude >= 0.1f)
+            Vector3 mouseWorldPosition = CameraController.Instance.GetWorldMousePosition();
+            Vector3 lookDirection = (mouseWorldPosition - _playerTransform.position).normalized;
+
+            if (lookDirection.magnitude >= 0.1f)
             {
-                float targetAngle = Mathf.Atan2(movementDirection.x, movementDirection.z) * Mathf.Rad2Deg;
+                float targetAngle = Mathf.Atan2(lookDirection.x, lookDirection.z) * Mathf.Rad2Deg;
                 float angle = Mathf.SmoothDampAngle(_playerTransform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, turnSmoothTime);
                 _playerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
-                cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
+                //cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
             }
         }
 
@@ -113,16 +139,12 @@ namespace EternalDefenders
             if (movementDirection.magnitude >= 0.1f)
             {
                 ChangeDirection(movementDirection);
-                ChangeAnimation(_runningHash);
-                _controller.Move(movementDirection * (speed * Time.deltaTime));
-            }
-            else
-            {
-                ChangeAnimation(_idleHash);
+                ChangeAnimation(_runningRifleHash);
+                _controller.Move(movementDirection * (playerStats.speed * Time.deltaTime));
             }
         }
 
-        void ChangeAnimation(int animationHash, float crossFadeDuration = 0.2f, float time = 0) 
+        public void ChangeAnimation(object animation, float crossFadeDuration = 0.05f, float time = 0, bool canLoop = false) 
         {
             if (time > 0)
             {
@@ -138,14 +160,23 @@ namespace EternalDefenders
 
             void Validate()
             {
-                if(_currentAnimationHash != animationHash)
+                int animationHash;
+                if (animation is string) animationHash = Animator.StringToHash((string)animation);
+                else animationHash = (int)animation;
+
+                if (_currentAnimationHash != animationHash && !canLoop)
                 {
-                    //Debug.Log($"Changing animation from {_currentAnimationHash} to {animationHash}");
+                    _currentAnimationHash = animationHash;
+                    _animator.CrossFade(animationHash, crossFadeDuration);
+                }
+                else if (_currentAnimationHash != animationHash && canLoop)
+                {
                     _currentAnimationHash = animationHash;
                     _animator.CrossFade(animationHash, crossFadeDuration);
                 }
             }
         }
+
 
     }
 }

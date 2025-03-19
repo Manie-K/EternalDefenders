@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 88faa5a91a671444399e4dd91c9dc1da
+timeCreated: 1504768173
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 99479
+  packageName: LowPoly Environment Pack
+  packageVersion: 1.0
+  assetPath: Assets/LowPoly Environment Pack/FBX/Materials/Yellow.2.mat
+  uploadId: 200756

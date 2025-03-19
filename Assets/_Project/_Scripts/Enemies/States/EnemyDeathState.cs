@@ -17,7 +17,7 @@ namespace EternalDefenders
         {
             base.OnEnter();
             _navMeshAgent.isStopped = true;
-            animator.Play(_dieHash);
+            ChangeAnimation(_dieHash);
         }
         
         public override void OnUpdate()

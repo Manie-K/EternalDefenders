@@ -74,8 +74,9 @@ namespace EternalDefenders
                 }
             }
 
-            public void ApplyModifier(Modifier modifier)
+            public void ApplyModifier(Modifier originalModifier)
             {
+                Modifier modifier = originalModifier.CreateCopy();
                 modifier.InitModifer();
                 _modifiers.Add(modifier);
                 CalculateStat();

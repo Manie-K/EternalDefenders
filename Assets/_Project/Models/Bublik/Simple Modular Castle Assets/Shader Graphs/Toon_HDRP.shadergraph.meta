@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 60f684947552ff0499d340919093c40e
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: 625f186215c104763be7675aa2d941aa, type: 3}
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309297
+  packageName: Simple Modular Castle Assets
+  packageVersion: 1.0.0
+  assetPath: Assets/Bublik/Simple Modular Castle Assets/Shader Graphs/Toon_HDRP.shadergraph
+  uploadId: 730254

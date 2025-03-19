@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: a57c77f070e349e428256669c403a9c5
+timeCreated: 1504770297
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 99479
+  packageName: LowPoly Environment Pack
+  packageVersion: 1.0
+  assetPath: Assets/LowPoly Environment Pack/FBX/Materials/Orange.2.mat
+  uploadId: 200756

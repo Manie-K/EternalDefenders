@@ -13,7 +13,7 @@ namespace EternalDefenders
         public override void OnEnter()
         {
             base.OnEnter();
-            animator.CrossFade(_attackHash, CrossFadeDuration);
+            ChangeAnimation(_attackHash);
             brain.StartAttack();
         }
         public override void OnExit()

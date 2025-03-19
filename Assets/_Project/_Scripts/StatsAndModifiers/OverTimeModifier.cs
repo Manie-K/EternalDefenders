@@ -4,12 +4,22 @@ using UnityEngine;
 namespace EternalDefenders
 {
     [CreateAssetMenu(fileName = "OverTimeModifier", menuName = "EternalDefenders/Modifiers/OverTimeModifier")]
-    public class OverTimeModifier : InstantModifier
+    public class OverTimeModifier : Modifier
     {
         public float tickRate;
         public int tickValue;
-        
         CountdownTimer _tickTimer;
+        
+        public override Modifier CreateCopy()
+        {
+            OverTimeModifier copy = CreateInstance<OverTimeModifier>();
+            copy.InitOnCreation(statType, modifierType, persistAfterFinish, limitedDurationTime, value);
+            copy.tickRate = tickRate;
+            copy.tickValue = tickValue;
+            copy._tickTimer = null;
+            return copy;
+        }
+
         public override void InitModifer()
         {
             base.InitModifer();

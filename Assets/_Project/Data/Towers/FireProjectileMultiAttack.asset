@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70ba69dbea764bbb9b16e6094201e030, type: 3}
+  m_Name: FireProjectileMultiAttack
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 3654844209370847375, guid: 5155adb95fa20154fb5eaa081ecb6bb3, type: 3}
+  explosionRadius: 4
+  explosionEffect: {fileID: 8746978703178695197, guid: 8ffaf28baff736642a4654b2442f8dc0, type: 3}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 256

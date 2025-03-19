@@ -10,7 +10,7 @@ namespace EternalDefenders
         public override void OnEnter()
         {
             base.OnEnter();
-            animator.CrossFade(_idleHash, CrossFadeDuration);
+            ChangeAnimation(_idleHash);
         }
     }
 }

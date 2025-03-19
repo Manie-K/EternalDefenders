@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 12e6736748c72764eab06c9887c80bb8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309297
+  packageName: Simple Modular Castle Assets
+  packageVersion: 1.0.0
+  assetPath: Assets/Bublik/Simple Modular Castle Assets/Materials/URP/Gray_Gradient.mat
+  uploadId: 730254

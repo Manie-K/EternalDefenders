@@ -79,15 +79,22 @@ namespace EternalDefenders
             int foundCount = Physics.OverlapSphereNonAlloc(enemy.transform.position,
                 enemy.Stats.GetStat(StatType.SeekingRange), _colliders);
 
+            TowerController closestTower = null;
+            float closestDistance = float.MaxValue;
             for(int i = 0; i < foundCount; i++)
             {
                 TowerController tower = _colliders[i].gameObject.GetComponent<TowerController>();
                 if(tower != null)
                 {
-                    return tower;
+                    float distance = Vector3.Distance(enemy.transform.position, tower.transform.position);
+                    if(distance < closestDistance)
+                    {
+                        closestTower = tower;
+                        closestDistance = distance;
+                    }
                 }
             }
-            return null;
+            return closestTower;
         }
         
     }
