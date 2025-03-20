@@ -12,27 +12,31 @@ namespace EternalDefenders
     {
         [SerializeField] PlayerStats playerStats;
         [SerializeField] Transform cameraTransform;
+        [SerializeField] Transform spawnPointTransform;
         [SerializeField] float turnSmoothTime = 0.01f;
 
         public Stats Stats { get; private set; }
         public event Action OnPlayerDeath;
+        public event Action OnPlayerRespawn;
         public event Action<bool> OnPlayerFight;
 
         CharacterController _controller;
         Transform _playerTransform;
         Animator _animator;
 
-        readonly int _idleHash = Animator.StringToHash("Idle");
-        readonly int _runningHash = Animator.StringToHash("Run");
-        readonly int _runningRifleHash = Animator.StringToHash("Run Rifle");
-        readonly int _idleRifleHash = Animator.StringToHash("Idle Rifle");
-        readonly int _aimingSniperRifleHash = Animator.StringToHash("Aiming SniperRifle");
-        readonly int _fireSniperRifleHash = Animator.StringToHash("Fire SniperRifle");
+        public readonly int _idleHash = Animator.StringToHash("Idle");
+        public readonly int _runningHash = Animator.StringToHash("Run");
+        public readonly int _runningRifleHash = Animator.StringToHash("Run Rifle");
+        public readonly int _idleRifleHash = Animator.StringToHash("Idle Rifle");
+        public readonly int _aimingSniperRifleHash = Animator.StringToHash("Aiming SniperRifle");
+        public readonly int _fireSniperRifleHash = Animator.StringToHash("Fire SniperRifle");
+        public readonly int _deathRifleHash = Animator.StringToHash("Death Rifle");
 
         private float _turnSmoothVelocity;
         private int _currentAnimationHash = 0;
 
         private bool _isFighting = false;
+        private bool _isDead = false;
 
         private Vector3 _velocity;
         private bool _isGrounded;
@@ -48,6 +52,10 @@ namespace EternalDefenders
 
         void Start()
         {
+            _controller.enabled = false;
+            transform.position = spawnPointTransform.position;
+            _controller.enabled = true;
+
             ChangeAnimation(_idleRifleHash);
 
             Stats = new Stats(playerStats.GetStats());
@@ -57,33 +65,63 @@ namespace EternalDefenders
         
         void OnPlayerDeathDelegate()
         {
-            Debug.Log("Player is dead");
-            //TODO: Implement player death logic, respawn etc.
-            //@FranciszekGwarek
+            //death
+            _isDead = true;
+            ChangeAnimation(_deathRifleHash);
+
+            //respawn
+            StartCoroutine(RespawnPlayerAfterDelay(6f));
         }
+
+        IEnumerator RespawnPlayerAfterDelay(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            _controller.enabled = false;
+            transform.position = spawnPointTransform.position;
+            _controller.enabled = true;
+
+            Stats = new Stats(playerStats.GetStats());
+            ChangeAnimation(_idleRifleHash);
+            _isDead = false;
+
+            OnPlayerRespawn?.Invoke();
+        }
+
         void Update()
         {
-            
-            PlayerInput();
-
-            if(Stats.GetStat(StatType.Health) <= 0) OnPlayerDeath?.Invoke();
-
-            //Gravity
-            _isGrounded = _controller.isGrounded;
-
-            if (_isGrounded && _velocity.y <0)
+            if (!_isDead)
             {
-                _velocity.y = -2f;
-            }
+                if (Stats.GetStat(StatType.Health) <= 0)
+                {
+                    _isDead = true;
+                    OnPlayerDeath?.Invoke();
+                }
+                else
+                {
 
-            _velocity.y += _gravity * Time.deltaTime;
-            _controller.Move(_velocity * Time.deltaTime);
+                    PlayerInput();
+
+                    //Gravity
+                    _isGrounded = _controller.isGrounded;
+
+                    if (_isGrounded && _velocity.y < 0)
+                    {
+                        _velocity.y = -2f;
+                    }
+
+                    _velocity.y += _gravity * Time.deltaTime;
+                    _controller.Move(_velocity * Time.deltaTime);
+                }
+
+            }
         }
 
         void PlayerInput()
         {
             if (Input.GetMouseButton(0) && !_isFighting)
             {
+                ChangeDirection();
                 _isFighting = true;
                 //OnPlayerFight?.Invoke(_isFighting);
             }
@@ -110,7 +148,7 @@ namespace EternalDefenders
             float targetAngle = Mathf.Atan2(movementDirection.x, movementDirection.z) * Mathf.Rad2Deg;
             float angle = Mathf.SmoothDampAngle(_playerTransform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, turnSmoothTime);
             _playerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
-            //cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
+            cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
         }
 
         public void ChangeDirection()
@@ -123,7 +161,7 @@ namespace EternalDefenders
                 float targetAngle = Mathf.Atan2(lookDirection.x, lookDirection.z) * Mathf.Rad2Deg;
                 float angle = Mathf.SmoothDampAngle(_playerTransform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, turnSmoothTime);
                 _playerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
-                //cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
+                cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
             }
         }
 
