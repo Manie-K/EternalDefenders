@@ -20,18 +20,19 @@ namespace EternalDefenders
         /// <summary>
         /// Item rarity value between 1-4: higher value means better quality.
         /// </summary>
-        private int _rarity;
+        [SerializeField] private int _rarity;
 
         /// <summary>
         /// Higher value means higher priority, base value - 5.
         /// </summary>
-        private int _priority;
+        [SerializeField] private int _priority;
 
         /// <summary>
         /// Value in seconds
         /// </summary>
-        private float _cooldownDuration;
-        private float _cooldownRemaining;
+        [SerializeField] private float _cooldownDuration;
+        [SerializeField] private float _cooldownRemaining;
+        [SerializeField] private float _duplicateCount;
 
         private ItemType _itemType;
         private ItemTarget _itemTarget;
@@ -82,6 +83,12 @@ namespace EternalDefenders
 
         }
 
+        public float DuplicateCount
+        {
+            get { return _duplicateCount; }
+            protected set { _duplicateCount = value; }
+        }
+
         public ItemType ItemType
         {
             get { return _itemType; }
@@ -100,8 +107,9 @@ namespace EternalDefenders
 
         #endregion
 
+        public abstract void Initialize(int id, string name);
 
-        public void Initialize(
+        protected void InitializeCommon(
             string name, string description, int ID, int rarity, 
             int priority, float cooldownDuration, float cooldownRemaining,
             ItemType itemType, ItemTarget itemTarget)
@@ -116,9 +124,17 @@ namespace EternalDefenders
             this._itemType = itemType;
             this._itemTarget = itemTarget;
             this._itemEffects = new List<ItemEffect>();
+            this._duplicateCount = 0;
         }
+        /// <summary>
+        /// Ensure DuplicateCount is updated
+        /// </summary>
+        public abstract void Collect();
 
-        public abstract void UnSubscribe();
+        /// <summary>
+        /// Ensure DuplicateCount is updated
+        /// </summary>
+        public abstract void Remove();
 
         public virtual void Use() { return; }
 

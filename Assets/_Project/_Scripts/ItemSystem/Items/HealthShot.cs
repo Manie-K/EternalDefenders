@@ -5,23 +5,22 @@ namespace EternalDefenders
     [CreateAssetMenu(fileName = "HealthShot", menuName = "EternalDefenders/ItemSystem/Items/HealthShot")]
     public class HealthShot : Item
     {
-        private float _healthPercentageRegen;
+        [SerializeField] private float _healthPercentageRegen = 1.5f;
         /// <summary>
         /// Value in seconds
         /// </summary>
-        private float _healthRegenDuration;
-        private float _healthUpdateInterval;
-        private float _triggerTime;
-        private float _elapsedTimeSinceLastInterval;
+        [SerializeField] private float _healthRegenDuration = 20;
+        [SerializeField] private float _healthUpdateInterval = 1;
+        [SerializeField] private float _triggerTime;
+        [SerializeField] private float _elapsedTimeSinceLastInterval;
         private bool _isActive;
 
-
-        public HealthShot()
+        public override void Initialize(int id, string name)
         {
-            Initialize(
-                name: "HealthShot",
+            InitializeCommon(
+                name: name,
                 description: "Quickly heals player over short period of time",
-                ID: 1,
+                ID: id,
                 rarity: 1,
                 priority: 5,
                 cooldownDuration: 60,
@@ -30,13 +29,20 @@ namespace EternalDefenders
                 itemTarget: ItemTarget.None
             );
 
-            _healthPercentageRegen = 1.5f;
-
-            // Ensure health regen duration is divisible by the update interval for consistent updates
-            _healthUpdateInterval = 1;
-            _healthRegenDuration = 20;
             _isActive = false;
+        }
 
+        public override void Collect()
+        {
+            DuplicateCount++;
+        }
+
+        public override void Remove()
+        {
+            _isActive = false;
+            CooldownRemaining = 0;
+
+            DuplicateCount--;
         }
 
         public override void Use()
@@ -61,9 +67,16 @@ namespace EternalDefenders
                 while (_elapsedTimeSinceLastInterval >= _healthUpdateInterval) {
                     float healthRegenValue = playerStats.GetStat(StatType.MaxHealth) * _healthPercentageRegen / (_healthRegenDuration /  _healthUpdateInterval);
 
-                    Debug.Log($"Regened player by {(int)healthRegenValue}");
-                    // Round down value
-                    playerStats.ChangeStat(StatType.Health, (int)healthRegenValue);
+                    Debug.Log($"Regened player by {Mathf.RoundToInt(healthRegenValue)}");
+
+                    InstantModifier modifier = new InstantModifier()
+                    {
+                        statType = StatType.Health,
+                        modifierType = ModifierType.Flat,
+                        value = Mathf.RoundToInt(healthRegenValue)
+                    };
+
+                    playerStats.ApplyModifier(modifier);
                   
                     _elapsedTimeSinceLastInterval -= _healthUpdateInterval;
 
@@ -77,11 +90,6 @@ namespace EternalDefenders
                 }
             }
 
-        }
-
-        public override void UnSubscribe()
-        {
-            return;
         }
     }
 }

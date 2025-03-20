@@ -5,21 +5,21 @@ namespace EternalDefenders
     [CreateAssetMenu(fileName = "UnfathomMalice", menuName = "EternalDefenders/ItemSystem/Items/UnfathomMalice")]
     public class UnfathomMalice : Item
     {
-        private int _lastDamageBoost;
-        private int _maxFlatDamageBoost;
+        [SerializeField] private int _lastDamageBoost;
+        [SerializeField] private int _minFlatDamageBoost = 5;
+        [SerializeField] private int _maxFlatDamageBoost = 20;
         /// <summary>
         /// Amount of health in percentage player needs to be under so the multipier applies
         /// </summary>
-        private float _damageMultiplierThreshold;
-        private float _damageMultiplier;
-         
+        [SerializeField] private float _damageMultiplierThreshold = 0.4f;
+        [SerializeField] private int _damageMultiplierPercentage = 50;
 
-        public UnfathomMalice()
+        public override void Initialize(int id, string name)
         {
-            Initialize(
-                name: "Unfathom Malice",
+            InitializeCommon(
+                name: name,
                 description: "Gives powerful damage boost the lower player health is",
-                ID: 2,
+                ID: id,
                 rarity: 2,
                 priority: 5,
                 cooldownDuration: 0,
@@ -29,9 +29,16 @@ namespace EternalDefenders
             );
 
             _lastDamageBoost = 0;
-            _maxFlatDamageBoost = 10;
-            _damageMultiplier = 2.0f;
-            _damageMultiplierThreshold = 0.4f;
+        }
+
+        public override void Collect()
+        {
+            DuplicateCount++;
+        }
+
+        public override void Remove()
+        {
+            DuplicateCount--;
         }
 
         public override void Update()
@@ -39,9 +46,18 @@ namespace EternalDefenders
             Stats playerStats = PlayerController.Instance.Stats;
 
             float remainingHealthRatio = 1 - (float)playerStats.GetStat(StatType.Health) / playerStats.GetStat(StatType.MaxHealth);
-            int currentDamageBoost = (int)(_maxFlatDamageBoost * remainingHealthRatio - _lastDamageBoost);
+            int currentDamageBoost = Mathf.RoundToInt(_minFlatDamageBoost + (_maxFlatDamageBoost - _minFlatDamageBoost) * remainingHealthRatio - _lastDamageBoost);
 
             playerStats.ChangeStat(StatType.Damage, currentDamageBoost);
+
+
+            InstantModifier modifer = new InstantModifier()
+            {
+                statType = StatType.Damage,
+                modifierType = ModifierType.Flat,
+                value = currentDamageBoost
+            };
+
 
             if (remainingHealthRatio > 1 - _damageMultiplierThreshold)
             {
@@ -51,9 +67,5 @@ namespace EternalDefenders
             _lastDamageBoost = currentDamageBoost;
         }
 
-        public override void UnSubscribe()
-        {
-            return;
-        }
     }
 }

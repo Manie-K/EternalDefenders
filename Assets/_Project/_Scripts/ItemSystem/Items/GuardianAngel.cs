@@ -16,7 +16,7 @@ namespace EternalDefenders
         /// <summary>
         /// Value in seconds
         /// </summary>
-        private float _protectionCooldown; 
+        [SerializeField] private float _protectionCooldown; 
 
         private class ProtectedTowerCooldown {
             public TowerController Tower { get; set; }
@@ -27,29 +27,48 @@ namespace EternalDefenders
                 TriggerTime = triggerTime;
             }
         }
-    
-        public GuardianAngel()
+
+        public override void Initialize(int id, string name)
         {
-            Initialize(
-                name: "Guardian Angel",
+            InitializeCommon(
+                name: name,
                 description: "Revives fallen tower",
-                ID: 0,
+                ID: id,
                 rarity: 1,
                 priority: 5,
                 cooldownDuration: 0,
                 cooldownRemaining: 0,
                 itemType: ItemType.Passive,
                 itemTarget: ItemTarget.Tower
-
             );
+
 
             ItemEffects.Add(ItemEffect.OnDeath);
             ItemEffects.Add(ItemEffect.PreventsDeath);
 
-            ItemManager.Instance.ProtectTower += HandleTowerDestroyed;
-
-            _protectedTowers = new List<ProtectedTowerCooldown>();
             _protectionCooldown = 30;
+        }
+
+        public override void Collect()
+        {
+            if (DuplicateCount == 0)
+            {
+                _protectedTowers = new List<ProtectedTowerCooldown>();
+                ItemManager.Instance.ProtectTower += HandleTowerDestroyed;
+            }
+
+            DuplicateCount++;
+        }
+
+        public override void Remove()
+        {
+            if (DuplicateCount == 1) 
+            {
+                _protectedTowers.Clear();
+                ItemManager.Instance.ProtectTower -= HandleTowerDestroyed;
+            }
+
+            DuplicateCount--;
         }
 
         private void UpdateCooldowns()
@@ -75,9 +94,5 @@ namespace EternalDefenders
             return false;
         }
 
-        public override void UnSubscribe()
-        {
-            ItemManager.Instance.ProtectTower -= HandleTowerDestroyed;
-        }
     }
 }
