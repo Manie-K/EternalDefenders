@@ -38,6 +38,8 @@ namespace EternalDefenders
             Register(0, "Guardian Angel", ScriptableObject.CreateInstance<GuardianAngel>());
             Register(1, "Health Shot", ScriptableObject.CreateInstance<HealthShot>());
             Register(2, "Unfathom Malice", ScriptableObject.CreateInstance<UnfathomMalice>());
+            Register(3, "Energy Core", ScriptableObject.CreateInstance<EnergyCore>());
+            Register(4, "Nano-Spike Gauntlets", ScriptableObject.CreateInstance<NanoSpikeGauntlets>());
         }
 
 
