@@ -90,6 +90,8 @@ namespace EternalDefenders
 
         void Update()
         {
+            Stats.UpdateStatsModifiers(Time.deltaTime);
+                
             if (!_isDead)
             {
                 if (Stats.GetStat(StatType.Health) <= 0)

@@ -16,7 +16,12 @@ namespace EternalDefenders
         /// <summary>
         /// Value in seconds
         /// </summary>
-        private float _protectionCooldown; 
+        [SerializeField] private float _protectionCooldown; 
+
+        public float ProtectionCooldown
+        {
+            get { return _protectionCooldown; }
+        }
 
         private class ProtectedTowerCooldown {
             public TowerController Tower { get; set; }
@@ -27,29 +32,48 @@ namespace EternalDefenders
                 TriggerTime = triggerTime;
             }
         }
-    
-        public GuardianAngel()
+
+        public override void Initialize(int id, string name)
         {
-            Initialize(
-                name: "Guardian Angel",
+            InitializeCommon(
+                name: name,
                 description: "Revives fallen tower",
-                ID: 0,
+                id: id,
                 rarity: 1,
                 priority: 5,
                 cooldownDuration: 0,
                 cooldownRemaining: 0,
                 itemType: ItemType.Passive,
                 itemTarget: ItemTarget.Tower
-
             );
+
 
             ItemEffects.Add(ItemEffect.OnDeath);
             ItemEffects.Add(ItemEffect.PreventsDeath);
 
-            ItemManager.Instance.ProtectTower += HandleTowerDestroyed;
-
-            _protectedTowers = new List<ProtectedTowerCooldown>();
             _protectionCooldown = 30;
+        }
+
+        public override void Collect()
+        {
+            if (DuplicateCount == 0)
+            {
+                _protectedTowers = new List<ProtectedTowerCooldown>();
+                ItemManager.Instance.ProtectTower += HandleTowerDestroyed;
+            }
+
+            DuplicateCount++;
+        }
+
+        public override void Remove()
+        {
+            if (DuplicateCount == 1) 
+            {
+                _protectedTowers.Clear();
+                ItemManager.Instance.ProtectTower -= HandleTowerDestroyed;
+            }
+
+            DuplicateCount--;
         }
 
         private void UpdateCooldowns()
@@ -66,18 +90,25 @@ namespace EternalDefenders
             {
                 
                 _protectedTowers.Add(new ProtectedTowerCooldown(towerController, Time.time));
+
+                InstantModifier modifier = new InstantModifier()
+                {
+                    statType = StatType.Health,
+                    modifierType = ModifierType.Flat,
+                    limitedDurationTime = 1,
+                    value = towerController.Stats.GetStat(StatType.MaxHealth)
+                    
+                };
+
+                towerController.Stats.ApplyModifier(modifier);
                 
-                Debug.Log("Tower dustruction prevented");
+                Debug.Log("Tower destruction prevented recovered tower max hp");
                 return true;
             }
 
-            Debug.Log("Tower dustruction allready prevented");
+            Debug.Log("Tower destruction allready prevented");
             return false;
         }
 
-        public override void UnSubscribe()
-        {
-            ItemManager.Instance.ProtectTower -= HandleTowerDestroyed;
-        }
     }
 }

@@ -5,21 +5,23 @@ namespace EternalDefenders
     [CreateAssetMenu(fileName = "UnfathomMalice", menuName = "EternalDefenders/ItemSystem/Items/UnfathomMalice")]
     public class UnfathomMalice : Item
     {
-        private int _lastDamageBoost;
-        private int _maxFlatDamageBoost;
+        [SerializeField] private int _flatDamageBoost = 5;
         /// <summary>
-        /// Amount of health in percentage player needs to be under so the multipier applies
+        /// Value in seconds
         /// </summary>
-        private float _damageMultiplierThreshold;
-        private float _damageMultiplier;
-         
+        [SerializeField] private float _damageBurstsInterval = 10;
+        [SerializeField] private int _damageBurstValue = 10;
+        [SerializeField] private int _damageBurstDuration = 5;
 
-        public UnfathomMalice()
+        private float _triggerTime;
+ 
+
+        public override void Initialize(int id, string name)
         {
-            Initialize(
-                name: "Unfathom Malice",
-                description: "Gives powerful damage boost the lower player health is",
-                ID: 2,
+            InitializeCommon(
+                name: name,
+                description: $"Gives dame bursts every {_damageBurstsInterval} seconds",
+                id: id,
                 rarity: 2,
                 priority: 5,
                 cooldownDuration: 0,
@@ -28,32 +30,68 @@ namespace EternalDefenders
                 itemTarget: ItemTarget.Player
             );
 
-            _lastDamageBoost = 0;
-            _maxFlatDamageBoost = 10;
-            _damageMultiplier = 2.0f;
-            _damageMultiplierThreshold = 0.4f;
+        }
+
+        public override void Collect()
+        {
+            DuplicateCount++;
+
+            if (DuplicateCount == 1)
+            {
+                _triggerTime = Time.time;
+                ApplyStats();
+            }
+            
+        }
+
+        public override void Remove()
+        {
+            DuplicateCount--;
+
+            if (DuplicateCount == 0)
+            {
+                ApplyStats();
+            }
+        }
+
+        private void ApplyStats()
+        {
+            Stats playerStats = PlayerController.Instance.Stats;
+
+            int damageBoost = DuplicateCount == 1 ? _flatDamageBoost : -_flatDamageBoost;
+
+            InstantModifier modifier = new InstantModifier()
+            {
+                statType = StatType.Damage,
+                modifierType = ModifierType.Flat,
+                value = damageBoost
+            };
+
+            playerStats.ApplyModifier(modifier);
+
         }
 
         public override void Update()
         {
-            Stats playerStats = PlayerController.Instance.Stats;
-
-            float remainingHealthRatio = 1 - (float)playerStats.GetStat(StatType.Health) / playerStats.GetStat(StatType.MaxHealth);
-            int currentDamageBoost = (int)(_maxFlatDamageBoost * remainingHealthRatio - _lastDamageBoost);
-
-            playerStats.ChangeStat(StatType.Damage, currentDamageBoost);
-
-            if (remainingHealthRatio > 1 - _damageMultiplierThreshold)
+            if (Time.time > _triggerTime + _damageBurstsInterval)
             {
-                // ToDo stat multiplication
+                Debug.Log($"{Name}: applied {_damageBurstValue} damage burst");
+
+                Stats playerStats = PlayerController.Instance.Stats;
+
+                InstantModifier modifier = new InstantModifier()
+                {
+                    statType = StatType.Damage,
+                    modifierType = ModifierType.Flat,
+                    limitedDurationTime = _damageBurstDuration,
+                    value = _damageBurstValue
+                };
+
+                playerStats.ApplyModifier(modifier);
+
+                _triggerTime += _damageBurstsInterval;
             }
-
-            _lastDamageBoost = currentDamageBoost;
         }
 
-        public override void UnSubscribe()
-        {
-            return;
-        }
     }
 }
