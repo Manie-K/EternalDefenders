@@ -4,6 +4,7 @@ using NUnit.Framework.Constraints;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace EternalDefenders
@@ -14,8 +15,10 @@ namespace EternalDefenders
         private List<Item> _equippedItems = new List<Item>();
 
         public event Func<Item, TowerController, bool> ProtectTower;
+        public event Action<Item> OnItemPickUp;
+        public event Action<Item> OnItemRemoval;
 
-        public ItemDatabase ItemDitionary { get; private set; }
+        public ItemDatabase ItemDictionary { get; private set; }
         public List<Item> EquippedItems { get; private set; }
 
         private void Awake()
@@ -24,37 +27,52 @@ namespace EternalDefenders
 
             _itemDictionary.FillData();
 
-            AddItemByID(0);
-            AddItemByID(1);
-            AddItemByID(2);
+            // Item activeItem = _equippedItems.Where(item => item.ItemType == ItemType.Active).ToList().First();
 
-            Item activeItem = _equippedItems.Where(item => item.ItemType == ItemType.Active).ToList().First();
-
-            activeItem.Use();
+            // activeItem.Use();
         }
 
-        public void RemoveItemByID(int itemID)
+        public void AddItemByID(int itemId)
         {
-            Item item = _equippedItems[itemID];
+            Item item = _itemDictionary.Items[itemId].Item;
 
-            item.Remove();
-
-            if (item.DuplicateCount == 0)
+            if (item != null)
             {
-                _equippedItems.RemoveAt(itemID);
+
+                if (!_equippedItems.Contains(item))
+                {
+                    _equippedItems.Add(item);
+                }
+
+                item.Collect();
+
+            }
+            else
+            {
+                Debug.LogError($"No item with id:{itemId} exists");
             }
         }
 
-        public void AddItemByID(int itemID)
+        public void RemoveItemByID(int itemId)
         {
-            Item item = _itemDictionary.Items[itemID].Item;
+            Item item = _equippedItems[itemId];
 
-            if (!_equippedItems.Contains(item))
+            if (item != null)
             {
-                _equippedItems.Add(item);
+                OnItemRemoval.Invoke(item);
+
+                item.Remove();
+
+                if (item.DuplicateCount == 0)
+                {
+                    _equippedItems.RemoveAt(itemId);
+                }
+            }
+            else
+            {
+                Debug.LogError($"No item with id:{itemId} is equipped");
             }
 
-            item.Collect();
         }
 
         public bool IsTowerProtected(TowerController towerController)
@@ -66,8 +84,7 @@ namespace EternalDefenders
 
 
             foreach (var item in protectiveItems)
-            {
-                
+            {                
                 bool isProtected = ProtectTower?.Invoke(item, towerController)??false;
                 
                 if (isProtected)

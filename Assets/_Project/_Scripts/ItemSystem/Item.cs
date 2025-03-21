@@ -15,7 +15,7 @@ namespace EternalDefenders
         /// <summary>
         /// Unique identifier for every item
         /// </summary>
-        private int _ID;
+        private int _id;
 
         /// <summary>
         /// Item rarity value between 1-4: higher value means better quality.
@@ -54,9 +54,9 @@ namespace EternalDefenders
             protected set { _description = value; }
         }
 
-        public int ID
+        public int Id
         {
-            get { return _ID; }
+            get { return _id; }
         }
 
         public int Rarity
@@ -110,13 +110,13 @@ namespace EternalDefenders
         public abstract void Initialize(int id, string name);
 
         protected void InitializeCommon(
-            string name, string description, int ID, int rarity, 
+            string name, string description, int id, int rarity, 
             int priority, float cooldownDuration, float cooldownRemaining,
             ItemType itemType, ItemTarget itemTarget)
         {
             this._name = name;
             this._description = description;
-            this._ID = ID;
+            this._id = id;
             this._rarity = rarity;
             this._priority = priority;
             this._cooldownDuration = cooldownDuration;

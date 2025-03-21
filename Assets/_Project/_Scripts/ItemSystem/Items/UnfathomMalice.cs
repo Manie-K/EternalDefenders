@@ -5,21 +5,23 @@ namespace EternalDefenders
     [CreateAssetMenu(fileName = "UnfathomMalice", menuName = "EternalDefenders/ItemSystem/Items/UnfathomMalice")]
     public class UnfathomMalice : Item
     {
-        [SerializeField] private int _lastDamageBoost;
-        [SerializeField] private int _minFlatDamageBoost = 5;
-        [SerializeField] private int _maxFlatDamageBoost = 20;
+        [SerializeField] private int _flatDamageBoost = 5;
         /// <summary>
-        /// Amount of health in percentage player needs to be under so the multipier applies
+        /// Value in seconds
         /// </summary>
-        [SerializeField] private float _damageMultiplierThreshold = 0.4f;
-        [SerializeField] private int _damageMultiplierPercentage = 50;
+        [SerializeField] private float _damageBurstsInterval = 10;
+        [SerializeField] private int _damageBurstValue = 10;
+        [SerializeField] private int _damageBurstDuration = 5;
+
+        private float _triggerTime;
+ 
 
         public override void Initialize(int id, string name)
         {
             InitializeCommon(
                 name: name,
-                description: "Gives powerful damage boost the lower player health is",
-                ID: id,
+                description: $"Gives dame bursts every {_damageBurstsInterval} seconds",
+                id: id,
                 rarity: 2,
                 priority: 5,
                 cooldownDuration: 0,
@@ -28,43 +30,67 @@ namespace EternalDefenders
                 itemTarget: ItemTarget.Player
             );
 
-            _lastDamageBoost = 0;
         }
 
         public override void Collect()
         {
             DuplicateCount++;
+
+            if (DuplicateCount == 1)
+            {
+                _triggerTime = Time.time;
+                ApplyStats();
+            }
+            
         }
 
         public override void Remove()
         {
             DuplicateCount--;
+
+            if (DuplicateCount == 0)
+            {
+                ApplyStats();
+            }
+        }
+
+        private void ApplyStats()
+        {
+            Stats playerStats = PlayerController.Instance.Stats;
+
+            int damageBoost = DuplicateCount == 1 ? _flatDamageBoost : -_flatDamageBoost;
+
+            InstantModifier modifier = new InstantModifier()
+            {
+                statType = StatType.Damage,
+                modifierType = ModifierType.Flat,
+                value = damageBoost
+            };
+
+            playerStats.ApplyModifier(modifier);
+
         }
 
         public override void Update()
         {
-            Stats playerStats = PlayerController.Instance.Stats;
-
-            float remainingHealthRatio = 1 - (float)playerStats.GetStat(StatType.Health) / playerStats.GetStat(StatType.MaxHealth);
-            int currentDamageBoost = Mathf.RoundToInt(_minFlatDamageBoost + (_maxFlatDamageBoost - _minFlatDamageBoost) * remainingHealthRatio - _lastDamageBoost);
-
-            playerStats.ChangeStat(StatType.Damage, currentDamageBoost);
-
-
-            InstantModifier modifer = new InstantModifier()
+            if (Time.time > _triggerTime + _damageBurstsInterval)
             {
-                statType = StatType.Damage,
-                modifierType = ModifierType.Flat,
-                value = currentDamageBoost
-            };
+                Debug.Log($"{Name}: applied {_damageBurstValue} damage burst");
 
+                Stats playerStats = PlayerController.Instance.Stats;
 
-            if (remainingHealthRatio > 1 - _damageMultiplierThreshold)
-            {
-                // ToDo stat multiplication
+                InstantModifier modifier = new InstantModifier()
+                {
+                    statType = StatType.Damage,
+                    modifierType = ModifierType.Flat,
+                    limitedDurationTime = _damageBurstDuration,
+                    value = _damageBurstValue
+                };
+
+                playerStats.ApplyModifier(modifier);
+
+                _triggerTime += _damageBurstsInterval;
             }
-
-            _lastDamageBoost = currentDamageBoost;
         }
 
     }

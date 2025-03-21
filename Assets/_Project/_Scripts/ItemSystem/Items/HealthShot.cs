@@ -20,7 +20,7 @@ namespace EternalDefenders
             InitializeCommon(
                 name: name,
                 description: "Quickly heals player over short period of time",
-                ID: id,
+                id: id,
                 rarity: 1,
                 priority: 5,
                 cooldownDuration: 60,

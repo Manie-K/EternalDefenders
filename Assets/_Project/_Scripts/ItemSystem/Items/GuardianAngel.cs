@@ -18,6 +18,11 @@ namespace EternalDefenders
         /// </summary>
         [SerializeField] private float _protectionCooldown; 
 
+        public float ProtectionCooldown
+        {
+            get { return _protectionCooldown; }
+        }
+
         private class ProtectedTowerCooldown {
             public TowerController Tower { get; set; }
             public float TriggerTime { get; set; }
@@ -33,7 +38,7 @@ namespace EternalDefenders
             InitializeCommon(
                 name: name,
                 description: "Revives fallen tower",
-                ID: id,
+                id: id,
                 rarity: 1,
                 priority: 5,
                 cooldownDuration: 0,
@@ -85,12 +90,23 @@ namespace EternalDefenders
             {
                 
                 _protectedTowers.Add(new ProtectedTowerCooldown(towerController, Time.time));
+
+                InstantModifier modifier = new InstantModifier()
+                {
+                    statType = StatType.Health,
+                    modifierType = ModifierType.Flat,
+                    limitedDurationTime = 1,
+                    value = towerController.Stats.GetStat(StatType.MaxHealth)
+                    
+                };
+
+                towerController.Stats.ApplyModifier(modifier);
                 
-                Debug.Log("Tower dustruction prevented");
+                Debug.Log("Tower destruction prevented recovered tower max hp");
                 return true;
             }
 
-            Debug.Log("Tower dustruction allready prevented");
+            Debug.Log("Tower destruction allready prevented");
             return false;
         }
 
