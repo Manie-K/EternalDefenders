@@ -63,6 +63,7 @@ namespace EternalDefenders
         }
         void Update()
         {
+            Stats.UpdateStatsModifiers(Time.deltaTime);
             
             PlayerInput();
 
