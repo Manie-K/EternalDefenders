@@ -32,20 +32,36 @@ public class ItemsTests
     public IEnumerator GuardianAngelProtectionTest()
     {
         TowerController towerPrefab = Object.FindAnyObjectByType<TowerController>();
-        Assert.IsNotNull(towerPrefab);
-        towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth) - 1);
+        Assert.IsTrue(towerPrefab != null);
+        towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth));
+        yield return new WaitForSeconds(2);
+        Assert.IsTrue(towerPrefab.Stats.GetStat(StatType.Health) > 0);
         yield return null;
     }
 
     [UnityTest]
     public IEnumerator GuardianAngelTowerDestroyDuringCooldownTest()
     {
+        TowerController towerPrefab = Object.FindAnyObjectByType<TowerController>();
+        Assert.IsTrue(towerPrefab != null);
+        towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth));
+        yield return new WaitForSeconds(2);
+        towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth));
+        yield return new WaitForSeconds(2);
+        Assert.IsTrue(towerPrefab == null);
         yield return null;
     }
 
     [UnityTest]
     public IEnumerator GuardianAngelTowerDestroyAfterCooldownTest()
     {
+        TowerController towerPrefab = Object.FindAnyObjectByType<TowerController>();
+        Assert.IsTrue(towerPrefab != null);
+        towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth));
+        yield return new WaitForSeconds(31);
+        towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth));
+        yield return new WaitForSeconds(2);
+        Assert.IsTrue(towerPrefab.Stats.GetStat(StatType.Health) > 0);
         yield return null;
     }
 }
