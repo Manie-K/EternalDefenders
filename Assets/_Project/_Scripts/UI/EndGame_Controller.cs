@@ -16,6 +16,8 @@ namespace EternalDefenders
         private Button _playAgainButton;
         private Button _ExitButton;
 
+        private bool isAnimationDone;
+
         void Start()
         {
             _doc = GetComponent<UIDocument>();
@@ -31,6 +33,8 @@ namespace EternalDefenders
             _ExitButton = _doc.rootVisualElement.Q<Button>("Exit");
             _ExitButton.clicked += ExitButtonOnClicked;
 
+            isAnimationDone = false;
+
             if (MainBaseController.Instance != null)
             {
                 MainBaseController.Instance.OnMainBaseDestroyed += GameOver;
@@ -39,8 +43,10 @@ namespace EternalDefenders
 
         void GameOver()
         {
-            _doc.rootVisualElement.style.display = DisplayStyle.Flex;
+            if (isAnimationDone) return; 
 
+            isAnimationDone = true; 
+            _doc.rootVisualElement.style.display = DisplayStyle.Flex;
             DisplayStatistics();
         }
 
@@ -64,13 +70,12 @@ namespace EternalDefenders
 
             while (elapsedTime < duration)
             {
-                elapsedTime += Time.deltaTime;
+                elapsedTime += Time.unscaledDeltaTime;
                 int currentValue = Mathf.RoundToInt(Mathf.Lerp(startValue, targetValue, elapsedTime / duration));
-                label.text = " " + currentValue.ToString();
+                label.text = "   " + currentValue.ToString();
                 yield return null;
             }
 
-            label.text = targetValue.ToString();
         }
 
         private void PlayAgainButtonOnClicked()

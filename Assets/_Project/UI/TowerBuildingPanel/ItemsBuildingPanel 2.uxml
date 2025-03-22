@@ -1,0 +1,76 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/TowerBuildingPanel/Tower_Building_Style.uss?fileID=7433441132597879392&amp;guid=c3ac15013ffc9544dacf02817c2fe99f&amp;type=3#Tower_Building_Style" />
+    <engine:VisualElement name="ItemsBuildingPanel" style="flex-grow: 0; width: 100%; height: 100%; align-items: stretch; align-self: center; top: 0; background-image: none; border-left-color: rgba(255, 255, 255, 0); border-right-color: rgba(255, 255, 255, 0); border-top-color: rgba(255, 255, 255, 0); border-bottom-color: rgba(255, 255, 255, 0); border-top-width: 5px; border-right-width: 5px; border-bottom-width: 5px; border-left-width: 5px; border-top-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 25px; border-bottom-left-radius: 25px;">
+        <engine:VisualElement name="MainContener" style="flex-grow: 1;">
+            <engine:VisualElement name="Item1" style="flex-grow: 1; flex-direction: row; margin-left: 7%;">
+                <engine:Label text="Miecz Ognia" name="Item1_Name" style="align-self: center; color: rgb(252, 208, 20); font-size: 20%; white-space: pre-wrap; width: 15%; -unity-text-align: upper-center;" />
+                <engine:VisualElement name="Item1_Icon" style="flex-grow: 0; width: 20%; height: 80%; align-self: center; margin-left: 0; background-image: url(&quot;project://database/Assets/_Project/UI/TowerBuildingPanel/TowerIcons/Icon_Fire_Tower.png?fileID=2800000&amp;guid=297fb7f95d4d5ec49a64a3364c80a1e5&amp;type=3#Icon_Fire_Tower&quot;); background-size: 70% 90%;" />
+                <engine:VisualElement name="MaterialsInfo" style="flex-grow: 0; width: 14%;">
+                    <engine:VisualElement name="Item1_Wood" style="flex-grow: 1; flex-direction: row;">
+                        <engine:VisualElement name="Wood_Icon" style="flex-grow: 0; width: 50%; height: 70%; align-self: flex-end; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/logs.png?fileID=2800000&amp;guid=e232efa096f10134a91bdf0ff689e302&amp;type=3#logs&quot;); background-size: 80% 80%;" />
+                        <engine:Label text="110" name="Item1_Wood_Price" style="align-self: flex-end; color: rgb(255, 255, 255); font-size: 20%; bottom: 10%;" />
+                    </engine:VisualElement>
+                    <engine:VisualElement name="Item1_Stone" style="flex-grow: 1; flex-direction: row;">
+                        <engine:VisualElement name="Stone_Icon" style="flex-grow: 0; width: 50%; height: 70%; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/stone.png?fileID=2800000&amp;guid=4fbc211cc2acbde409318a8ddad95353&amp;type=3#stone&quot;); background-size: 80% 80%;" />
+                        <engine:Label text="100" name="Item1_Stone_Price" style="align-self: flex-start; color: rgb(255, 255, 255); font-size: 20%;" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+                <engine:Label text="Zadaje 50 obrażeń i podpala wroga." name="Item1_Description" style="width: 25%; align-self: center; flex-wrap: nowrap; white-space: pre-wrap; font-size: 20%; -unity-font-style: normal; color: rgb(194, 255, 255); margin-left: 3%; -unity-text-align: upper-center; margin-right: 4%;" />
+                <engine:Button text="Buy" name="Item1_Button" class="menu-button2" />
+            </engine:VisualElement>
+            <engine:VisualElement name="Item2" style="flex-grow: 1; flex-direction: row; margin-left: 7%; -unity-text-align: upper-left; align-self: auto;">
+                <engine:Label text="Łuk Cienia" name="Item2_Name" style="align-self: center; color: rgb(252, 208, 20); font-size: 20%; white-space: pre-wrap; width: 15%; -unity-text-align: upper-center;" />
+                <engine:VisualElement name="Item2_Icon" style="flex-grow: 0; align-self: center; width: 20%; height: 86%; margin-left: 0; background-image: url(&quot;project://database/Assets/_Project/UI/TowerBuildingPanel/TowerIcons/Icon_Electric_Tower.png?fileID=2800000&amp;guid=bac845deaf4bc37408a7c24d55daae81&amp;type=3#Icon_Electric_Tower&quot;); background-size: 70% 90%;" />
+                <engine:VisualElement name="MaterialsInfo2" style="flex-grow: 0; width: 14%;">
+                    <engine:VisualElement name="Item2_Wood" style="flex-grow: 1; flex-direction: row;">
+                        <engine:VisualElement name="Wood_Icon" style="flex-grow: 0; width: 50%; height: 70%; align-self: flex-end; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/logs.png?fileID=2800000&amp;guid=e232efa096f10134a91bdf0ff689e302&amp;type=3#logs&quot;); background-size: 80% 80%;" />
+                        <engine:Label text="120" name="Item2_Wood_Price" style="color: rgb(255, 255, 255); align-self: flex-end; font-size: 20%; bottom: 10%;" />
+                    </engine:VisualElement>
+                    <engine:VisualElement name="Item2_Stone" style="flex-grow: 1; flex-direction: row;">
+                        <engine:VisualElement name="Stone_Icon" style="flex-grow: 0; width: 50%; height: 70%; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/stone.png?fileID=2800000&amp;guid=4fbc211cc2acbde409318a8ddad95353&amp;type=3#stone&quot;); background-size: 80% 80%;" />
+                        <engine:Label text="120" name="Item2_Stone_Price" style="align-self: flex-start; color: rgb(255, 255, 255); font-size: 20%;" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+                <engine:Label text="Zadaje 50 obrażeń i podpala wroga." name="Item2_Description" style="width: 25%; align-self: center; flex-wrap: nowrap; white-space: pre-wrap; font-size: 20%; -unity-font-style: normal; color: rgb(194, 255, 255); margin-left: 3%; -unity-text-align: upper-center; margin-right: 4%;" />
+                <engine:Button text="Buy" name="Item2_Button" class="menu-button2" />
+            </engine:VisualElement>
+            <engine:VisualElement name="Item3" style="flex-grow: 1; flex-direction: row; margin-left: 7%;">
+                <engine:Label text="Zatruty Sztylet" name="Item3_Name" style="align-self: center; color: rgb(252, 208, 20); font-size: 20%; white-space: pre-wrap; width: 15%; -unity-text-align: upper-center;" />
+                <engine:VisualElement name="Item3_Icon" style="flex-grow: 0; width: 20%; height: 85%; margin-left: 0; background-image: url(&quot;project://database/Assets/_Project/UI/TowerBuildingPanel/TowerIcons/Icon_Ice_Tower.png?fileID=2800000&amp;guid=af29da7c35e3f36439fa58127bf34451&amp;type=3#Icon_Ice_Tower&quot;); background-size: 70% 90%;" />
+                <engine:VisualElement name="MaterialsInfo3" style="flex-grow: 0; width: 14%;">
+                    <engine:VisualElement name="Item3_Wood" style="flex-grow: 1; flex-direction: row;">
+                        <engine:VisualElement name="Wood_Icon" style="flex-grow: 0; width: 50%; height: 70%; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/logs.png?fileID=2800000&amp;guid=e232efa096f10134a91bdf0ff689e302&amp;type=3#logs&quot;); -unity-text-align: upper-left; align-self: flex-end; background-size: 80% 80%;" />
+                        <engine:Label text="150" name="Item3_Wood_Price" style="color: rgb(255, 255, 255); align-self: flex-end; font-size: 20%; -unity-text-align: upper-left; bottom: 10%;" />
+                    </engine:VisualElement>
+                    <engine:VisualElement name="Item3_Stone" style="flex-grow: 1; flex-direction: row; margin-bottom: 0;">
+                        <engine:VisualElement name="Stone_Icon" style="flex-grow: 0; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/stone.png?fileID=2800000&amp;guid=4fbc211cc2acbde409318a8ddad95353&amp;type=3#stone&quot;); width: 50%; height: 70%; align-self: flex-start; justify-content: center; background-size: 80% 80%;" />
+                        <engine:Label text="150" name="Item3_Stone_Price" style="height: auto; color: rgb(255, 255, 255); font-size: 20%; align-self: auto; justify-content: flex-start;" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+                <engine:Label text="Zadaje 50 obrażeń i podpala wroga." name="Item3_Description" style="width: 25%; align-self: center; flex-wrap: nowrap; white-space: pre-wrap; font-size: 20%; -unity-font-style: normal; color: rgb(194, 255, 255); margin-left: 3%; -unity-text-align: upper-center; margin-right: 4%;" />
+                <engine:Button text="Buy" name="Item3_Button" class="menu-button2" />
+            </engine:VisualElement>
+            <engine:VisualElement name="Item4" style="flex-grow: 1; flex-direction: row; margin-left: 7%;">
+                <engine:Label text="Buty Szybkości" name="Item4_Name" style="align-self: center; color: rgb(252, 208, 20); font-size: 20%; white-space: pre-wrap; width: 15%; -unity-text-align: upper-center;" />
+                <engine:VisualElement name="Item4_Icon" style="flex-grow: 0; width: 20%; height: 85%; margin-left: 0; background-size: 60% 60%; background-image: url(&quot;project://database/Assets/_Project/UI/TowerBuildingPanel/MillsIcons/WoodMill_1.png?fileID=2800000&amp;guid=728e8f14a6dc1fd4c846f94870256981&amp;type=3#WoodMill_1&quot;);" />
+                <engine:VisualElement name="MaterialsInfo4" style="flex-grow: 0; width: 14%;">
+                    <engine:VisualElement name="Item4_Wood" style="flex-grow: 1; flex-direction: row;">
+                        <engine:VisualElement name="Wood_Icon" style="flex-grow: 0; align-self: flex-end; width: 50%; height: 70%; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/logs.png?fileID=2800000&amp;guid=e232efa096f10134a91bdf0ff689e302&amp;type=3#logs&quot;); background-size: 80% 80%;" />
+                        <engine:Label text="170" name="Item4_Wood_Price" emoji-fallback-support="true" style="align-self: flex-end; font-size: 20px; color: rgb(255, 255, 255); bottom: 10%;" />
+                    </engine:VisualElement>
+                    <engine:VisualElement name="Item4__Stone" style="flex-grow: 1; flex-direction: row;">
+                        <engine:VisualElement name="Stone_Icon" style="flex-grow: 0; align-self: flex-start; width: 50%; height: 70%; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/stone.png?fileID=2800000&amp;guid=4fbc211cc2acbde409318a8ddad95353&amp;type=3#stone&quot;); justify-content: center; background-size: 80% 80%;" />
+                        <engine:Label text="160" name="Item4_Stone_Price" style="font-size: 20px; color: rgb(255, 255, 255);" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+                <engine:Label text="Zadaje 50 obrażeń i podpala wroga." name="Item4_Description" style="width: 25%; align-self: center; flex-wrap: nowrap; white-space: pre-wrap; font-size: 20%; -unity-font-style: normal; color: rgb(194, 255, 255); margin-left: 3%; -unity-text-align: upper-center; margin-right: 4%;" />
+                <engine:Button text="Buy" name="Item4_Button" class="menu-button2" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="Buttons" style="flex-grow: 0; flex-direction: row; height: 7%;">
+            <engine:Button text="Back" name="Back_Button" class="menu-button2" style="flex-grow: 0; -unity-text-align: middle-left; font-size: 25px; width: 10%;" />
+            <engine:Label text="1" name="Page_Number" style="width: 78%; -unity-text-align: upper-center; font-size: 25px; color: rgb(255, 255, 255);" />
+            <engine:Button text="Next" name="NextButton" class="menu-button2" style="align-self: flex-end; flex-grow: 1; -unity-text-align: middle-right; font-size: 25px; width: 10%;" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>

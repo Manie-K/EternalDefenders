@@ -11,25 +11,35 @@ namespace EternalDefenders
     {
         private UIDocument _doc;
 
-        private Button _FireTowerBuy;
-        private Label _FireWoodPrice;
-        private Label _FireStonePrice;
+        private Button[] _towerBuyButtons;
+        private Label[,] _towerPriceLabels;
 
-        private Button _ElectricTowerBuy;
-        private Label _ElectricWoodPrice;
-        private Label _ElectricStonePrice;
 
-        private Button _IceTowerBuy;
-        private Label _IceWoodPrice;
-        private Label _IceStonePrice;
+        private Button[] _ItemsBuyButtons;
+        private Label[,] _ItemsNamesLabels;
+        private Label[,] _ItemsPriceLabels;
+        private Label[,] _ItemsDescriptionsLabels;
+        private VisualElement[,] _ItemsSprites;
 
-        private Button _WoodMillBuy;
-        private Label _WoodMillWoodPrice;
-        private Label _WoodMillStonePrice;
+        private Button ItemsPanel_Next;
+        private Button ItemsPanel_Back;
+        private Label ItemsPanel_PageNumber;
 
-        private Button _StoneMillBuy;
-        private Label _StoneMillWoodPrice;
-        private Label _StoneMillStonePrice;
+        private int AcctualPage;
+        private int SizeOfItems;
+        private ItemDatabase _ItemsDatabase;
+
+        //main
+        private Button Towers_Button;
+        private Button Items_Button;
+
+        [SerializeField]
+        private VisualTreeAsset _TowersContener_Template;
+        private VisualElement _TowersContener;
+
+        [SerializeField]
+        private VisualTreeAsset _ItemsContener_Template;
+        private VisualElement _ItemsContener;
 
         [SerializeField] private List<TowerBundle> towerBundles;
         public event Action<TowerBundle> OnBuildingSelected;
@@ -38,37 +48,69 @@ namespace EternalDefenders
         {
             _doc = GetComponent<UIDocument>();
 
-            _FireTowerBuy = _doc.rootVisualElement.Q<Button>("Fire_Tower_Button");
-            _FireWoodPrice = _doc.rootVisualElement.Q<Label>("Fire_Wood_Price");
-            _FireStonePrice = _doc.rootVisualElement.Q<Label>("Fire_Stone_Price");
-            _FireTowerBuy.clicked += () => TryBuyBuilding(towerBundles[0], towerBundles[0].cost[0].amount, towerBundles[0].cost[1].amount);
+            Towers_Button = _doc.rootVisualElement.Q<Button>("TowersContener_Panel");
+            Towers_Button.clicked += OnTowersButtonClicked;
+            Items_Button = _doc.rootVisualElement.Q<Button>("ItemsContener_Panel");
+            Items_Button.clicked += OnItemsButtonClicked;
 
-            _ElectricTowerBuy = _doc.rootVisualElement.Q<Button>("Electric_Tower_Button");
-            _ElectricWoodPrice = _doc.rootVisualElement.Q<Label>("Electric_Wood_Price");
-            _ElectricStonePrice = _doc.rootVisualElement.Q<Label>("Electric_Stone_Price");
-            _ElectricTowerBuy.clicked += () => TryBuyBuilding(towerBundles[1], towerBundles[1].cost[0].amount, towerBundles[1].cost[1].amount);
+            _TowersContener = _TowersContener_Template.CloneTree();
 
-            _IceTowerBuy = _doc.rootVisualElement.Q<Button>("Ice_Tower_Button");
-            _IceWoodPrice = _doc.rootVisualElement.Q<Label>("Ice_Wood_Price");
-            _IceStonePrice = _doc.rootVisualElement.Q<Label>("Ice_Stone_Price");
-            _IceTowerBuy.clicked += () => TryBuyBuilding(towerBundles[2], towerBundles[2].cost[0].amount, towerBundles[2].cost[1].amount);
+            _ItemsContener = _ItemsContener_Template.CloneTree();
 
-            _WoodMillBuy = _doc.rootVisualElement.Q<Button>("WoodMill_Button");
-            _WoodMillWoodPrice = _doc.rootVisualElement.Q<Label>("WoodMill_Wood_Price");
-            _WoodMillStonePrice = _doc.rootVisualElement.Q<Label>("WoodMill_Stone_Price");
-            _WoodMillBuy.clicked += () => TryBuyBuilding(towerBundles[3], towerBundles[3].cost[0].amount, towerBundles[3].cost[1].amount);
+            InitializeItemsPanel();
 
-            _StoneMillBuy = _doc.rootVisualElement.Q<Button>("StoneMill_Button");
-            _StoneMillWoodPrice = _doc.rootVisualElement.Q<Label>("StoneMill_Wood_Price");
-            _StoneMillStonePrice = _doc.rootVisualElement.Q<Label>("StoneMill_Stone_Price");
-            _StoneMillBuy.clicked += () => TryBuyBuilding(towerBundles[4], towerBundles[4].cost[0].amount, towerBundles[4].cost[1].amount);
+            AcctualPage = 0;
+            _ItemsDatabase = ItemManager.Instance._itemDictionary;
+            SizeOfItems = _ItemsDatabase.Items.Count;
+
+            _towerBuyButtons = new Button[]
+            {
+                _TowersContener.Q<Button>("Fire_Tower_Button"),
+                _TowersContener.Q<Button>("Electric_Tower_Button"),
+                _TowersContener.Q<Button>("Ice_Tower_Button"),
+                _TowersContener.Q<Button>("WoodMill_Button"),
+                _TowersContener.Q<Button>("StoneMill_Button")
+            };
+
+            _towerPriceLabels = new Label[,]
+            {
+                {
+                     _TowersContener.Q<Label>("Fire_Wood_Price"),
+                     _TowersContener.Q<Label>("Fire_Stone_Price")
+                },
+                {
+                     _TowersContener.Q<Label>("Electric_Wood_Price"),
+                     _TowersContener.Q<Label>("Electric_Stone_Price")
+                },
+                {
+                     _TowersContener.Q<Label>("Ice_Wood_Price"),
+                     _TowersContener.Q<Label>("Ice_Stone_Price")
+                },
+                {
+                     _TowersContener.Q<Label>("WoodMill_Wood_Price"),
+                     _TowersContener.Q<Label>("WoodMill_Stone_Price")
+                },
+                {
+                    _TowersContener.Q<Label>("StoneMill_Wood_Price"),
+                    _TowersContener.Q<Label>("StoneMill_Stone_Price")
+                }
+            };
+
+            for (int i = 0; i < _towerBuyButtons.Length; i++)
+            {
+                int index = i;
+                _towerBuyButtons[i].clicked += () => TryBuyBuilding(towerBundles[index],
+                    towerBundles[index].cost[0].amount, towerBundles[index].cost[1].amount);
+            }
+
+            SetTowerPrices();
 
             _doc.rootVisualElement.style.display = DisplayStyle.None;
 
             BuildingManager.Instance.OnBuildingModeEnter += OnBuildingModeEnter_Delegate;
             BuildingManager.Instance.OnBuildingModeExit += OnBuildingModeExit_Delegate;
 
-            SetTowerPrices();
+            OnTowersButtonClicked();
 
             InvokeRepeating(nameof(UpdatePriceColors), 0f, 0.1f);
         }
@@ -84,6 +126,122 @@ namespace EternalDefenders
         void OnBuildingModeExit_Delegate() => _doc.rootVisualElement.style.display = DisplayStyle.None;
 
         void OnBuildingModeEnter_Delegate() => _doc.rootVisualElement.style.display = DisplayStyle.Flex;
+
+
+        private void InitializeItemsPanel()
+        {
+
+            _ItemsBuyButtons = new Button[4];
+            _ItemsNamesLabels = new Label[4, 1];
+            _ItemsPriceLabels = new Label[4, 2];
+            _ItemsDescriptionsLabels = new Label[4, 1];
+            _ItemsSprites = new VisualElement[4, 1];
+
+            for (int i = 0; i < 4; i++)
+            {
+                _ItemsBuyButtons[i] = _ItemsContener.Q<Button>($"Item{i + 1}_Button");
+
+                _ItemsNamesLabels[i, 0] = _ItemsContener.Q<Label>($"Item{i + 1}_Name");
+
+                _ItemsPriceLabels[i, 0] = _ItemsContener.Q<Label>($"Item{i + 1}_Wood_Price");
+                _ItemsPriceLabels[i, 1] = _ItemsContener.Q<Label>($"Item{i + 1}_Stone_Price");
+
+                _ItemsDescriptionsLabels[i, 0] = _ItemsContener.Q<Label>($"Item{i + 1}_Description");
+
+                _ItemsSprites[i, 0] = _ItemsContener.Q<VisualElement>($"Item{i + 1}_Icon");
+            }
+
+            ItemsPanel_Next = _ItemsContener.Q<Button>("NextButton");
+            ItemsPanel_Next.clicked += OnNextButtonClicked;
+
+            ItemsPanel_Back = _ItemsContener.Q<Button>("Back_Button");
+            ItemsPanel_Back.clicked += OnBackButtonClicked;
+
+            ItemsPanel_PageNumber = _ItemsContener.Q<Label>("Page_Number");
+        }
+
+
+        void OnTowersButtonClicked()
+        {
+            VisualElement towerBuildingPanel = _doc.rootVisualElement.Q<VisualElement>("Contener");
+
+            towerBuildingPanel.Clear();
+
+            _TowersContener.style.flexGrow = 1;
+            towerBuildingPanel.Add(_TowersContener);
+        }
+
+        void OnItemsButtonClicked()
+        {
+            VisualElement towerBuildingPanel = _doc.rootVisualElement.Q<VisualElement>("Contener");
+
+            towerBuildingPanel.Clear();
+
+            _ItemsContener.style.flexGrow = 1;
+            towerBuildingPanel.Add(_ItemsContener);
+
+            AcctualPage = 0;
+            ItemsPanel_PageNumber.text = (AcctualPage + 1).ToString();
+
+            DisplayItemsOnPage();
+        }
+
+        void OnNextButtonClicked()
+        {
+            int maxPage = Mathf.CeilToInt((float)SizeOfItems / 4) - 1;
+
+            if (AcctualPage < maxPage)
+            {
+                AcctualPage++;
+                ItemsPanel_PageNumber.text = (AcctualPage + 1).ToString();
+                DisplayItemsOnPage();
+            }
+        }
+
+        void OnBackButtonClicked()
+        {
+            if (AcctualPage > 0)
+            {
+                AcctualPage--;
+                ItemsPanel_PageNumber.text = (AcctualPage + 1).ToString();
+                DisplayItemsOnPage();
+            }
+        }
+
+        private void DisplayItemsOnPage()
+        {
+            int itemsPerPage = 4;
+            int startIndex = AcctualPage * itemsPerPage;
+
+
+            for (int i = 0; i < itemsPerPage; i++)
+            {
+                int itemIndex = startIndex + i;
+
+                // Sprawdzenie, czy indeks przedmiotu nie przekracza dostêpnych danych
+                if (itemIndex < _ItemsDatabase.Items.Count)
+                {
+   
+                    _ItemsNamesLabels[i, 0].text = _ItemsDatabase.Items[itemIndex].Name;
+                    _ItemsPriceLabels[i, 0].text = "100";
+                    _ItemsPriceLabels[i, 1].text = "200";
+                    _ItemsDescriptionsLabels[i, 0].text = _ItemsDatabase.Items[itemIndex].Item.Description;
+
+                    // Mo¿esz dodaæ kod do ustawiania ikony, jeœli masz do niej dostêp
+                    //_ItemsSprites[i, 0].style.backgroundImage = new StyleBackground(item.icon);
+
+                    //_ItemsBuyButtons[i].clicked += () => TryBuyBuilding(item, item.cost[0].amount, item.cost[1].amount);
+                }
+                else
+                {
+                    // Jeœli nie ma wiêcej przedmiotów, ukryj elementy
+                    _ItemsNamesLabels[i, 0].text = "";
+                    _ItemsPriceLabels[i, 0].text = "";
+                    _ItemsPriceLabels[i, 1].text = "";
+                    _ItemsDescriptionsLabels[i, 0].text = "";
+                }
+            }
+        }
 
         void TryBuyBuilding(TowerBundle tower, int woodCost, int stoneCost)
         {
@@ -105,41 +263,13 @@ namespace EternalDefenders
                 Debug.Log("Nie masz wystarczaj¹cych zasobów!");
             }
         }
+
         void SetTowerPrices()
         {
-            if (towerBundles.Count > 0)
+            for (int i = 0; i < towerBundles.Count; i++)
             {
-                var fireTower = towerBundles[0];
-                _FireWoodPrice.text = fireTower.cost[0].amount.ToString();
-                _FireStonePrice.text = fireTower.cost[1].amount.ToString();
-            }
-
-            if (towerBundles.Count > 1)
-            {
-                var electricTower = towerBundles[1];
-                _ElectricWoodPrice.text = electricTower.cost[0].amount.ToString();
-                _ElectricStonePrice.text = electricTower.cost[1].amount.ToString();
-            }
-
-            if (towerBundles.Count > 2)
-            {
-                var iceTower = towerBundles[2];
-                _IceWoodPrice.text = iceTower.cost[0].amount.ToString();
-                _IceStonePrice.text = iceTower.cost[1].amount.ToString();
-            }
-
-            if (towerBundles.Count > 3)
-            {
-                var woodMill = towerBundles[3];
-                _WoodMillWoodPrice.text = woodMill.cost[0].amount.ToString();
-                _WoodMillStonePrice.text = woodMill.cost[1].amount.ToString();
-            }
-
-            if (towerBundles.Count > 4)
-            {
-                var stoneMill = towerBundles[4];
-                _StoneMillWoodPrice.text = stoneMill.cost[0].amount.ToString();
-                _StoneMillStonePrice.text = stoneMill.cost[1].amount.ToString();
+                _towerPriceLabels[i, 0].text = towerBundles[i].cost[0].amount.ToString();
+                _towerPriceLabels[i, 1].text = towerBundles[i].cost[1].amount.ToString();
             }
         }
 
@@ -147,26 +277,17 @@ namespace EternalDefenders
         {
             PlayerResourceInventory inventory = PlayerResourceInventory.Instance;
 
-            UpdateLabelColor(towerBundles[0].cost[0], _FireWoodPrice, inventory, towerBundles[0].cost[0].resource);
-            UpdateLabelColor(towerBundles[0].cost[1], _FireStonePrice, inventory, towerBundles[0].cost[1].resource);
+            for (int i = 0; i < towerBundles.Count; i++)
+            {
+                UpdateLabelColor(towerBundles[i].cost[0], _towerPriceLabels[i, 0], inventory, towerBundles[i].cost[0].resource);
+                UpdateLabelColor(towerBundles[i].cost[1], _towerPriceLabels[i, 1], inventory, towerBundles[i].cost[1].resource);
+            }
 
-            UpdateLabelColor(towerBundles[1].cost[0], _ElectricWoodPrice, inventory, towerBundles[1].cost[0].resource);
-            UpdateLabelColor(towerBundles[1].cost[1], _ElectricStonePrice, inventory, towerBundles[1].cost[1].resource);
 
-            UpdateLabelColor(towerBundles[2].cost[0], _IceWoodPrice, inventory, towerBundles[2].cost[0].resource);
-            UpdateLabelColor(towerBundles[2].cost[1], _IceStonePrice, inventory, towerBundles[2].cost[1].resource);
-            /*
-            UpdateLabelColor(towerBundles[3].cost[0], _StoneMillWoodPrice, inventory, towerBundles[3].cost[0].resource);
-            UpdateLabelColor(towerBundles[3].cost[1],_StoneMillStonePrice, inventory, towerBundles[3].cost[1].resource);
-
-            UpdateLabelColor(towerBundles[4].cost[0], _WoodMillWoodPrice, inventory, towerBundles[4].cost[0].resource);
-            UpdateLabelColor(towerBundles[4].cost[1], _WoodMillStonePrice, inventory, towerBundles[4].cost[1].resource);
-            */
-        }
-
-        void UpdateLabelColor(ResourceCost cost, Label label, PlayerResourceInventory inventory, ResourceSO resource)
-        {
-            label.style.color = inventory.HasEnoughOfResource(resource, cost.amount) ? Color.white : Color.red;
+            void UpdateLabelColor(ResourceCost cost, Label label, PlayerResourceInventory inventory, ResourceSO resource)
+            {
+                label.style.color = inventory.HasEnoughOfResource(resource, cost.amount) ? Color.white : Color.red;
+            }
         }
     }
 }
