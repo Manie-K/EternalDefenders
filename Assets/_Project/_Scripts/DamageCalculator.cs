@@ -79,6 +79,11 @@ namespace EternalDefenders
             }
             
             DamagePopupText.Create(player.transform.position.With(y: 1.75f), enemyStats.GetStat(StatType.Damage));
+            
+            if (player.GetState() != PlayerState.Dead)
+            {
+                player.GetDamage();
+            }
         }
 
         public void BulletHitEnemy(EnemyController enemy)

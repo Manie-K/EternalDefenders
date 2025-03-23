@@ -63,7 +63,7 @@ namespace EternalDefenders
                 }
                 else if (Input.GetMouseButton(0) && !_isFighting)
                 {
-                    _playerController.ChangeDirection();
+                    _playerController.ChangeDirection360();
                     _playerController.ChangeAnimation(_playerController._aimingSniperRifleHash, 0.03f);
                     StartCoroutine(WaitForFightAndFire(0.3f));
                 }
