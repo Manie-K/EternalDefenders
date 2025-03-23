@@ -44,6 +44,20 @@ namespace EternalDefenders
         [SerializeField] private List<TowerBundle> towerBundles;
         public event Action<TowerBundle> OnBuildingSelected;
 
+
+
+
+        //testowanie kupowania itemow
+        [SerializeField]
+        private ResourceSO res_wood;
+        [SerializeField]
+        private ResourceSO res_stone;
+        [SerializeField]
+        private Sprite icon;
+
+        private VisualElement[] _ItemsRows;
+
+
         void Start()
         {
             _doc = GetComponent<UIDocument>();
@@ -136,6 +150,7 @@ namespace EternalDefenders
             _ItemsPriceLabels = new Label[4, 2];
             _ItemsDescriptionsLabels = new Label[4, 1];
             _ItemsSprites = new VisualElement[4, 1];
+            _ItemsRows = new VisualElement[4];
 
             for (int i = 0; i < 4; i++)
             {
@@ -149,6 +164,11 @@ namespace EternalDefenders
                 _ItemsDescriptionsLabels[i, 0] = _ItemsContener.Q<Label>($"Item{i + 1}_Description");
 
                 _ItemsSprites[i, 0] = _ItemsContener.Q<VisualElement>($"Item{i + 1}_Icon");
+
+                _ItemsRows[i] = _ItemsContener.Q<VisualElement>($"Item{i + 1}");
+
+                int index = i; 
+                _ItemsBuyButtons[i].clicked += () => TryBuyItem(index);
             }
 
             ItemsPanel_Next = _ItemsContener.Q<Button>("NextButton");
@@ -213,32 +233,32 @@ namespace EternalDefenders
             int itemsPerPage = 4;
             int startIndex = AcctualPage * itemsPerPage;
 
-
             for (int i = 0; i < itemsPerPage; i++)
             {
                 int itemIndex = startIndex + i;
 
-                // Sprawdzenie, czy indeks przedmiotu nie przekracza dostêpnych danych
                 if (itemIndex < _ItemsDatabase.Items.Count)
                 {
-   
-                    _ItemsNamesLabels[i, 0].text = _ItemsDatabase.Items[itemIndex].Name;
-                    _ItemsPriceLabels[i, 0].text = "100";
-                    _ItemsPriceLabels[i, 1].text = "200";
-                    _ItemsDescriptionsLabels[i, 0].text = _ItemsDatabase.Items[itemIndex].Item.Description;
+                    var currentItem = _ItemsDatabase.Items[itemIndex].Item;
 
-                    // Mo¿esz dodaæ kod do ustawiania ikony, jeœli masz do niej dostêp
-                    //_ItemsSprites[i, 0].style.backgroundImage = new StyleBackground(item.icon);
+                    _ItemsNamesLabels[i, 0].text = currentItem.Name;
+                    _ItemsPriceLabels[i, 0].text = "30";
+                    _ItemsPriceLabels[i, 1].text = "30";
+                    _ItemsDescriptionsLabels[i, 0].text = currentItem.Description;
 
-                    //_ItemsBuyButtons[i].clicked += () => TryBuyBuilding(item, item.cost[0].amount, item.cost[1].amount);
+                    _ItemsSprites[i, 0].style.backgroundImage = new StyleBackground(icon);
+
+
+                    _ItemsRows[i].style.display = DisplayStyle.Flex;
                 }
                 else
                 {
-                    // Jeœli nie ma wiêcej przedmiotów, ukryj elementy
                     _ItemsNamesLabels[i, 0].text = "";
                     _ItemsPriceLabels[i, 0].text = "";
                     _ItemsPriceLabels[i, 1].text = "";
                     _ItemsDescriptionsLabels[i, 0].text = "";
+
+                    _ItemsRows[i].style.display = DisplayStyle.None;
                 }
             }
         }
@@ -257,6 +277,32 @@ namespace EternalDefenders
 
                 OnBuildingSelected?.Invoke(tower);
 
+            }
+            else
+            {
+                Debug.Log("Nie masz wystarczaj¹cych zasobów!");
+            }
+        }
+
+        //testowanie kupowania itemow
+        void TryBuyItem(int buttonIndex)
+        {
+            int itemIndex = AcctualPage * 4 + buttonIndex;
+
+            if (itemIndex >= _ItemsDatabase.Items.Count) return;
+
+            var selectedItem = _ItemsDatabase.Items[itemIndex].Item;
+            PlayerResourceInventory inventory = PlayerResourceInventory.Instance;
+
+            if (inventory.HasEnoughOfResource(res_stone, 30) && inventory.HasEnoughOfResource(res_wood, 30))
+            {
+                //ten warunek mozna zmienic pozniej
+                if (!ItemManager.Instance._equippedItems.Contains(selectedItem))
+                {
+                    inventory.RemoveResource(res_stone, 30);
+                    inventory.RemoveResource(res_wood, 30);
+                    ItemManager.Instance.AddItemByID(selectedItem.Id);
+                }
             }
             else
             {
@@ -283,11 +329,22 @@ namespace EternalDefenders
                 UpdateLabelColor(towerBundles[i].cost[1], _towerPriceLabels[i, 1], inventory, towerBundles[i].cost[1].resource);
             }
 
-
-            void UpdateLabelColor(ResourceCost cost, Label label, PlayerResourceInventory inventory, ResourceSO resource)
+            //testowanie kupowania itemow
+            for (int i = 0; i < 4; i++)
             {
-                label.style.color = inventory.HasEnoughOfResource(resource, cost.amount) ? Color.white : Color.red;
+                UpdateLabelColor2(30, _ItemsPriceLabels[i, 0], inventory, res_wood);
+                UpdateLabelColor2(30, _ItemsPriceLabels[i, 1], inventory, res_stone);
             }
+        }
+        void UpdateLabelColor(ResourceCost cost, Label label, PlayerResourceInventory inventory, ResourceSO resource)
+        {
+            label.style.color = inventory.HasEnoughOfResource(resource, cost.amount) ? Color.white : Color.red;
+        }
+
+        //testowanie kupowania itemow
+        void UpdateLabelColor2(int amount, Label label, PlayerResourceInventory inventory, ResourceSO resource)
+        {
+            label.style.color = inventory.HasEnoughOfResource(resource, amount) ? Color.white : Color.red;
         }
     }
 }

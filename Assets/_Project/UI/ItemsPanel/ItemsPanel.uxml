@@ -4,42 +4,42 @@
         <engine:VisualElement name="Items" style="flex-grow: 1;">
             <engine:VisualElement name="row1" style="flex-grow: 1; flex-direction: row;">
                 <engine:VisualElement name="Item1" style="flex-grow: 1;">
-                    <engine:VisualElement name="Item_Image" class="Item_Image" style="flex-grow: 0; top: 12.5%; height: 75%; left: 5%; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/qsilver.png?fileID=2800000&amp;guid=64a3a2ccba0b4094f95d44fd0efec3d4&amp;type=3#qsilver&quot;);" />
+                    <engine:VisualElement name="Item1_Image" class="Item_Image" style="flex-grow: 0; top: 12.5%; height: 75%; left: 5%; background-image: none;" />
                 </engine:VisualElement>
                 <engine:VisualElement name="Item2" style="flex-grow: 1;">
-                    <engine:VisualElement name="Item_Image" class="Item_Image" style="flex-grow: 0; right: 5%; background-image: url(&quot;project://database/Assets/_Project/UI/Icons/StrategyGameResourceIcons/Icons/stone.png?fileID=2800000&amp;guid=4fbc211cc2acbde409318a8ddad95353&amp;type=3#stone&quot;);" />
+                    <engine:VisualElement name="Item2_Image" class="Item_Image" style="flex-grow: 0; right: 5%; background-image: none;" />
                 </engine:VisualElement>
             </engine:VisualElement>
             <engine:VisualElement name="row2" style="flex-grow: 1; flex-direction: row;">
                 <engine:VisualElement name="Item1" style="flex-grow: 1;">
-                    <engine:VisualElement name="Item_Image" class="Item_Image" style="flex-grow: 0; left: 5%;" />
+                    <engine:VisualElement name="Item3_Image" class="Item_Image" style="flex-grow: 0; left: 5%;" />
                 </engine:VisualElement>
                 <engine:VisualElement name="Item2" style="flex-grow: 1;">
-                    <engine:VisualElement name="Item_Image" class="Item_Image" style="flex-grow: 0; right: 5%;" />
+                    <engine:VisualElement name="Item4_Image" class="Item_Image" style="flex-grow: 0; right: 5%;" />
                 </engine:VisualElement>
             </engine:VisualElement>
             <engine:VisualElement name="row3" style="flex-grow: 1; flex-direction: row;">
                 <engine:VisualElement name="Item1" style="flex-grow: 1;">
-                    <engine:VisualElement name="Item_Image" class="Item_Image" style="flex-grow: 0; left: 5%;" />
+                    <engine:VisualElement name="Item5_Image" class="Item_Image" style="flex-grow: 0; left: 5%;" />
                 </engine:VisualElement>
                 <engine:VisualElement name="Item2" style="flex-grow: 1;">
-                    <engine:VisualElement name="Item_Image" class="Item_Image" style="flex-grow: 0; right: 5%;" />
+                    <engine:VisualElement name="Item6_Image" class="Item_Image" style="flex-grow: 0; right: 5%;" />
                 </engine:VisualElement>
             </engine:VisualElement>
             <engine:VisualElement name="row4" style="flex-grow: 1; flex-direction: row;">
                 <engine:VisualElement name="Item1" style="flex-grow: 1;">
-                    <engine:VisualElement name="Item_Image" class="Item_Image" style="flex-grow: 0; left: 5%;" />
+                    <engine:VisualElement name="Item7_Image" class="Item_Image" style="flex-grow: 0; left: 5%;" />
                 </engine:VisualElement>
                 <engine:VisualElement name="Item2" style="flex-grow: 1;">
-                    <engine:VisualElement name="Item_Image" class="Item_Image" style="flex-grow: 0; right: 5%;" />
+                    <engine:VisualElement name="Item8_Image" class="Item_Image" style="flex-grow: 0; right: 5%;" />
                 </engine:VisualElement>
             </engine:VisualElement>
             <engine:VisualElement name="row5" style="flex-grow: 1; flex-direction: row;">
                 <engine:VisualElement name="Item1" style="flex-grow: 1;">
-                    <engine:VisualElement name="Item_Image" class="Item_Image" style="flex-grow: 0; left: 5%;" />
+                    <engine:VisualElement name="Item9_Image" class="Item_Image" style="flex-grow: 0; left: 5%;" />
                 </engine:VisualElement>
                 <engine:VisualElement name="Item2" style="flex-grow: 1;">
-                    <engine:VisualElement name="Item_Image" class="Item_Image" style="flex-grow: 0; right: 5%;" />
+                    <engine:VisualElement name="Item10_Image" class="Item_Image" style="flex-grow: 0; right: 5%;" />
                 </engine:VisualElement>
             </engine:VisualElement>
         </engine:VisualElement>
