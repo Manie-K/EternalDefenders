@@ -10,22 +10,13 @@ namespace EternalDefenders
         private bool _isEnabled;
         private Label _itemNameLabel;
         private Label _itemInfoLabel;
-        private int _rows = 5;
-        private int _columns = 2;
 
-        private Dictionary<(int, int), (string name, string description)> _items = new Dictionary<(int, int), (string, string)>
-        {
-            { (0, 0), ("Miecz Ognia", "Zadaje 50 obra¿eñ i podpala wroga.") },
-            { (0, 1), ("Tarcza Obroñcy", "Zwiêksza obronê o 30 punktów.") },
-            { (1, 0), ("Eliksir ¯ycia", "Przywraca 100 punktów zdrowia.") },
-            { (1, 1), ("Runa Mocy", "Zwiêksza si³ê ataku o 20%.") },
-            { (2, 0), ("Zatruty Sztylet", "Zadaje 25 obra¿eñ i zatruwa cel.") },
-            { (2, 1), ("£uk Cienia", "Zwiêksza celnoœæ i obra¿enia dystansowe.") },
-            { (3, 0), ("Amulet Œwiat³a", "Zwiêksza odpornoœæ na magiê.") },
-            { (3, 1), ("Zbroja Smoka", "Zmniejsza obra¿enia o 40%.") },
-            { (4, 0), ("Buty Szybkoœci", "Zwiêkszaj¹ prêdkoœæ poruszania.") },
-            { (4, 1), ("Pierœcieñ Many", "Regeneruje manê o 10% szybciej.") }
-        };
+        //testowanie kupowania itemow
+        private VisualElement[] _ItemsSprites;
+        private List<Item> _equippedItems;
+
+        [SerializeField]
+        private Sprite icon;
 
         void Start()
         {
@@ -39,6 +30,14 @@ namespace EternalDefenders
             _itemNameLabel = itemsInfo.Q<Label>("ItemName");
             _itemInfoLabel = itemsInfo.Q<Label>("ItemInformations");
 
+            //testowanie kupowania itemow
+            _ItemsSprites = new VisualElement[10];
+
+            for (int i = 0; i < 10; i++)
+            {
+                _ItemsSprites[i] = _doc.rootVisualElement.Q<VisualElement>($"Item{i + 1}_Image");
+            }
+
             _itemNameLabel.text = "";
             _itemInfoLabel.text = "";
 
@@ -50,38 +49,51 @@ namespace EternalDefenders
             {
                 _isEnabled = !_isEnabled;
                 _doc.rootVisualElement.style.display = _isEnabled ? DisplayStyle.Flex : DisplayStyle.None;
+
+                if(_isEnabled)
+                {
+                    UpdateEquippedItems();
+                }
             }
 
             if (_isEnabled)
             {
-                CheckMouseOverItems();
+                CheckMouseOverEquippedItems();
             }
         }
 
-        private void CheckMouseOverItems()
+        //testowanie kupowania itemow
+        private void UpdateEquippedItems()
+        {
+             _equippedItems = ItemManager.Instance._equippedItems;
+
+            for (int i = 0; i < _equippedItems.Count; i++)
+            {
+                _ItemsSprites[i].style.backgroundImage = null;
+            }
+
+            for (int i = 0; i < _equippedItems.Count && i < _ItemsSprites.Length; i++)
+            {
+                 _ItemsSprites[i].style.backgroundImage = new StyleBackground(icon);           
+            }
+        }
+
+
+        private void CheckMouseOverEquippedItems()
         {
             Vector2 mousePosition = Input.mousePosition;
-            mousePosition.y = Screen.height - mousePosition.y; 
+            mousePosition.y = Screen.height - mousePosition.y;
 
             bool itemFound = false;
 
-            for (int row = 0; row < _rows; row++)
+            for (int i = 0; i < _equippedItems.Count && i < _ItemsSprites.Length; i++)
             {
-                for (int col = 0; col < _columns; col++)
+                if (_ItemsSprites[i] != null && IsMouseOverElement(_ItemsSprites[i], mousePosition))
                 {
-                    VisualElement itemElement = GetItemElement(row, col);
-                    if (itemElement != null && IsMouseOverElement(itemElement, mousePosition))
-                    {
-                        if (_items.TryGetValue((row, col), out var itemData))
-                        {
-                            ShowItemInfo(itemData.name, itemData.description);
-                        }
-                        itemFound = true;
-                        break; 
-                    }
+                    ShowItemInfo(_equippedItems[i].Name, _equippedItems[i].Description);
+                    itemFound = true;
+                    break;
                 }
-
-                if (itemFound) break;
             }
 
             if (!itemFound)

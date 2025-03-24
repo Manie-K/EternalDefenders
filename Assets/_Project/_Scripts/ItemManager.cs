@@ -11,8 +11,8 @@ namespace EternalDefenders
 {
     public class ItemManager : Singleton<ItemManager>
     {
-        private ItemDatabase _itemDictionary = new ItemDatabase();
-        private List<Item> _equippedItems = new List<Item>();
+        public ItemDatabase _itemDictionary = new ItemDatabase();
+        public List<Item> _equippedItems = new List<Item>();
 
         public event Func<Item, TowerController, bool> ProtectTower;
         public event Action<Item> OnItemPickUp;
