@@ -9,6 +9,9 @@ namespace EternalDefenders
         Run,
         Fight,
         Jump,
-        Dead
+        Dead,
+        Damage,
+        FightAndWalk,
+        FightAndRun
     }
 }

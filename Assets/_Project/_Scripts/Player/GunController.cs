@@ -22,13 +22,13 @@ namespace EternalDefenders
         private float _firePower;
         private bool _fire;
         private bool _isFighting = false;
-        private bool _canFight = true;
+        private bool _canPlayerFight = true;
         private Stats _playerStats;
 
         void Awake()
         {
             _isFighting = false;
-            _canFight = true;
+            _canPlayerFight = true;
             Reload();
         }
 
@@ -45,6 +45,8 @@ namespace EternalDefenders
 
         void Update()
         {
+            _canPlayerFight = _playerController.CheckIfCanFight();
+
             if (_currentBullet == null)
             {
                 Reload();
@@ -55,7 +57,7 @@ namespace EternalDefenders
 
         void PlayerInput()
         {
-            if (_canFight)
+            if (_canPlayerFight)
             {
                 if (Input.GetMouseButton(0) && _isFighting)
                 {
@@ -67,10 +69,6 @@ namespace EternalDefenders
                     _playerController.ChangeAnimation(_playerController._aimingSniperRifleHash, 0.03f);
                     StartCoroutine(WaitForFightAndFire(0.3f));
                 }
-            }
-            else
-            {
-                _playerController.ChangeAnimation(_playerController._deathRifleHash);
             }
 
         }
@@ -93,12 +91,13 @@ namespace EternalDefenders
 
         private void OnPlayerDeath()
         {
-            _canFight = false;
+            _canPlayerFight = false;
+            _playerController.ChangeAnimation(_playerController._deathRifleHash);
         }
 
         private void OnPlayerRespawn()
         {
-            _canFight = true;
+            _canPlayerFight = true;
         }
 
         public void Reload()
@@ -119,7 +118,7 @@ namespace EternalDefenders
 
         public void Fire(float firePower)
         {
-            if (_isReloading || _currentBullet == null || _canFight == false) return;
+            if (_isReloading || _currentBullet == null || _canPlayerFight == false) return;
 
             _playerController.ChangeAnimation(_playerController._fireSniperRifleHash, 0.03f, 0, true);
 
