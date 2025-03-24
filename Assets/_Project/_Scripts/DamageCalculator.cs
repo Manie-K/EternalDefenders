@@ -82,7 +82,7 @@ namespace EternalDefenders
             
             if (player.GetState() != PlayerState.Dead)
             {
-                player.GetDamage();
+                player.OnDamage();
             }
         }
 
