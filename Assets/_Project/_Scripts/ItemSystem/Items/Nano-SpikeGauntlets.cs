@@ -1,3 +1,6 @@
+using Mono.Cecil;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
+using UnityEditor.Graphs;
 using UnityEngine;
 
 namespace EternalDefenders
@@ -12,7 +15,7 @@ namespace EternalDefenders
         {
             InitializeCommon(
                 name: name,
-                description: "Adds flat damage buff to player",
+                description: $"Adds {_flatDamageBoost} flat damage buff to player",
                 id: id,
                 rarity: 1,
                 priority: 5,
@@ -48,12 +51,10 @@ namespace EternalDefenders
 
             int damageBoost = DuplicateCount == 1 ? _flatDamageBoost : -_flatDamageBoost;
 
-            InstantModifier modifier = new InstantModifier()
-            {
-                statType = StatType.Damage,
-                modifierType = ModifierType.Flat,
-                value = damageBoost
-            };
+            InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
+            modifier.statType = StatType.Damage;
+            modifier.modifierType = ModifierType.Flat;
+            modifier.value = damageBoost;
 
             playerStats.ApplyModifier(modifier);
 

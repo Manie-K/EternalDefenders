@@ -1,3 +1,6 @@
+using Mono.Cecil;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
+using UnityEditor.Graphs;
 using UnityEngine;
 
 namespace EternalDefenders
@@ -14,7 +17,11 @@ namespace EternalDefenders
         [SerializeField] private int _damageBurstDuration = 5;
 
         private float _triggerTime;
- 
+
+        public float TriggerTime
+        {
+            get { return _triggerTime; }
+        }
 
         public override void Initialize(int id, string name)
         {
@@ -79,13 +86,11 @@ namespace EternalDefenders
 
                 Stats playerStats = PlayerController.Instance.Stats;
 
-                InstantModifier modifier = new InstantModifier()
-                {
-                    statType = StatType.Damage,
-                    modifierType = ModifierType.Flat,
-                    limitedDurationTime = _damageBurstDuration,
-                    value = _damageBurstValue
-                };
+                InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
+                modifier.statType = StatType.Damage;
+                modifier.modifierType = ModifierType.Flat;
+                modifier.limitedDurationTime = _damageBurstDuration;
+                modifier.value = _damageBurstValue;
 
                 playerStats.ApplyModifier(modifier);
 
