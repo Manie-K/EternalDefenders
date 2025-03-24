@@ -1,3 +1,6 @@
+using Mono.Cecil;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
+using UnityEditor.Graphs;
 using UnityEngine;
 
 namespace EternalDefenders
@@ -51,12 +54,10 @@ namespace EternalDefenders
 
             int speedBoost = DuplicateCount == 1 ? _speedBoost : -_speedBoost;
 
-            InstantModifier modifier = new InstantModifier()
-            {
-                statType = StatType.Speed,
-                modifierType = ModifierType.Flat,
-                value = speedBoost
-            };
+            InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
+            modifier.statType = StatType.Speed;
+            modifier.modifierType = ModifierType.Flat;
+            modifier.value = speedBoost;
 
             playerStats.ApplyModifier(modifier);
 

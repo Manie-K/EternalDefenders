@@ -16,7 +16,8 @@ namespace EternalDefenders
         /// <summary>
         /// Value in seconds
         /// </summary>
-        [SerializeField] private float _protectionCooldown; 
+        [SerializeField] private float _protectionCooldown;
+        [SerializeField] private int _perctentageHealthRecovery = 100;
 
         public float ProtectionCooldown
         {
@@ -37,7 +38,7 @@ namespace EternalDefenders
         {
             InitializeCommon(
                 name: name,
-                description: "Revives fallen tower",
+                description: $"Revives fallen tower with its {_perctentageHealthRecovery}% health back",
                 id: id,
                 rarity: 1,
                 priority: 5,
@@ -90,23 +91,22 @@ namespace EternalDefenders
             {
                 
                 _protectedTowers.Add(new ProtectedTowerCooldown(towerController, Time.time));
+                int healthRecovery = towerController.Stats.GetStat(StatType.MaxHealth) * _perctentageHealthRecovery / 100;
 
-                InstantModifier modifier = new InstantModifier()
-                {
-                    statType = StatType.Health,
-                    modifierType = ModifierType.Flat,
-                    limitedDurationTime = 1,
-                    value = towerController.Stats.GetStat(StatType.MaxHealth)
-                    
-                };
+
+                InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
+                modifier.statType = StatType.Health;
+                modifier.modifierType = ModifierType.Flat;
+                modifier.limitedDurationTime = 1;
+                modifier.value = healthRecovery;
 
                 towerController.Stats.ApplyModifier(modifier);
                 
-                Debug.Log("Tower destruction prevented recovered tower max hp");
+                Debug.Log($"Tower destruction prevented recovered tower {healthRecovery} hp");
                 return true;
             }
 
-            Debug.Log("Tower destruction allready prevented");
+            Debug.Log("Tower destruction already prevented");
             return false;
         }
 
