@@ -11,9 +11,9 @@ namespace EternalDefenders
         
         void Start()
         {
-            TowersDestroyed = 100;
-            PlayerDeaths = 100;
-            EnemiesKilled =100;
+            TowersDestroyed = 0;
+            PlayerDeaths = 0;
+            EnemiesKilled = 0;
             
             SubscribeToEvents();
         }
