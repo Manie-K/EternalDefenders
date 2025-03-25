@@ -76,7 +76,7 @@ namespace EternalDefenders
 
         }
 
-        public override void Update(float dt)
+        public override void UpdateItem(float dt)
         {
             if (Time.time > _triggerTime + _damageBurstsInterval)
             {

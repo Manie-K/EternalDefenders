@@ -7,11 +7,10 @@ namespace EternalDefenders
     {
         [SerializeField] private float _healthPercentageRegen = 2.0f;
         /// <summary>
-        /// Updates in a second
+        /// Amount of updates in a second
         /// </summary>
         [SerializeField] private int _regenerationTickRate = 1;
         [SerializeField] private int _regenerationDuration = 10;
-        private bool _isActive;
 
         public override void Initialize(int id, string name)
         {
@@ -26,8 +25,6 @@ namespace EternalDefenders
                 itemType: ItemType.Active,
                 itemTarget: ItemTarget.None
             );
-
-            _isActive = false;
         }
 
         public override void Collect()
@@ -37,7 +34,6 @@ namespace EternalDefenders
 
         public override void Remove()
         {
-            _isActive = false;
             CooldownRemaining = 0;
 
             DuplicateCount--;
@@ -62,7 +58,7 @@ namespace EternalDefenders
             }
         }
 
-        public override void Update(float dt) 
+        public override void UpdateItem(float dt) 
         {
             CooldownRemaining = CooldownRemaining - dt > 0 ? CooldownRemaining - dt : 0;
         }

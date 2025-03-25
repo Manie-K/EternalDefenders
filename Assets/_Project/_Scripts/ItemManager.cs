@@ -50,7 +50,7 @@ namespace EternalDefenders
         {
             foreach (var item in _equippedItems)
             {
-                item.Update(Time.deltaTime);
+                item.UpdateItem(Time.deltaTime);
             }
         }
 
