@@ -11,25 +11,55 @@ namespace EternalDefenders
 {
     public class ItemManager : Singleton<ItemManager>
     {
-        public ItemDatabase _itemDictionary = new ItemDatabase();
-        public List<Item> _equippedItems = new List<Item>();
+        #region Fields
+
+        private readonly ItemDatabase _itemDictionary = new();
+        private readonly List<Item> _equippedItems = new();
+        private readonly ItemPool _pool = new();
+
+        #endregion
+
+        #region Properties
+        public ItemDatabase ItemDictionary
+        {
+            get { return _itemDictionary; }
+        }
+        public List<Item> EquippedItems 
+        {
+            get { return _equippedItems; }
+        }
+        public ItemPool Pool { get { return _pool; } }
+
+        #endregion
+
+        #region Events
 
         public event Func<Item, TowerController, bool> ProtectTower;
         public event Action<Item> OnItemPickUp;
         public event Action<Item> OnItemRemoval;
 
-        public ItemDatabase ItemDictionary { get; private set; }
-        public List<Item> EquippedItems { get; private set; }
+        #endregion
 
-        private void Awake()
+        private void Start()
         {
-            base.Awake();
+            _itemDictionary.Initialize();
+            _pool.Initialize();
+        }
 
-            _itemDictionary.FillData();
+        private void Update()
+        {
+            foreach (var item in _equippedItems)
+            {
+                item.Update(Time.deltaTime);
+            }
+        }
 
-            // Item activeItem = _equippedItems.Where(item => item.ItemType == ItemType.Active).ToList().First();
-
-            // activeItem.Use();
+        public void UseActiveItem()
+        {
+            foreach(var item in _equippedItems)
+            {
+                item.Use();
+            }
         }
 
         public void AddItemByID(int itemId)
@@ -94,14 +124,6 @@ namespace EternalDefenders
             }
 
             return false;
-        }
-
-        private void Update()
-        {
-            foreach (var item in _equippedItems)
-            {
-                item.Update();
-            }
         }
 
     }
