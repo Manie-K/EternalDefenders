@@ -15,6 +15,11 @@ namespace EternalDefenders
                 }
             }
 
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                ItemManager.Instance.UseActiveItem();
+            }
+
         }
     }
 }
