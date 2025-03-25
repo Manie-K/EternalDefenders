@@ -1,0 +1,16 @@
+{
+  "Pools": [
+    {
+      "Category": "Regural",
+      "Id": [ 0, 1, 2, 3, 4, 5 ]
+    },
+    {
+      "Category": "Shop",
+      "Id": [ 2, 3 ]
+    },
+    {
+      "Category": "Boss",
+      "Id": [ 0, 1 ]
+    }
+  ]
+}
