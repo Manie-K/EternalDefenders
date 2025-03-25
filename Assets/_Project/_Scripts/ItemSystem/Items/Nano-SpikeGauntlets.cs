@@ -9,7 +9,7 @@ namespace EternalDefenders
     public class NanoSpikeGauntlets : Item
     {
 
-        [SerializeField] private int _flatDamageBoost = 20;
+        [SerializeField] private readonly int _flatDamageBoost = 20;
 
         public override void Initialize(int id, string name)
         {

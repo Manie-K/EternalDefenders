@@ -138,7 +138,7 @@ namespace EternalDefenders
 
         public virtual void Use() { return; }
 
-        public virtual void Update() {  return; }
+        public virtual void Update(float dt) {  return; }
 
     }
 }

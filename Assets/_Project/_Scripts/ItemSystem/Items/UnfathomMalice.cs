@@ -8,13 +8,13 @@ namespace EternalDefenders
     [CreateAssetMenu(fileName = "UnfathomMalice", menuName = "EternalDefenders/ItemSystem/Items/UnfathomMalice")]
     public class UnfathomMalice : Item
     {
-        [SerializeField] private int _flatDamageBoost = 5;
+        [SerializeField] private readonly int _flatDamageBoost = 5;
         /// <summary>
         /// Value in seconds
         /// </summary>
-        [SerializeField] private float _damageBurstsInterval = 10;
-        [SerializeField] private int _damageBurstValue = 10;
-        [SerializeField] private int _damageBurstDuration = 5;
+        [SerializeField] private readonly float _damageBurstsInterval = 10;
+        [SerializeField] private readonly int _damageBurstValue = 10;
+        [SerializeField] private readonly int _damageBurstDuration = 5;
 
         private float _triggerTime;
 
@@ -29,7 +29,7 @@ namespace EternalDefenders
                 name: name,
                 description: $"Gives dame bursts every {_damageBurstsInterval} seconds",
                 id: id,
-                rarity: 2,
+                rarity: 4,
                 priority: 5,
                 cooldownDuration: 0,
                 cooldownRemaining: 0,
@@ -67,18 +67,16 @@ namespace EternalDefenders
 
             int damageBoost = DuplicateCount == 1 ? _flatDamageBoost : -_flatDamageBoost;
 
-            InstantModifier modifier = new InstantModifier()
-            {
-                statType = StatType.Damage,
-                modifierType = ModifierType.Flat,
-                value = damageBoost
-            };
+            InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
+            modifier.statType = StatType.Damage;
+            modifier.modifierType = ModifierType.Flat;
+            modifier.value = damageBoost;
 
             playerStats.ApplyModifier(modifier);
 
         }
 
-        public override void Update()
+        public override void Update(float dt)
         {
             if (Time.time > _triggerTime + _damageBurstsInterval)
             {
