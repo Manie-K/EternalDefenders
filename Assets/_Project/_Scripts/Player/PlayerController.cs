@@ -20,7 +20,7 @@ namespace EternalDefenders
         public Stats Stats { get; private set; }
         public event Action OnPlayerDeath;
         public event Action OnPlayerRespawn;
-        public event Action<bool> OnPlayerFight;
+        public PlayerState currentState;
 
         CharacterController _controller;
         Transform _playerTransform;
@@ -38,7 +38,8 @@ namespace EternalDefenders
 
         private float _turnSmoothVelocity;
         private int _currentAnimationHash;
-        private PlayerState _currentState;
+        private int _previousAnimationHash;
+
 
         private Vector3 _velocity;
         private bool _isGrounded;
@@ -54,7 +55,7 @@ namespace EternalDefenders
             _playerTransform = transform.GetChild(0).GetComponent<Transform>();
             _animator = transform.GetChild(0).GetComponent<Animator>();
 
-            _currentState = PlayerState.Idle;
+            currentState = PlayerState.Idle;
             _currentAnimationHash = _idleRifleHash;
 
             Stats = new Stats(playerStats.GetStats());
@@ -73,15 +74,16 @@ namespace EternalDefenders
 
         void Update()
         {
+            //Debug.Log(currentState);
             Stats.UpdateStatsModifiers(Time.deltaTime);
 
-            if (_currentState != PlayerState.Dead)
+            if (currentState != PlayerState.Dead)
             {
                 //check if player is alive
                 if (Stats.GetStat(StatType.Health) <= 0)
                 { 
                     _canFight = false;
-                    _currentState = PlayerState.Dead;
+                    currentState = PlayerState.Dead;
                     OnPlayerDeath?.Invoke();
                 }
                 else
@@ -96,8 +98,8 @@ namespace EternalDefenders
                 _canFight = false;
             }
 
-                //gravity
-                _isGrounded = _controller.isGrounded;
+            //gravity
+            _isGrounded = _controller.isGrounded;
 
             if (_isGrounded && _velocity.y < 0)
             {
@@ -107,18 +109,12 @@ namespace EternalDefenders
             _velocity.y += _gravity * Time.deltaTime;
             _controller.Move(_velocity * Time.deltaTime);
 
-            //TODO: This is temporary solution 
-            if (_currentAnimationHash != _jumpRifleHash && _currentState == PlayerState.Jump)
-            {
-                _currentState = PlayerState.Idle;
-                _canFight = true;
-            }
         }
 
         void OnPlayerDeathDelegate()
         {
             //death
-            _currentState = PlayerState.Dead;
+            currentState = PlayerState.Dead;
             ChangeAnimation(_deathRifleHash);
 
             //respawn
@@ -135,67 +131,74 @@ namespace EternalDefenders
 
             Stats = new Stats(playerStats.GetStats());
             ChangeAnimation(_idleRifleHash);
-            _currentState = PlayerState.Idle;
+            currentState = PlayerState.Idle;
 
             OnPlayerRespawn?.Invoke();
         }
 
         void PlayerInput()
         {
-            //TODO: what should happens when player is moving or jumping and want to fight
-            if (Input.GetMouseButton(0) && _currentState != PlayerState.Fight && _canFight)
-            {
-                _canFight = true;
-                _currentState = PlayerState.Fight;
-                ChangeDirection360();
-                //OnPlayerFight?.Invoke(true);
-            }
-
             if ((Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-                 && _currentState != PlayerState.Damage)
+                 && currentState != PlayerState.Damage && currentState != PlayerState.Fight)
             {
-                _canFight = false;
+                //_canFight = false;
 
-                if (_currentState == PlayerState.Jump)
+                if (currentState == PlayerState.Jump)
                 {
-                    MovePlayer(_currentState);
+                    MovePlayer(currentState);
                 }
                 else if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    _currentState = PlayerState.Run;
+                    currentState = PlayerState.Run;
                     ChangeAnimation(_runRifleHash);
-                    MovePlayer(_currentState);
+                    MovePlayer(currentState);
                 }
                 else
                 {
-                    _currentState = PlayerState.Walk;
+                    currentState = PlayerState.Walk;
                     ChangeAnimation(_walkRifleHash);
-                    MovePlayer(_currentState);
+                    MovePlayer(currentState);
                 }
 
-                OnPlayerFight?.Invoke(false);
             }
-            else if (_currentState != PlayerState.Fight && _currentState != PlayerState.Damage
-                    && _currentState != PlayerState.Jump)
-            {
-                _canFight = true;
-                ChangeAnimation(_idleRifleHash);
-                OnPlayerFight?.Invoke(false);
-            }   
-            else if (_currentState == PlayerState.Fight)
+            else if (currentState == PlayerState.ReadyToFight)
             {
                 _canFight = true;
                 ChangeDirection360();
             }
+            else if (currentState != PlayerState.Fight && currentState != PlayerState.Damage
+                    && currentState != PlayerState.Jump)
+            {
+                _canFight = true;
+                ChangeAnimation(_idleRifleHash);
+            }   
 
             if (_isGrounded && Input.GetKeyDown(KeyCode.Space))
             {
-                _canFight = false;
-                _currentState = PlayerState.Jump;
-                ChangeAnimation(_jumpRifleHash, 0.01f);
-                _velocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+                StartCoroutine(Jump());
             }
 
+        }
+
+        IEnumerator Jump()
+        {
+            _canFight = false;
+            currentState = PlayerState.Jump;
+            _previousAnimationHash = _currentAnimationHash;
+            ChangeAnimation(_jumpRifleHash, 0.01f);
+            _velocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
+
+            yield return new WaitForSeconds(0.05f);
+
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            float time = stateInfo.length;
+            Debug.Log(time);
+
+            yield return new WaitForSeconds(time);
+            ChangeAnimation(_previousAnimationHash, 0.0001f);
+
+            currentState = PlayerState.Idle;
+            _canFight = true;
         }
 
         void ChangeDirection(Vector3 movementDirection)
@@ -273,19 +276,19 @@ namespace EternalDefenders
 
         public IEnumerator OnDamage()
         {
-            _currentState = PlayerState.Damage;
+            currentState = PlayerState.Damage;
             System.Random random = new System.Random();
             int number = random.Next(_damageHashes.Length);
             Console.WriteLine(number);
             ChangeAnimation(_damageHashes[number]);
             
             yield return new WaitForSeconds(1f);
-            _currentState = PlayerState.Idle;
+            currentState = PlayerState.Idle;
         }
 
         public PlayerState GetState()
         {
-            return _currentState;
+            return currentState;
         }
 
         public bool CheckIfCanFight()
