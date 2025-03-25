@@ -46,7 +46,7 @@ namespace EternalDefenders
                     if (enemyController != null)
                     {
                         DamageCalculator.Instance.BulletHitEnemy(enemyController);
-                        //Debug.Log("Enemy hit");
+                        Debug.Log("Enemy hit");
                     }
                     else
                     {

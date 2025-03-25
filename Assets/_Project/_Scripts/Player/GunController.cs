@@ -16,7 +16,6 @@ namespace EternalDefenders
         [SerializeField] float maxRotation;
 
         private Bullet _currentBullet;
-        private string _enemyTag;
         private bool _isReloading;
         private PlayerController _playerController;
         private float _firePower;
@@ -59,6 +58,7 @@ namespace EternalDefenders
         {
             if (_canPlayerFight)
             {
+                Debug.Log(_canPlayerFight);
                 if (Input.GetMouseButton(0) && _isFighting)
                 {
                     StartCoroutine(WaitForFightAndFire(0f));
@@ -111,7 +111,7 @@ namespace EternalDefenders
         {
             yield return new WaitForSeconds(reloadTime);
             _currentBullet = Instantiate(bulletPrefab, spawnPoint);
-            _currentBullet.SetEnemyTag(_enemyTag);
+            _currentBullet.SetEnemyTag(enemyTag);
             _currentBullet.transform.localPosition = Vector3.zero;
             _isReloading = false;
         }

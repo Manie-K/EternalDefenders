@@ -15,6 +15,7 @@ namespace EternalDefenders
         [SerializeField] Transform cameraTransform;
         [SerializeField] Transform spawnPointTransform;
         [SerializeField] float turnSmoothTime = 0.01f;
+        [SerializeField] int respawnTime = 6;
 
         public Stats Stats { get; private set; }
         public event Action OnPlayerDeath;
@@ -78,7 +79,8 @@ namespace EternalDefenders
             {
                 //check if player is alive
                 if (Stats.GetStat(StatType.Health) <= 0)
-                {
+                { 
+                    _canFight = false;
                     _currentState = PlayerState.Dead;
                     OnPlayerDeath?.Invoke();
                 }
@@ -89,9 +91,13 @@ namespace EternalDefenders
                 }
 
             }
+            else
+            {
+                _canFight = false;
+            }
 
-            //gravity
-            _isGrounded = _controller.isGrounded;
+                //gravity
+                _isGrounded = _controller.isGrounded;
 
             if (_isGrounded && _velocity.y < 0)
             {
@@ -116,7 +122,7 @@ namespace EternalDefenders
             ChangeAnimation(_deathRifleHash);
 
             //respawn
-            StartCoroutine(RespawnPlayerAfterDelay(6f));
+            StartCoroutine(RespawnPlayerAfterDelay(respawnTime));
         }
 
         IEnumerator RespawnPlayerAfterDelay(float delay)
@@ -198,7 +204,7 @@ namespace EternalDefenders
             float angle = Mathf.SmoothDampAngle(_playerTransform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, turnSmoothTime);
             
             _playerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
-            cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
+            //cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
         }
 
         public void ChangeDirection360()
@@ -212,7 +218,7 @@ namespace EternalDefenders
                 float angle = Mathf.SmoothDampAngle(_playerTransform.eulerAngles.y, targetAngle, ref _turnSmoothVelocity, turnSmoothTime);
                 
                 _playerTransform.rotation = Quaternion.Euler(0f, angle, 0f);
-                cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
+                //cameraTransform.rotation = Quaternion.Euler(0f, angle, 0f);
             }
         }
 
@@ -261,7 +267,6 @@ namespace EternalDefenders
                 {
                     _currentAnimationHash = animationHash;
                     _animator.CrossFade(animationHash, crossFadeDuration, layer);
-                    Debug.Log("change animation");
                 }
             }
         }
