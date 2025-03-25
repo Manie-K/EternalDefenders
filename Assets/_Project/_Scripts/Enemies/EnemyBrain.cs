@@ -46,8 +46,8 @@ namespace EternalDefenders
                                                     <= _enemyController.Stats.GetStat(StatType.Range)
                 )
             );
-            
             stateMachine.AddTransition(walkState, idleState, new EventPredicate("OnRetarget", _enemyController));
+            stateMachine.AddTransition(attackState, idleState, new EventPredicate("OnRetarget", _enemyController));
             
             
             stateMachine.AddAnyTransition(deathState, new EventPredicate("OnDeath", _enemyController));

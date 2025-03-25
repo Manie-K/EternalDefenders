@@ -58,6 +58,7 @@ namespace EternalDefenders
             currentState = PlayerState.Idle;
             _currentAnimationHash = _idleRifleHash;
 
+            //TODO: Don't use playerStats directly, use Stats instead @FranciszekGwarek
             Stats = new Stats(playerStats.GetStats());
 
             OnPlayerDeath += OnPlayerDeathDelegate;

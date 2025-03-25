@@ -21,7 +21,7 @@ namespace EternalDefenders
         public ItemDatabase ItemDictionary { get; private set; }
         public List<Item> EquippedItems { get; private set; }
 
-        private void Awake()
+        protected override void Awake()
         {
             base.Awake();
 
