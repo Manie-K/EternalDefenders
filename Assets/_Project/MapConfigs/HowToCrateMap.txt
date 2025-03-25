@@ -1,0 +1,14 @@
+1. Create single hex.
+2. Remember to set all hex visuals to static.
+3. Remember to set hex Can Build option and Building Height.
+4. Remember to add SpawnerSpawnPoint for spawners.
+5. Go to Chunk Creator on scene, add name and all 6 hexes. Hex 0-5 setup can be found in ChunkSetup.
+6. Click Generate Chunks. Chunk will appear in Chunks folder.
+7. Remember to add MapSpawnPoint to chunk prefab if needed.
+8. Go to MapController -> MapParent and keep clicking Delete Map until there is nothing under MapParent.
+9. Go to Map Builder on scene. Add all used chunks.
+10. Go to MapConfigs folder and open map.txt. Here you setup all chunks positions. Remember that chunks' ids start from 1 not 0.
+11. Remember that number of rows and columns in map.txt must be the same as MapWidthChunks and MapHeightChunks in HexMapController.
+12. Once done, go to Map Builder and press Generate Map.
+13. Remember to generate new NavMesh for a map.
+14. GG.

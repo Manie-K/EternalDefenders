@@ -10,8 +10,8 @@ namespace EternalDefenders
     {
         [SerializeField] Transform mapTransform;
         public static float HexSize => 6f;
-        public static int MapWidthChunks => 20;
-        public static int MapHeightChunks => 15;
+        public static int MapWidthChunks => 10;
+        public static int MapHeightChunks => 8;
 
         readonly HexTile[,] _map = new HexTile[MapWidthChunks * HexPerChunkX, MapHeightChunks*HexPerChunkY];
 
