@@ -74,7 +74,7 @@ namespace EternalDefenders
             InitializeItemsPanel();
 
             AcctualPage = 0;
-            _ItemsDatabase = ItemManager.Instance._itemDictionary;
+            _ItemsDatabase = ItemManager.Instance.ItemDictionary;
             SizeOfItems = _ItemsDatabase.Items.Count;
 
             _towerBuyButtons = new Button[]
@@ -297,7 +297,7 @@ namespace EternalDefenders
             if (inventory.HasEnoughOfResource(res_stone, 30) && inventory.HasEnoughOfResource(res_wood, 30))
             {
                 //ten warunek mozna zmienic pozniej
-                if (!ItemManager.Instance._equippedItems.Contains(selectedItem))
+                if (!ItemManager.Instance.EquippedItems.Contains(selectedItem))
                 {
                     inventory.RemoveResource(res_stone, 30);
                     inventory.RemoveResource(res_wood, 30);

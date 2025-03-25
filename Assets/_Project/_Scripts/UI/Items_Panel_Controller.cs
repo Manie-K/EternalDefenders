@@ -65,7 +65,7 @@ namespace EternalDefenders
         //testowanie kupowania itemow
         private void UpdateEquippedItems()
         {
-             _equippedItems = ItemManager.Instance._equippedItems;
+             _equippedItems = ItemManager.Instance.EquippedItems;
 
             for (int i = 0; i < _equippedItems.Count; i++)
             {
