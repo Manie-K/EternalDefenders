@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62d37239b4a93f449be9734af9237a09, type: 3}
+  m_Name: GuardianAngel
+  m_EditorClassIdentifier: 
+  _rarity: 0
+  _priority: 0
+  _cooldownDuration: 0
+  _cooldownRemaining: 0
+  _duplicateCount: 0
+  _protectionCooldown: 0

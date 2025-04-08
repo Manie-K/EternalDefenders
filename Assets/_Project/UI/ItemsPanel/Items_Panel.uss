@@ -1,0 +1,20 @@
+.Item_Image {
+    width: 45%;
+    height: 75%;
+    align-self: center;
+    align-items: center;
+    flex-grow: 0;
+    top: 12.5%;
+    border-top-width: 2px;
+    border-right-width: 2px;
+    border-bottom-width: 2px;
+    border-left-width: 2px;
+    border-left-color: rgb(143, 125, 139);
+    border-right-color: rgb(143, 125, 139);
+    border-top-color: rgb(143, 125, 139);
+    border-bottom-color: rgb(143, 125, 139);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-bottom-left-radius: 6px;
+}

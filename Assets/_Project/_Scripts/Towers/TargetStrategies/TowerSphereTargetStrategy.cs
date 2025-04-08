@@ -6,7 +6,7 @@ namespace EternalDefenders
     public class TowerSphereTargetStrategy : TowerTargetStrategy
     {
         readonly Collider[] _results = new Collider[32];
-        public override bool Validate(EnemyController target)
+        public override bool Validate(TowerController tower, EnemyController target)
         {
             if(target == null) return false;
             bool targetIsValid = true;
@@ -17,7 +17,7 @@ namespace EternalDefenders
             return targetIsValid;
         }
 
-        public override EnemyController FindTarget()
+        public override EnemyController FindTarget(TowerController tower)
         {
             int foundEnemies = Physics.OverlapSphereNonAlloc(tower.transform.position, tower.Stats.GetStat(StatType.Range), 
                 _results);

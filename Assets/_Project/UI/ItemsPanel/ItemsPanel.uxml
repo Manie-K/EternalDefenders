@@ -1,0 +1,51 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Project/UI/ItemsPanel/Items_Panel.uss?fileID=7433441132597879392&amp;guid=bdf0b3b5768a899418d15407f8b35820&amp;type=3#Items_Panel" />
+    <engine:VisualElement name="ItemsPanel" style="flex-grow: 0; top: 20%; width: 20%; height: 60%; left: 80%; flex-direction: column; background-image: url(&quot;project://database/Assets/_Project/UI/ItemsPanel/rm183-techi-02.jpg?fileID=2800000&amp;guid=582a4d7c3ada79e4ba6de7b93abc620b&amp;type=3#rm183-techi-02&quot;); border-top-width: 3px; border-right-width: 3px; border-bottom-width: 3px; border-left-width: 3px; border-left-color: rgb(255, 255, 255); border-right-color: rgba(255, 0, 0, 0); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-left-radius: 18px; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 18px;">
+        <engine:VisualElement name="Items" style="flex-grow: 1;">
+            <engine:VisualElement name="row1" style="flex-grow: 1; flex-direction: row;">
+                <engine:VisualElement name="Item1" style="flex-grow: 1;">
+                    <engine:VisualElement name="Item1_Image" class="Item_Image" style="flex-grow: 0; top: 12.5%; height: 75%; left: 5%; background-image: none;" />
+                </engine:VisualElement>
+                <engine:VisualElement name="Item2" style="flex-grow: 1;">
+                    <engine:VisualElement name="Item2_Image" class="Item_Image" style="flex-grow: 0; right: 5%; background-image: none;" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+            <engine:VisualElement name="row2" style="flex-grow: 1; flex-direction: row;">
+                <engine:VisualElement name="Item1" style="flex-grow: 1;">
+                    <engine:VisualElement name="Item3_Image" class="Item_Image" style="flex-grow: 0; left: 5%;" />
+                </engine:VisualElement>
+                <engine:VisualElement name="Item2" style="flex-grow: 1;">
+                    <engine:VisualElement name="Item4_Image" class="Item_Image" style="flex-grow: 0; right: 5%;" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+            <engine:VisualElement name="row3" style="flex-grow: 1; flex-direction: row;">
+                <engine:VisualElement name="Item1" style="flex-grow: 1;">
+                    <engine:VisualElement name="Item5_Image" class="Item_Image" style="flex-grow: 0; left: 5%;" />
+                </engine:VisualElement>
+                <engine:VisualElement name="Item2" style="flex-grow: 1;">
+                    <engine:VisualElement name="Item6_Image" class="Item_Image" style="flex-grow: 0; right: 5%;" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+            <engine:VisualElement name="row4" style="flex-grow: 1; flex-direction: row;">
+                <engine:VisualElement name="Item1" style="flex-grow: 1;">
+                    <engine:VisualElement name="Item7_Image" class="Item_Image" style="flex-grow: 0; left: 5%;" />
+                </engine:VisualElement>
+                <engine:VisualElement name="Item2" style="flex-grow: 1;">
+                    <engine:VisualElement name="Item8_Image" class="Item_Image" style="flex-grow: 0; right: 5%;" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+            <engine:VisualElement name="row5" style="flex-grow: 1; flex-direction: row;">
+                <engine:VisualElement name="Item1" style="flex-grow: 1;">
+                    <engine:VisualElement name="Item9_Image" class="Item_Image" style="flex-grow: 0; left: 5%;" />
+                </engine:VisualElement>
+                <engine:VisualElement name="Item2" style="flex-grow: 1;">
+                    <engine:VisualElement name="Item10_Image" class="Item_Image" style="flex-grow: 0; right: 5%;" />
+                </engine:VisualElement>
+            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:VisualElement name="ItemsInfo" style="flex-grow: 0; height: 25%;">
+            <engine:Label text="Label" name="ItemName" style="height: 25%; color: rgb(255, 194, 0); -unity-text-align: upper-center; -unity-font-definition: url(&quot;project://database/Library/unity%20default%20resources?fileID=10102&amp;guid=0000000000000000e000000000000000&amp;type=0#LegacyRuntime&quot;);" />
+            <engine:Label text="Label" name="ItemInformations" style="flex-grow: 1; width: 70%; align-self: center; color: rgb(255, 255, 255); -unity-font-definition: url(&quot;project://database/Library/unity%20default%20resources?fileID=10102&amp;guid=0000000000000000e000000000000000&amp;type=0#LegacyRuntime&quot;); -unity-text-align: upper-center; text-overflow: clip; white-space: normal;" />
+        </engine:VisualElement>
+    </engine:VisualElement>
+</engine:UXML>

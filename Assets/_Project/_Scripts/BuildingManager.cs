@@ -19,7 +19,7 @@ namespace EternalDefenders
         GameObject _ghost;
         TowerController _selectedTower;
         bool _isEnabled = false;
-
+        
         void Start()
         {
             _ghost = transform.GetChild(0).gameObject;
@@ -48,14 +48,14 @@ namespace EternalDefenders
                 _ghost.SetActive(false);
             };
 
-            BuildingConstructionManger.Instance.OnBuildingSelected += OnBuildingSelected_Delegate;
-            
-            OnBuildingModeExit?.Invoke();
+            Tower_Building_Panel_Controller.Instance.OnBuildingSelected += OnBuildingSelected_Delegate;
         }
 
         void OnDisable()
         {
-            BuildingConstructionManger.Instance.OnBuildingSelected -= OnBuildingSelected_Delegate;
+            Tower_Building_Panel_Controller bcm = Tower_Building_Panel_Controller.Instance;
+            if(bcm == null) return;
+            bcm.OnBuildingSelected -= OnBuildingSelected_Delegate;
         }
         void Update()
         {
@@ -79,6 +79,7 @@ namespace EternalDefenders
             if(Input.GetMouseButtonDown(0) && tile.CanBuild())
             {
                 BuildTower(tile);
+                OnBuildingModeExit?.Invoke();
             }
         }
 
@@ -96,7 +97,7 @@ namespace EternalDefenders
                 return;
             }
             
-            var tower = Instantiate(_selectedTower, tile.transform.position, Quaternion.identity
+            var tower = Instantiate(_selectedTower, tile.transform.position.With(y: tile.BuildingHeight), Quaternion.identity
                 , towersParent);
             tile.SetBuilding(tower);
         }

@@ -19,6 +19,8 @@ namespace EternalDefenders.Editor
             int dmg = myScript.Stats.GetStat(StatType.Damage);
             
             GUILayout.Space(6);
+            GUILayout.Label("Target:".Bold() + $" {myScript.Target}".Italics(), richTextStyle);
+            GUILayout.Space(4);
             GUILayout.Label("Enemy stats:".Bold(), richTextStyle);
             GUILayout.Space(2);
             GUILayout.Label("Health: \t".Bold() + hp.ToString().Italics(), richTextStyle);

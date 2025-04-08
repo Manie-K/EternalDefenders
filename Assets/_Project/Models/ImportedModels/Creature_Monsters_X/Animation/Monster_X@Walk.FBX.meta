@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: 233d4e0f3fe21cc44bdee5556298d03b
+AssetOrigin:
+  serializedVersion: 1
+  productId: 89243
+  packageName: Character Monsters X
+  packageVersion: 3.0
+  assetPath: Assets/Creature_Monsters_X/Animation/Monster_X@Walk.FBX
+  uploadId: 196688
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
@@ -248,7 +255,7 @@ ModelImporter:
     second: Clutches_mesh
   - first:
       74: 7400000
-    second: Take 001
+    second: Walk
   - first:
       95: 9500000
     second: //RootNode
@@ -290,7 +297,36 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths: []
     extraUserProperties: []
-    clipAnimations: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Walk
+      takeName: Take 001
+      internalID: 7400000
+      firstFrame: 1
+      lastFrame: 40
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
     isReadable: 1
   meshes:
     lODScreenPercentages: []
@@ -366,10 +402,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 89243
-  packageName: Character Monsters X
-  packageVersion: 3.0
-  assetPath: Assets/Creature_Monsters_X/Animation/Monster_X@Walk.FBX
-  uploadId: 196688

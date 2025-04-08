@@ -35,8 +35,6 @@ namespace EternalDefenders
             //TODO: This is a hardcoded value, we should find a way to get the attack point dynamically.
             _attackPoint = transform.GetChild(1);
             
-            targetStrategy.Init(this);
-            attackStrategy.Init(this);
             _cooldownTimer = new CountdownTimer(_stats.GetStat(StatType.Cooldown));
         }
 
@@ -55,14 +53,14 @@ namespace EternalDefenders
             
             if(_cooldownTimer.IsRunning) return;
             
-            if(!targetStrategy.Validate(_target))
+            if(!targetStrategy.Validate(this, _target))
             {
-                _target = targetStrategy.FindTarget();
+                _target = targetStrategy.FindTarget(this);
             }
             if(_target != null)
             {
                 _cooldownTimer.Start(_stats.GetStat(StatType.Cooldown));
-                attackStrategy.Attack(_target);
+                attackStrategy.Attack(this, _target);
             }
             //==================
         }
@@ -70,6 +68,11 @@ namespace EternalDefenders
         //TODO decide what to do in here
         void Die()
         {
+            if (ItemManager.Instance.IsTowerProtected(this))
+            {
+                return;
+            }
+
             OnTowerDestroyed?.Invoke(this);
             Debug.Log("Tower destroyed");
             Destroy(gameObject);

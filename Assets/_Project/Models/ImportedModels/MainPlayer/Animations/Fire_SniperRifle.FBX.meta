@@ -1,5 +1,12 @@
 fileFormatVersion: 2
 guid: 75fb60ee2bc98f04fbcd08239ff9dcdd
+AssetOrigin:
+  serializedVersion: 1
+  productId: 29559
+  packageName: Sci-Fi Soldier
+  packageVersion: 1.2
+  assetPath: Assets/Yurowm/Animations/Fire_SniperRifle.FBX
+  uploadId: 62369
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable:
@@ -630,8 +637,7 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 0
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 4960b8c497e9d8941ae785c3df388bfd,
-    type: 3}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 4960b8c497e9d8941ae785c3df388bfd, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
@@ -643,10 +649,3 @@ ModelImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
-AssetOrigin:
-  serializedVersion: 1
-  productId: 29559
-  packageName: Sci-Fi Soldier
-  packageVersion: 1.2
-  assetPath: Assets/Yurowm/Animations/Fire_SniperRifle.FBX
-  uploadId: 62369

@@ -1,6 +1,7 @@
 ﻿//The whole grand design of this FSM system is inspired by the video from git-amend, which can be found here: 
 //https://www.youtube.com/watch?v=NnH6ZK5jt7o&t=122s&ab_channel=git-amend
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace EternalDefenders
 {
@@ -70,11 +71,13 @@ namespace EternalDefenders
         
         void ChangeState(IState newState)
         {
+            string currentStateName = _currentStateNode?.State?.Name;
             if (_currentStateNode?.State == newState)
                 return;
 
             _currentStateNode?.State?.OnExit();
             SetState(newState);
+            //Debug.Log($"Changed state from {currentStateName} to {newState.Name}");
         }
         public void SetState(IState newState)
         {

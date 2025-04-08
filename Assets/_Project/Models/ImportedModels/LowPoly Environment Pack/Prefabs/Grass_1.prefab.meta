@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: b2199aadf1bb8c4449f3edfc84a39f78
+timeCreated: 1504785524
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 99479
+  packageName: LowPoly Environment Pack
+  packageVersion: 1.0
+  assetPath: Assets/LowPoly Environment Pack/Prefabs/Grass_1.prefab
+  uploadId: 200756

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 1b487e4aa512c6c46b231d5aacdceae0
+timeCreated: 1504768175
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 99479
+  packageName: LowPoly Environment Pack
+  packageVersion: 1.0
+  assetPath: Assets/LowPoly Environment Pack/FBX/Materials/Gray.3.mat
+  uploadId: 200756

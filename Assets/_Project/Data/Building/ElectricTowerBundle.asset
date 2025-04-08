@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0084076e88314363a2dc0c68d49bbce7, type: 3}
+  m_Name: ElectricTowerBundle
+  m_EditorClassIdentifier: 
+  towerPrefab: {fileID: 2347603226323764336, guid: 98971045176718b4cb8acc53291bd0d6, type: 3}
+  combinedMesh: {fileID: 4300000, guid: 47ff0aa27a9ba4b448d0bf838b6874bc, type: 2}
+  icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  cost:
+  - resource: {fileID: 11400000, guid: bfa98661e90d8dd4ca62abd0c758c6e2, type: 2}
+    amount: 20
+  - resource: {fileID: 11400000, guid: fd41a69815d404d45a2295472ef0266d, type: 2}
+    amount: 69

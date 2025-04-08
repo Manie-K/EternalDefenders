@@ -9,9 +9,8 @@ namespace EternalDefenders
     {
         [SerializeField] float speed = 2f;
         [SerializeField] float hitDistance = 0.1f;
-
-        public event Action<EnemyController> OnTargetHit;
         
+        public event Action<EnemyController> OnTargetHit;
         EnemyController _target;
         
         public void Launch(EnemyController target)
@@ -36,6 +35,5 @@ namespace EternalDefenders
             
             Destroy(gameObject);
         }
-        
     }
 }

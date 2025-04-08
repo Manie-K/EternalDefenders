@@ -74,8 +74,9 @@ namespace EternalDefenders
                 }
             }
 
-            public void ApplyModifier(Modifier modifier)
+            public void ApplyModifier(Modifier originalModifier)
             {
+                Modifier modifier = originalModifier.CreateCopy();
                 modifier.InitModifer();
                 _modifiers.Add(modifier);
                 CalculateStat();
@@ -88,7 +89,7 @@ namespace EternalDefenders
                 //change value back to original ???
                 if(modifier.persistAfterFinish)
                 {
-                    _baseValue -= modifier.value;
+                    _baseValue += modifier.value;
                 }
                 _modifiers.Remove(modifier);
                 _isDirty = true;

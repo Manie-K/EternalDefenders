@@ -1,7 +1,12 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <engine:VisualElement name="Screen" style="flex-grow: 1;">
         <HudElements.HealthBar fill-color="#FF191CFF" name="HealthBar" style="position: absolute; top: 5%; left: 1%;" />
-        <HudElements.HealthBar fill-color="#64AECDFF" name="ShieldBar" style="position: absolute; left: 1%; top: 12%;" />
-        <HudElements.HealthBar name="BaseHeartBar" width="601" fill-color="#F013D1FF" value="1" style="position: absolute; top: 1%; left: 35%; width: 300px;" />
+        <HudElements.HealthBar fill-color="#64AECDFF" name="ShieldBar" _fill-color="#20C3C3FF" style="position: absolute; left: 1%; top: 12%;" />
+        <HudElements.HealthBar name="BaseHeartBar" width="601" fill-color="#F013D1FF" value="1" _fill-color="#D755B1FF" style="position: absolute; top: 1%; left: 35%; width: 300px;" />
+        <engine:VisualElement name="Materials" style="flex-grow: 0; position: absolute; width: 180px; height: 8%; top: 20%; left: 1%;">
+            <engine:VisualElement name="WoodCounter" style="flex-grow: 1;" />
+            <engine:VisualElement name="StoneCounter" style="flex-grow: 1;" />
+        </engine:VisualElement>
+        <engine:VisualElement name="WaveTimer" style="flex-grow: 0; width: 9%; height: 6%; position: absolute; top: 1%; left: 90%;" />
     </engine:VisualElement>
 </engine:UXML>
