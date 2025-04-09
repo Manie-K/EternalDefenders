@@ -82,7 +82,7 @@ namespace EternalDefenders
         {
             Stats.UpdateStatsModifiers(Time.deltaTime);
 
-            if (Stats.GetStat(StatType.Health) <= 0)
+            if (Stats.GetStat(StatType.Health) <= 0 && CurrentState != PlayerState.Dead)
             {
                 CanFight = false;
                 CanMove = false;
@@ -118,6 +118,7 @@ namespace EternalDefenders
             //death
             CurrentState = PlayerState.Dead;
             CanMove = false;
+            CanFight = false;
             ChangeAnimation(_deathRifleHash);
 
             //respawn
