@@ -28,10 +28,11 @@ namespace EternalDefenders
 
         private GameMode _currentGameMode;
 
-        public Vector2 MoveDirection { get; private set; }
-        public bool IsSprinting { get; private set; }
-        public bool IsJumping { get; private set; }
-        public bool IsFighting { get; private set; }
+        public bool IsPlayerSprinting { get; private set; }
+        public bool IsPlayerJumping { get; private set; }
+        public bool IsPlayerFighting { get; private set; }
+        public bool IsPlayerMoving { get; private set; }
+
 
         protected override void Awake()
         {
@@ -88,11 +89,19 @@ namespace EternalDefenders
         {
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
-            MoveDirection = new Vector2(horizontal, vertical).normalized;
 
-            IsSprinting = Input.GetKey(KeyCode.LeftShift);
-            IsJumping = Input.GetKeyDown(KeyCode.Space);
-            IsFighting = Input.GetMouseButton(0);
+            if (horizontal != 0 || vertical != 0)
+            {
+                IsPlayerMoving = true;
+            }
+            else
+            {
+                IsPlayerMoving = false;
+            }
+
+            IsPlayerSprinting = Input.GetKey(KeyCode.LeftShift);
+            IsPlayerJumping = Input.GetKeyDown(KeyCode.Space);
+            IsPlayerFighting = Input.GetMouseButton(0);
         }
         
         void OnBuildingSelected_Delegate(TowerBundle towerBundle)
