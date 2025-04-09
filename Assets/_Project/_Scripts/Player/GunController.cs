@@ -35,8 +35,9 @@ namespace EternalDefenders
             reloadTime = _playerStats.GetStat(StatType.Cooldown);
 
             _playerController = GetComponentInParent<PlayerController>();
-            _playerController.OnPlayerDeath += OnPlayerDeath;
-            _playerController.OnPlayerRespawn += OnPlayerRespawn;
+            _playerController.OnDeath += OnPlayerDeath_Delagate;
+            _playerController.OnRespawn += OnPlayerRespawn_Delagate;
+            _playerController.OnFight += OnPlayerFight_Delagate;
         }
 
         void Update()
@@ -47,29 +48,6 @@ namespace EternalDefenders
             {
                 Reload();
             }
-
-            PlayerInput();
-        }
-
-        void PlayerInput()
-        {
-            if (_canPlayerFight && !_isReloading && _currentBullet != null)
-            {
-                if (Input.GetMouseButton(0) && _playerController.currentState == PlayerState.ReadyToFight)
-                {
-                    _playerController.currentState = PlayerState.Fight;
-                    _playerController.ChangeDirection360();
-                    StartCoroutine(WaitForFightAndFire(0f));
-                }
-                else if (Input.GetMouseButton(0) && _playerController.currentState != PlayerState.ReadyToFight)
-                {
-                    _playerController.currentState = PlayerState.Fight;
-                    _playerController.ChangeDirection360();
-                    _playerController.ChangeAnimation(_playerController._aimingSniperRifleHash, 0.03f);
-                    StartCoroutine(WaitForFightAndFire(0.3f));
-                }
-            }
-
         }
 
         private IEnumerator WaitForFightAndFire(float waitingTime)
@@ -81,15 +59,37 @@ namespace EternalDefenders
             _firePower = 0;
         }
 
-        private void OnPlayerDeath()
+        private void OnPlayerDeath_Delagate()
         {
             _canPlayerFight = false;
             _playerController.ChangeAnimation(_playerController._deathRifleHash);
         }
 
-        private void OnPlayerRespawn()
+        private void OnPlayerRespawn_Delagate()
         {
             _canPlayerFight = true;
+        }
+
+        private void OnPlayerFight_Delagate()
+        {
+            if (_canPlayerFight && !_isReloading && _currentBullet != null)
+            {
+                if (_playerController.currentState == PlayerState.ReadyToFight)
+                {
+                    _playerController.currentState = PlayerState.Fight;
+                    _playerController.CanMove = false;
+                    _playerController.ChangeDirection360();
+                    StartCoroutine(WaitForFightAndFire(0f));
+                }
+                else if (_playerController.currentState != PlayerState.ReadyToFight)
+                {
+                    _playerController.currentState = PlayerState.Fight;
+                    _playerController.CanMove = false;
+                    _playerController.ChangeDirection360();
+                    _playerController.ChangeAnimation(_playerController._aimingSniperRifleHash, 0.03f);
+                    StartCoroutine(WaitForFightAndFire(0.3f));
+                }
+            }
         }
 
         public void Reload()
@@ -112,6 +112,7 @@ namespace EternalDefenders
         {
             if (_isReloading || _currentBullet == null || _canPlayerFight == false)
             {
+                _playerController.CanMove = true;
                 _playerController.currentState = PlayerState.ReadyToFight;
                 return;
             }
@@ -124,6 +125,7 @@ namespace EternalDefenders
             _currentBullet = null;
             
             Reload();
+            _playerController.CanMove = true;
             _playerController.currentState = PlayerState.ReadyToFight;
         }
 

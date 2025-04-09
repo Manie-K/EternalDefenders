@@ -18,8 +18,9 @@ namespace EternalDefenders
         [SerializeField] int respawnTime = 6;
 
         public Stats Stats { get; private set; }
-        public event Action OnPlayerDeath;
-        public event Action OnPlayerRespawn;
+        public event Action OnDeath;
+        public event Action OnRespawn;
+        public event Action OnFight;
         public PlayerState currentState;
 
         CharacterController _controller;
@@ -46,6 +47,7 @@ namespace EternalDefenders
         private readonly float _gravity = -9.81f;
         private float _jumpHeight = 2f;
         private bool _canFight = true;
+        public bool CanMove { get; set; }
 
         protected override void Awake()
         {
@@ -61,7 +63,8 @@ namespace EternalDefenders
             //TODO: Don't use playerStats directly, use Stats instead @FranciszekGwarek
             Stats = new Stats(playerStats.GetStats());
 
-            OnPlayerDeath += OnPlayerDeathDelegate;
+            OnDeath += OnDeath_Delegate;
+            CanMove = true;
         }
 
         void Start()
@@ -85,12 +88,12 @@ namespace EternalDefenders
                 { 
                     _canFight = false;
                     currentState = PlayerState.Dead;
-                    OnPlayerDeath?.Invoke();
+                    OnDeath?.Invoke();
                 }
                 else
                 {
 
-                    PlayerInput();
+                    PlayerActions();
                 }
 
             }
@@ -112,10 +115,11 @@ namespace EternalDefenders
 
         }
 
-        void OnPlayerDeathDelegate()
+        void OnDeath_Delegate()
         {
             //death
             currentState = PlayerState.Dead;
+            CanMove = false;
             ChangeAnimation(_deathRifleHash);
 
             //respawn
@@ -133,22 +137,26 @@ namespace EternalDefenders
             Stats = new Stats(playerStats.GetStats());
             ChangeAnimation(_idleRifleHash);
             currentState = PlayerState.Idle;
+            CanMove = true;
 
-            OnPlayerRespawn?.Invoke();
+            OnRespawn?.Invoke();
         }
 
-        void PlayerInput()
+        void PlayerActions()
         {
-            if ((Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-                 && currentState != PlayerState.Damage && currentState != PlayerState.Fight)
-            {
-                //_canFight = false;
+            var input = InputManager.Instance;
 
+            if (input.IsFighting && _canFight == true)
+            {
+                OnFight?.Invoke();
+            }
+            else if (input.MoveDirection != Vector2.zero && currentState != PlayerState.Damage && currentState != PlayerState.Fight && CanMove == true)
+            {
                 if (currentState == PlayerState.Jump)
                 {
                     MovePlayer(currentState);
                 }
-                else if (Input.GetKey(KeyCode.LeftShift))
+                else if (input.IsSprinting)
                 {
                     currentState = PlayerState.Run;
                     ChangeAnimation(_runRifleHash);
@@ -167,14 +175,13 @@ namespace EternalDefenders
                 _canFight = true;
                 ChangeDirection360();
             }
-            else if (currentState != PlayerState.Fight && currentState != PlayerState.Damage
-                    && currentState != PlayerState.Jump)
+            else if (currentState != PlayerState.Fight && currentState != PlayerState.Damage && currentState != PlayerState.Jump)
             {
                 _canFight = true;
                 ChangeAnimation(_idleRifleHash);
             }   
 
-            if (_isGrounded && Input.GetKeyDown(KeyCode.Space))
+            if (_isGrounded && input.IsJumping)
             {
                 StartCoroutine(Jump());
             }
