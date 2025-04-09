@@ -19,23 +19,23 @@ namespace EternalDefenders
         {
             GenerateButtons();
 
-            BuildingManager.Instance.OnBuildingModeEnter += OnBuildingModeEnter_Delegate;
-            BuildingManager.Instance.OnBuildingModeExit += OnBuildingModeExit_Delegate;
+            InputManager.Instance.OnStoreModeEnter += OnStoreModeEnter_Delegate;
+            InputManager.Instance.OnStoreModeExit += OnStoreModeExit_Delegate;
         }
 
         void OnDisable()
         {
             //TODO: Clean up this mess
-            BuildingManager buildingManager = BuildingManager.Instance;
-            if (buildingManager == null) return;
-            BuildingManager.Instance.OnBuildingModeEnter -= OnBuildingModeEnter_Delegate;
-            BuildingManager.Instance.OnBuildingModeExit -= OnBuildingModeExit_Delegate;
+            InputManager inputManager = InputManager.Instance;
+            if (inputManager == null) return;
+            inputManager.OnStoreModeEnter -= OnStoreModeEnter_Delegate;
+            inputManager.OnStoreModeExit -= OnStoreModeExit_Delegate;
         }
-        void OnBuildingModeEnter_Delegate()
+        void OnStoreModeEnter_Delegate()
         {
             panel.gameObject.SetActive(true);
         }
-        void OnBuildingModeExit_Delegate()
+        void OnStoreModeExit_Delegate()
         {
             panel.gameObject.SetActive(false);
         }

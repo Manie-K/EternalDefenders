@@ -80,9 +80,9 @@ namespace EternalDefenders
             
             DamagePopupText.Create(player.transform.position.With(y: 1.75f), enemyStats.GetStat(StatType.Damage));
             
-            if (player.GetState() != PlayerState.Dead)
+            if (player.CurrentState != PlayerState.Dead)
             {
-                player.OnDamage();
+                StartCoroutine(player.OnDamage());
             }
         }
 
