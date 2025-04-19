@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 
 namespace EternalDefenders
@@ -16,15 +17,16 @@ namespace EternalDefenders
         readonly float _hexSize = HexMapController.HexSize;
         readonly int _width = HexMapController.MapWidthChunks;
         readonly int _height = HexMapController.MapHeightChunks;
-        readonly string _filePath = Path.Combine(Application.dataPath, "_Project/MapConfigs/default_map.txt");
-        
+        readonly string _filePath = Path.Combine(Application.dataPath, "_Project/MapConfigs/Otlupium.json");
+
         const float Sqrt3 = 1.73205080757f;
         
         
         void SetUp()
         {
-            string[] lines = File.ReadAllLines(_filePath);
-            
+            string json = File.ReadAllText(_filePath);
+            int[][] mapChunks = JsonConvert.DeserializeObject<int[][]>(json);
+
             _chunkTypes = new List<int>(_width * _height);
             _chunkPositions = new List<Vector3>(_width * _height);
             _chunkRotations = new List<Quaternion>(_width * _height);
@@ -48,16 +50,15 @@ namespace EternalDefenders
                     }
 
                     _chunkPositions.Add(new Vector3(calcX, 0, calcY));
-                    _chunkTypes.Add(lines[y][x] - '1');
+                    _chunkTypes.Add(mapChunks[y][x]);
                 }
             }
         }
-        public void GenerateChunks()
+        public void GenerateMap()
         {
             SetUp();
             for (int chunkIndex = 0; chunkIndex < _width * _height; chunkIndex++)
             {
-                
                 var chunk = Instantiate(chunkPrefabs[_chunkTypes[chunkIndex]], 
                     _chunkPositions[chunkIndex], _chunkRotations[chunkIndex]);
                 chunk.transform.parent = mapParent;
