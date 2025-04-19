@@ -26,6 +26,8 @@ namespace EternalDefenders
         public event Action OnPlayModeEnter;
         public event Action OnPlayModeExit;
 
+        public event Action OnPlayerWeaponChange;
+
         private GameMode _currentGameMode;
 
         public bool IsPlayerSprinting { get; private set; }
@@ -102,6 +104,15 @@ namespace EternalDefenders
             IsPlayerSprinting = Input.GetKey(KeyCode.LeftShift);
             IsPlayerJumping = Input.GetKeyDown(KeyCode.Space);
             IsPlayerFighting = Input.GetMouseButton(0);
+
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                PlayerController player = FindAnyObjectByType<PlayerController>();
+                WeaponsController weaponsController = player.GetComponent<WeaponsController>();
+
+                weaponsController.SetNextArsenal();
+                OnPlayerWeaponChange?.Invoke();
+            }
         }
         
         void OnBuildingSelected_Delegate(TowerBundle towerBundle)

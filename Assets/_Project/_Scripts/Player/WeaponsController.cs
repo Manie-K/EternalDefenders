@@ -2,13 +2,12 @@
 using System.Collections;
 
 [RequireComponent (typeof (Animator))]
-public class WeaponController : MonoBehaviour {
+public class WeaponsController : MonoBehaviour {
 
 	public Transform rightGunBone;
 	public Transform leftGunBone;
 	public Arsenal[] arsenal;
-
-	private Animator animator;
+    private Animator animator;
 
 	void Awake() {
 		animator = GetComponent<Animator> ();
@@ -36,10 +35,27 @@ public class WeaponController : MonoBehaviour {
 					newLeftGun.transform.localRotation = Quaternion.Euler(90, 0, 0);
 				}
 				animator.runtimeAnimatorController = hand.controller;
-				return;
+                return;
 				}
 		}
-	}
+    }
+
+	public void SetNextArsenal()
+	{
+        int currentIndex = 0;
+        for (int i = 0; i < arsenal.Length; i++)
+        {
+            if (arsenal[i].name == arsenal[currentIndex].name)
+            {
+                currentIndex = i;
+                break;
+            }
+        }
+        currentIndex++;
+        if (currentIndex >= arsenal.Length)
+            currentIndex = 0;
+        SetArsenal(arsenal[currentIndex].name);
+    }
 
 	[System.Serializable]
 	public struct Arsenal {

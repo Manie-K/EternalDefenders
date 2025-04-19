@@ -46,7 +46,7 @@ namespace EternalDefenders
             }
         }
 
-        private IEnumerator WaitForFightAndFire(float waitingTime)
+        private IEnumerator WaitAndFire(float waitingTime)
         {
             yield return new WaitForSeconds(waitingTime);
 
@@ -73,7 +73,7 @@ namespace EternalDefenders
                     _playerController.CurrentState = PlayerState.Fight;
                     _playerController.CanMove = false;
                     _playerController.ChangeDirection360();
-                    StartCoroutine(WaitForFightAndFire(0f));
+                    StartCoroutine(WaitAndFire(0f));
                 }
                 else if (_playerController.CurrentState != PlayerState.ReadyToFight)
                 {
@@ -81,7 +81,7 @@ namespace EternalDefenders
                     _playerController.CanMove = false;
                     _playerController.ChangeDirection360();
                     _playerController.ChangeAnimation(_playerController._aimingSniperRifleHash, 0.03f);
-                    StartCoroutine(WaitForFightAndFire(0.3f));
+                    StartCoroutine(WaitAndFire(0.3f));
                 }
             }
         }

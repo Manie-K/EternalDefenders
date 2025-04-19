@@ -35,8 +35,27 @@ namespace EternalDefenders
         public readonly int _deathRifleHash = Animator.StringToHash("Death Rifle");
         public readonly int _walkRifleHash = Animator.StringToHash("Walk Rifle");
         public readonly int _jumpRifleHash = Animator.StringToHash("Jump Rifle");
+
+        public readonly int _runHash = Animator.StringToHash("Run");
+        public readonly int _idleHash = Animator.StringToHash("Idle");
+        public readonly int _deathHash = Animator.StringToHash("Death");
+        public readonly int _walkHash = Animator.StringToHash("Walk");
+        public readonly int _jumpHash = Animator.StringToHash("Jump");
+        public readonly int _fightStanceHash = Animator.StringToHash("FightStance");
+        public readonly int _hitHash = Animator.StringToHash("Hit");
+
         public readonly int[] _damageHashes = new int[] { Animator.StringToHash("Damage1"), 
             Animator.StringToHash("Damage2"), Animator.StringToHash("Damage3") };
+
+        private int _currentRunHash;
+        private int _currentIdleHash;
+        private int _currentDeathHash;
+        private int _currentWalkHash;
+        private int _currentJumpHash;
+        private int _currentAimingHash;
+        private int _currentFireHash;
+        private int _currentHitHash;
+        private int _currentFightStanceHash;
 
         private float _turnSmoothVelocity;
         private int _currentAnimationHash;
@@ -65,8 +84,19 @@ namespace EternalDefenders
 
             OnDeath += OnDeath_Delegate;
             OnRespawn += OnRespawn_Delegate;
+      
             CanMove = true;
             CanFight = true;
+
+            _currentAimingHash = _aimingSniperRifleHash;
+            _currentFireHash = _fireSniperRifleHash;
+            _currentDeathHash = _deathRifleHash;
+            _currentRunHash = _runRifleHash;
+            _currentIdleHash = _idleRifleHash;
+            _currentJumpHash = _jumpRifleHash;
+            _currentWalkHash = _walkRifleHash;
+            _currentHitHash = _hitHash;
+            _currentFightStanceHash = _fightStanceHash;
         }
 
         void Start()
@@ -74,6 +104,9 @@ namespace EternalDefenders
             _controller.enabled = false;
             transform.position = spawnPointTransform.position;
             _controller.enabled = true;
+
+            var input = InputManager.Instance;
+            input.OnPlayerWeaponChange += OnWeaponChange;
 
             ChangeAnimation(_idleRifleHash);
         }
@@ -111,6 +144,8 @@ namespace EternalDefenders
             _velocity.y += _gravity * Time.deltaTime;
             _controller.Move(_velocity * Time.deltaTime);
 
+            OnWeaponChange();
+
         }
 
         void OnDeath_Delegate()
@@ -119,7 +154,7 @@ namespace EternalDefenders
             CurrentState = PlayerState.Dead;
             CanMove = false;
             CanFight = false;
-            ChangeAnimation(_deathRifleHash);
+            ChangeAnimation(_currentDeathHash);
 
             //respawn
             StartCoroutine(RespawnPlayerAfterDelay(respawnTime));
@@ -139,7 +174,7 @@ namespace EternalDefenders
             _controller.enabled = true;
 
             Stats = new Stats(playerStats.GetStats());
-            ChangeAnimation(_idleRifleHash);
+            ChangeAnimation(_currentIdleHash);
             CurrentState = PlayerState.Idle;
             CanMove = true;
             CanFight = true;
@@ -152,6 +187,10 @@ namespace EternalDefenders
             if (input.IsPlayerFighting && CanFight == true)
             {
                 OnFight?.Invoke();
+                if (GetComponentInChildren<GunController>() == null)
+                {
+                    Attack();
+                }
             }
             else if (input.IsPlayerMoving && CurrentState != PlayerState.Fight && CanMove == true)
             {
@@ -162,13 +201,13 @@ namespace EternalDefenders
                 else if (input.IsPlayerSprinting)
                 {
                     CurrentState = PlayerState.Run;
-                    ChangeAnimation(_runRifleHash);
+                    ChangeAnimation(_currentRunHash);
                     MovePlayer(CurrentState);
                 }
                 else
                 {
                     CurrentState = PlayerState.Walk;
-                    ChangeAnimation(_walkRifleHash);
+                    ChangeAnimation(_currentWalkHash);
                     MovePlayer(CurrentState);
                 }
 
@@ -178,17 +217,20 @@ namespace EternalDefenders
                 CanFight = true;
                 ChangeDirection360();
             }
-            else if ((CurrentState != PlayerState.Fight && CurrentState != PlayerState.Jump) || CurrentState == PlayerState.Idle)
+            else if (CurrentState != PlayerState.Fight && CurrentState != PlayerState.Jump)
             {
                 CanFight = true;
                 CurrentState = PlayerState.Idle;
-                ChangeAnimation(_idleRifleHash);
-            }   
+                ChangeAnimation(_currentIdleHash);
+
+            }
 
             if (_isGrounded && input.IsPlayerJumping)
             {
                 StartCoroutine(Jump());
             }
+
+            //Debug.Log(CurrentState);
 
         }
 
@@ -197,20 +239,90 @@ namespace EternalDefenders
             CanFight = false;
             CurrentState = PlayerState.Jump;
             _previousAnimationHash = _currentAnimationHash;
-            ChangeAnimation(_jumpRifleHash, 0.01f);
+            ChangeAnimation(_currentJumpHash, 0.01f);
             _velocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.2f);
 
-            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-            float time = stateInfo.length;
-            Debug.Log(time);
+            // Wait until the player is grounded again
+            while (!_isGrounded)
+            {
+                yield return null;
+            }
 
-            yield return new WaitForSeconds(time);
-            ChangeAnimation(_previousAnimationHash, 0.0001f);
+            ChangeAnimation(_currentIdleHash);
 
             CurrentState = PlayerState.Idle;
             CanFight = true;
+        }
+
+        //TODO: attack by punches
+        void Attack()
+        {
+            if (CanFight && CurrentState != PlayerState.Fight)
+            {
+                if (CurrentState == PlayerState.ReadyToFight)
+                {
+                    CurrentState = PlayerState.Fight;
+                    CanMove = false;
+                    ChangeDirection360();
+                    StartCoroutine(WaitAndHit(0f));
+                }
+                else if (CurrentState != PlayerState.ReadyToFight)
+                {
+                    CurrentState = PlayerState.Fight;
+                    CanMove = false;
+                    ChangeDirection360();
+                    ChangeAnimation(_currentFightStanceHash, 0.03f);
+                    StartCoroutine(WaitAndHit(0.3f));
+                }
+            }
+        }
+
+        private IEnumerator WaitAndHit(float waitingTime = 0f)
+        {
+            yield return new WaitForSeconds(waitingTime);
+
+            if (!CanFight)
+            {
+                CanMove = true;
+                CurrentState = PlayerState.ReadyToFight;
+                yield return null;
+            }
+
+            ChangeAnimation(_currentHitHash, 0.01f);
+
+            yield return new WaitForSeconds(0.2f);
+            float animationLength = _animator.GetCurrentAnimatorStateInfo(0).length;
+
+            yield return new WaitForSeconds(animationLength);
+
+            CanMove = true;
+            CurrentState = PlayerState.ReadyToFight;
+        }
+
+        void OnWeaponChange()
+        {
+            if (GetComponentInChildren<GunController>() == null)
+            {
+                _currentWalkHash = _walkHash;
+                _currentIdleHash = _idleHash;
+                _currentRunHash = _runHash;
+                _currentJumpHash = _jumpHash;
+                _currentDeathHash = _deathHash;
+                _currentFightStanceHash = _fightStanceHash;
+                _currentHitHash = _hitHash;
+            }
+            else
+            {
+                _currentWalkHash = _walkRifleHash;
+                _currentIdleHash = _idleRifleHash;
+                _currentRunHash = _runRifleHash;
+                _currentJumpHash = _jumpRifleHash;
+                _currentDeathHash = _deathRifleHash;
+                _currentAimingHash = _aimingSniperRifleHash;
+                _currentFireHash = _fireSniperRifleHash;
+            }
         }
 
         void ChangeDirection(Vector3 movementDirection)
