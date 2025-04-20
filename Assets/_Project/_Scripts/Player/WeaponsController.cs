@@ -8,6 +8,7 @@ public class WeaponsController : MonoBehaviour {
 	public Transform leftGunBone;
 	public Arsenal[] arsenal;
     private Animator animator;
+	private Arsenal _currentWeapon;
 
 	void Awake() {
 		animator = GetComponent<Animator> ();
@@ -35,6 +36,7 @@ public class WeaponsController : MonoBehaviour {
 					newLeftGun.transform.localRotation = Quaternion.Euler(90, 0, 0);
 				}
 				animator.runtimeAnimatorController = hand.controller;
+				_currentWeapon = hand;
                 return;
 				}
 		}
@@ -45,7 +47,7 @@ public class WeaponsController : MonoBehaviour {
         int currentIndex = 0;
         for (int i = 0; i < arsenal.Length; i++)
         {
-            if (arsenal[i].name == arsenal[currentIndex].name)
+            if (arsenal[i].name == _currentWeapon.name)
             {
                 currentIndex = i;
                 break;

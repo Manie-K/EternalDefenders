@@ -86,7 +86,7 @@ namespace EternalDefenders
             }
         }
 
-        public void BulletHitEnemy(EnemyController enemy)
+        public void PlayerAttackEnemy(EnemyController enemy)
         {
             Stats playerStats = PlayerController.Instance.Stats;
             Stats enemyStats = enemy.Stats;

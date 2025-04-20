@@ -256,7 +256,7 @@ namespace EternalDefenders
             CanFight = true;
         }
 
-        //TODO: attack by punches
+        //TODO: check if it is working
         void Attack()
         {
             if (CanFight && CurrentState != PlayerState.Fight)
@@ -292,9 +292,17 @@ namespace EternalDefenders
 
             ChangeAnimation(_currentHitHash, 0.01f);
 
+            List<EnemyController> enemiesToHit = GetEnemiesInFront();
+            foreach (var enemy in enemiesToHit)
+            {
+                if (enemy != null)
+                {
+                    DamageCalculator.Instance.PlayerAttackEnemy(enemy);
+                }
+            }
+
             yield return new WaitForSeconds(0.2f);
             float animationLength = _animator.GetCurrentAnimatorStateInfo(0).length;
-
             yield return new WaitForSeconds(animationLength);
 
             CanMove = true;
@@ -412,6 +420,29 @@ namespace EternalDefenders
             CurrentState = PlayerState.Idle;
             CanMove = true;
             CanFight = true;
+        }
+
+        private List<EnemyController> GetEnemiesInFront(float detectionRadius = 5f, float angle = 90f)
+        {
+            List<EnemyController> enemiesInFront = new List<EnemyController>();
+            Collider[] hitColliders = Physics.OverlapSphere(_playerTransform.position, detectionRadius);
+
+            foreach (var hitCollider in hitColliders)
+            {
+                EnemyController enemy = hitCollider.GetComponent<EnemyController>();
+                if (enemy != null)
+                {
+                    Vector3 directionToEnemy = (hitCollider.transform.position - _playerTransform.position).normalized;
+                    float angleToEnemy = Vector3.Angle(_playerTransform.forward, directionToEnemy);
+
+                    if (angleToEnemy <= angle / 2)
+                    {
+                        enemiesInFront.Add(enemy);
+                    }
+                }
+            }
+
+            return enemiesInFront;
         }
 
     }
