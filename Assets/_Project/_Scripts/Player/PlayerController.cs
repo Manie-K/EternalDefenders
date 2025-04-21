@@ -256,7 +256,6 @@ namespace EternalDefenders
             CanFight = true;
         }
 
-        //TODO: check if it is working
         void Attack()
         {
             if (CanFight && CurrentState != PlayerState.Fight)
@@ -422,7 +421,7 @@ namespace EternalDefenders
             CanFight = true;
         }
 
-        private List<EnemyController> GetEnemiesInFront(float detectionRadius = 5f, float angle = 90f)
+        private List<EnemyController> GetEnemiesInFront(float detectionRadius = 10f, float angle = 90f)
         {
             List<EnemyController> enemiesInFront = new List<EnemyController>();
             Collider[] hitColliders = Physics.OverlapSphere(_playerTransform.position, detectionRadius);
