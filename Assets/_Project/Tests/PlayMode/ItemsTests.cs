@@ -1,4 +1,5 @@
 using EternalDefenders;
+using JetBrains.Annotations;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 
-public class ItemsTests // Need to test Collecting items later
+public class ItemsTests
 {
     // Runs before each test
     [UnitySetUp]
@@ -75,6 +76,30 @@ public class ItemsTests // Need to test Collecting items later
 
         towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth));
         yield return new WaitForSeconds(angel.ProtectionCooldown + 1.0f);
+        towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth));
+        yield return new WaitForSeconds(angel.ProtectionCooldown / 2.0f);
+        Assert.IsTrue(towerPrefab.Stats.GetStat(StatType.Health) > 0);
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator GuardianAngelDuplicationTest()
+    {
+        // Guardian Angel id: 0
+        ItemManager.Instance.AddItemByID(0);
+        TowerController towerPrefab = Object.FindAnyObjectByType<TowerController>();
+        Assert.IsTrue(towerPrefab != null);
+        GuardianAngel angel = ItemManager.Instance._equippedItems.OfType<GuardianAngel>().FirstOrDefault();
+        Assert.IsTrue(angel != null);
+
+        towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth));
+        yield return new WaitForSeconds(angel.ProtectionCooldown / 2.0f);
+        Assert.IsTrue(towerPrefab.Stats.GetStat(StatType.Health) > 0);
+        ItemManager.Instance.AddItemByID(0);
+        towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth));
+        yield return new WaitForSeconds(angel.ProtectionCooldown / 2.0f);
+        Assert.IsTrue(towerPrefab.Stats.GetStat(StatType.Health) > 0);
+        ItemManager.Instance.AddItemByID(0);
         towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth));
         yield return new WaitForSeconds(angel.ProtectionCooldown / 2.0f);
         Assert.IsTrue(towerPrefab.Stats.GetStat(StatType.Health) > 0);
@@ -185,6 +210,33 @@ public class ItemsTests // Need to test Collecting items later
     }
 
     [UnityTest]
+    public IEnumerator UnfathomMaliceDuplicationTest()
+    {
+        // Unfathom Malice id: 2
+        PlayerController player = PlayerController.Instance;
+        Assert.IsTrue(player != null);
+        int playerBasicDmg = player.Stats.GetStat(StatType.Damage);
+        int duplicates = 3;
+        for (int i = 0; i < duplicates; i++)
+        {
+            ItemManager.Instance.AddItemByID(2);
+        }
+        UnfathomMalice malice = ItemManager.Instance._equippedItems.OfType<UnfathomMalice>().FirstOrDefault();
+        Assert.IsTrue(malice != null);
+
+        Assert.AreEqual(playerBasicDmg + 5 * duplicates, player.Stats.GetStat(StatType.Damage));
+        yield return new WaitForSeconds(11);
+        Assert.AreEqual(playerBasicDmg + 5 * duplicates + 10, player.Stats.GetStat(StatType.Damage));
+        yield return new WaitForSeconds(5);
+        Assert.AreEqual(playerBasicDmg + 5 * duplicates, player.Stats.GetStat(StatType.Damage));
+        yield return new WaitForSeconds(5);
+        Assert.AreEqual(playerBasicDmg + 5 * duplicates + 10, player.Stats.GetStat(StatType.Damage));
+        yield return new WaitForSeconds(5);
+        Assert.AreEqual(playerBasicDmg + 5 * duplicates, player.Stats.GetStat(StatType.Damage));
+        yield return null;
+    }
+
+    [UnityTest]
     public IEnumerator EnergyCoreTest()
     {
         // Energy Core id: 3
@@ -202,6 +254,27 @@ public class ItemsTests // Need to test Collecting items later
     }
 
     [UnityTest]
+    public IEnumerator EnergyCoreDuplicationTest()
+    {
+        // Energy Core id: 3
+        PlayerController player = PlayerController.Instance;
+        Assert.IsTrue(player != null);
+        int playerBasicSpeed = player.Stats.GetStat(StatType.Speed);
+        int duplicates = 3;
+        for (int i = 0; i < duplicates; i++)
+        {
+            ItemManager.Instance.AddItemByID(3);
+        }
+        EnergyCore energy = ItemManager.Instance._equippedItems.OfType<EnergyCore>().FirstOrDefault();
+        Assert.IsTrue(energy != null);
+
+        Assert.AreEqual(playerBasicSpeed + 5 * duplicates, player.Stats.GetStat(StatType.Speed));
+        yield return new WaitForSeconds(10);
+        Assert.AreEqual(playerBasicSpeed + 5 * duplicates, player.Stats.GetStat(StatType.Speed));
+        yield return null;
+    }
+
+    [UnityTest]
     public IEnumerator NanoSpikeGauntletsTest()
     {
         // Nano-Spike Gauntlets id: 4
@@ -215,6 +288,27 @@ public class ItemsTests // Need to test Collecting items later
         Assert.AreEqual(playerBasicDmg + 20, player.Stats.GetStat(StatType.Damage));
         yield return new WaitForSeconds(10);
         Assert.AreEqual(playerBasicDmg + 20, player.Stats.GetStat(StatType.Damage));
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator NanoSpikeGauntletsDuplicationTest()
+    {
+        // Nano-Spike Gauntlets id: 4
+        PlayerController player = PlayerController.Instance;
+        Assert.IsTrue(player != null);
+        int playerBasicDmg = player.Stats.GetStat(StatType.Damage);
+        int duplicates = 3;
+        for (int i = 0; i < duplicates; i++)
+        {
+            ItemManager.Instance.AddItemByID(4);
+        }
+        NanoSpikeGauntlets gauntlets = ItemManager.Instance._equippedItems.OfType<NanoSpikeGauntlets>().FirstOrDefault();
+        Assert.IsTrue(gauntlets != null);
+
+        Assert.AreEqual(playerBasicDmg + 20 * duplicates, player.Stats.GetStat(StatType.Damage));
+        yield return new WaitForSeconds(10);
+        Assert.AreEqual(playerBasicDmg + 20 * duplicates, player.Stats.GetStat(StatType.Damage));
         yield return null;
     }
 }
