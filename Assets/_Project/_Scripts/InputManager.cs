@@ -67,6 +67,7 @@ namespace EternalDefenders
                 {
                     _currentGameMode = GameMode.Playing;
                     OnBuildModeExit?.Invoke();
+                    OnStoreModeExit?.Invoke();
                     OnPlayModeEnter?.Invoke();
                 }
                 else

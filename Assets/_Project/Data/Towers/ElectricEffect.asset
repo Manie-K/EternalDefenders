@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: ElectricEffect
   m_EditorClassIdentifier: 
   modifiers: []
-  particleSystem: {fileID: 8746978703178695197, guid: e1fa274ed4e30fc48bcbce1a3263be63, type: 3}
+  particleSystem: {fileID: 5396372950321188654, guid: fcb74f28d107e284e80af037bfec14ca, type: 3}

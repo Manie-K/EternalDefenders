@@ -18,6 +18,13 @@ namespace EternalDefenders
         [SerializeField] float turnSmoothTime = 0.01f;
         [SerializeField] int respawnTime = 6;
 
+        [SerializeField] private GameObject deathEffectPrefab;
+        private Vector3 deathEffectOffset = new Vector3(0, 1.5f, 0);
+
+        [SerializeField] private GameObject Attack1Prefab;
+        [SerializeField] private GameObject Attack2Prefab;
+        private Vector3 attackEffectOffset = new Vector3(0, 0.85f, 0);
+
         public Stats Stats { get; private set; }
         public event Action OnDeath;
         public event Action OnRespawn;
@@ -155,6 +162,16 @@ namespace EternalDefenders
             CanMove = false;
             CanFight = false;
             ChangeAnimation(_currentDeathHash);
+
+            if (deathEffectPrefab != null)
+            {
+                Vector3 spawnPosition = transform.position + deathEffectOffset;
+                GameObject deathEffect = Instantiate(deathEffectPrefab, spawnPosition, Quaternion.identity);
+
+                deathEffect.transform.localScale *= 0.2f;
+
+                Destroy(deathEffect, 5f);
+            }
 
             //respawn
             StartCoroutine(RespawnPlayerAfterDelay(respawnTime));
@@ -297,6 +314,7 @@ namespace EternalDefenders
                 if (enemy != null)
                 {
                     DamageCalculator.Instance.PlayerAttackEnemy(enemy);
+                    AttackAnimation(enemy.transform.position);
                 }
             }
 
@@ -306,6 +324,32 @@ namespace EternalDefenders
 
             CanMove = true;
             CurrentState = PlayerState.ReadyToFight;
+        }
+
+        void AttackAnimation(Vector3 pos)
+        {
+            if (GetComponentInChildren<GunController>() == null)
+            {
+                if (Attack1Prefab != null)
+                {
+                    GameObject deathEffect = Instantiate(Attack1Prefab, pos + attackEffectOffset, Quaternion.identity);
+
+                    deathEffect.transform.localScale *= 0.3f;
+
+                    Destroy(deathEffect, 5f);
+                }
+            }
+            else
+            {
+                if (Attack2Prefab != null)
+                {
+                    GameObject deathEffect = Instantiate(Attack2Prefab, pos + attackEffectOffset, Quaternion.identity);
+
+                    deathEffect.transform.localScale *= 0.3f;
+
+                    Destroy(deathEffect, 5f);
+                }
+            }
         }
 
         void OnWeaponChange()

@@ -11,7 +11,9 @@ namespace EternalDefenders
         [SerializeField] Effect attackEffect;
         [SerializeField] TowerTargetStrategy targetStrategy;
         [SerializeField] TowerAttackStrategy attackStrategy;
-        
+
+        [SerializeField] private GameObject deathEffectPrefab;
+
         public static event Action<TowerController> OnTowerDestroyed;
 
         public Stats Stats
@@ -75,6 +77,14 @@ namespace EternalDefenders
 
             OnTowerDestroyed?.Invoke(this);
             Debug.Log("Tower destroyed");
+
+            if (deathEffectPrefab != null)
+            {
+                GameObject deathEffect = Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+
+                Destroy(deathEffect, 5f);
+            }
+
             Destroy(gameObject);
         }
     }

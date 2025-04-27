@@ -103,6 +103,7 @@ MonoBehaviour:
   attackEffect: {fileID: 11400000, guid: 68a525725573b10448c125c45a5dbf5e, type: 2}
   targetStrategy: {fileID: 11400000, guid: 0d365ff80dae973439b4cd52712c0223, type: 2}
   attackStrategy: {fileID: 11400000, guid: 155c14c2a264d404caa9f187d2e0ce83, type: 2}
+  deathEffectPrefab: {fileID: 4593184484909914552, guid: 2e1e9506f5904a64b81744324fb7cd50, type: 3}
 --- !u!1001 &8751667914007907321
 PrefabInstance:
   m_ObjectHideFlags: 0
