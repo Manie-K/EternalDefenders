@@ -77,5 +77,6 @@ crashlytics-build.properties
 
 Assets/*
 !Assets/_Project*
+!Assets/Resources/
 
 .idea/*

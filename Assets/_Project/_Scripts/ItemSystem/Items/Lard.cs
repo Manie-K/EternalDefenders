@@ -1,3 +1,4 @@
+using Codice.Client.Common.GameUI;
 using Mono.Cecil;
 using System.Collections.Generic;
 using Unity.VisualScripting.YamlDotNet.Core.Tokens;
@@ -7,11 +8,10 @@ using static EternalDefenders.TowerBundle;
 
 namespace EternalDefenders
 {
-    [CreateAssetMenu(fileName = "Nano-SpikeGauntlets", menuName = "EternalDefenders/ItemSystem/Items/Nano-SpikeGauntlets")]
-    public class NanoSpikeGauntlets : Item
+    [CreateAssetMenu(fileName = "Lard", menuName = "EternalDefenders/ItemSystem/Items/Lard")]
+    public class Lard : Item
     {
-
-        [SerializeField] private readonly int _flatDamageBoost = 10;
+        [SerializeField] private int _maxHealthBoost = 50;
 
         public override void Initialize(int id, string name)
         {
@@ -19,35 +19,36 @@ namespace EternalDefenders
                 new ResourceCost
                 {
                     resource = new(),
-                    amount = 200
+                    amount = 50
                 },
                 new ResourceCost
                 {
                     resource = new(),
-                    amount = 200
+                    amount = 50
                 }
             };
 
             InitializeCommon(
                 name: name,
-                description: $"Adds {_flatDamageBoost} flat damage buff to player",
+                description: $"Gives {_maxHealthBoost} max health",
                 id: id,
                 icon: null,
                 rarity: Rarity.Common,
                 cost: cost,
-                unique: false,
                 priority: 5,
+                unique: false,
                 cooldownDuration: 0,
                 cooldownRemaining: 0,
                 itemType: ItemType.Passive,
                 itemTarget: ItemTarget.Player
             );
-        }
 
+        }
 
         public override void Collect()
         {
             DuplicateCount++;
+
             ApplyStats(true);
 
         }
@@ -55,19 +56,22 @@ namespace EternalDefenders
         public override void Remove()
         {
             DuplicateCount--;
+            
             ApplyStats(false);
+           
         }
+
 
         private void ApplyStats(bool wasDuplicateCountRaised)
         {
             Stats playerStats = PlayerController.Instance.Stats;
 
-            int damageBoost = wasDuplicateCountRaised ? _flatDamageBoost : -_flatDamageBoost;
+            int maxHealthBoost = wasDuplicateCountRaised ? _maxHealthBoost : -_maxHealthBoost;
 
             InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
-            modifier.statType = StatType.Damage;
+            modifier.statType = StatType.MaxHealth;
             modifier.modifierType = ModifierType.Flat;
-            modifier.value = damageBoost;
+            modifier.value = maxHealthBoost;
 
             playerStats.ApplyModifier(modifier);
 
