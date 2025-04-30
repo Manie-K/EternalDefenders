@@ -69,7 +69,7 @@ namespace EternalDefenders
             if (item != null)
             {
 
-                OnItemPickUp.Invoke(item);
+                OnItemPickUp?.Invoke(item);
 
                 if (!_equippedItems.Contains(item))
                 {
@@ -91,7 +91,7 @@ namespace EternalDefenders
 
             if (item != null)
             {
-                OnItemRemoval.Invoke(item);
+                OnItemRemoval?.Invoke(item);
 
                 item.Remove();
 

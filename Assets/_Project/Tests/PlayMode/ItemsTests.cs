@@ -37,7 +37,7 @@ public class ItemsTests
         ItemManager.Instance.AddItemByID(0);
         TowerController towerPrefab = Object.FindAnyObjectByType<TowerController>();
         Assert.IsTrue(towerPrefab != null);
-        GuardianAngel angel = ItemManager.Instance._equippedItems.OfType<GuardianAngel>().FirstOrDefault();
+        GuardianAngel angel = ItemManager.Instance.EquippedItems.OfType<GuardianAngel>().FirstOrDefault();
         Assert.IsTrue(angel != null);
 
         towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth));
@@ -53,7 +53,7 @@ public class ItemsTests
         ItemManager.Instance.AddItemByID(0);
         TowerController towerPrefab = Object.FindAnyObjectByType<TowerController>();
         Assert.IsTrue(towerPrefab != null);
-        GuardianAngel angel = ItemManager.Instance._equippedItems.OfType<GuardianAngel>().FirstOrDefault();
+        GuardianAngel angel = ItemManager.Instance.EquippedItems.OfType<GuardianAngel>().FirstOrDefault();
         Assert.IsTrue(angel != null);
 
         towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth));
@@ -71,7 +71,7 @@ public class ItemsTests
         ItemManager.Instance.AddItemByID(0);
         TowerController towerPrefab = Object.FindAnyObjectByType<TowerController>();
         Assert.IsTrue(towerPrefab != null);
-        GuardianAngel angel = ItemManager.Instance._equippedItems.OfType<GuardianAngel>().FirstOrDefault();
+        GuardianAngel angel = ItemManager.Instance.EquippedItems.OfType<GuardianAngel>().FirstOrDefault();
         Assert.IsTrue(angel != null);
 
         towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth));
@@ -89,7 +89,7 @@ public class ItemsTests
         ItemManager.Instance.AddItemByID(0);
         TowerController towerPrefab = Object.FindAnyObjectByType<TowerController>();
         Assert.IsTrue(towerPrefab != null);
-        GuardianAngel angel = ItemManager.Instance._equippedItems.OfType<GuardianAngel>().FirstOrDefault();
+        GuardianAngel angel = ItemManager.Instance.EquippedItems.OfType<GuardianAngel>().FirstOrDefault();
         Assert.IsTrue(angel != null);
 
         towerPrefab.Stats.ChangeStat(StatType.Health, -towerPrefab.Stats.GetStat(StatType.MaxHealth));
@@ -113,7 +113,7 @@ public class ItemsTests
         ItemManager.Instance.AddItemByID(1);
         PlayerController player = PlayerController.Instance;
         Assert.IsTrue(player != null);
-        HealthShot healthShot = ItemManager.Instance._equippedItems.OfType<HealthShot>().FirstOrDefault();
+        HealthShot healthShot = ItemManager.Instance.EquippedItems.OfType<HealthShot>().FirstOrDefault();
         Assert.IsTrue(healthShot != null);
 
         player.Stats.SetStat(StatType.Health, 1);
@@ -135,7 +135,7 @@ public class ItemsTests
         ItemManager.Instance.AddItemByID(1);
         PlayerController player = PlayerController.Instance;
         Assert.IsTrue(player != null);
-        HealthShot healthShot = ItemManager.Instance._equippedItems.OfType<HealthShot>().FirstOrDefault();
+        HealthShot healthShot = ItemManager.Instance.EquippedItems.OfType<HealthShot>().FirstOrDefault();
         Assert.IsTrue(healthShot != null);
 
         player.Stats.SetStat(StatType.Health, (int)(player.Stats.GetStat(StatType.MaxHealth) * 0.9f));
@@ -153,7 +153,7 @@ public class ItemsTests
         ItemManager.Instance.AddItemByID(1);
         PlayerController player = PlayerController.Instance;
         Assert.IsTrue(player != null);
-        HealthShot healthShot = ItemManager.Instance._equippedItems.OfType<HealthShot>().FirstOrDefault();
+        HealthShot healthShot = ItemManager.Instance.EquippedItems.OfType<HealthShot>().FirstOrDefault();
         Assert.IsTrue(healthShot != null);
 
         player.Stats.SetStat(StatType.Health, 1);
@@ -173,7 +173,7 @@ public class ItemsTests
         ItemManager.Instance.AddItemByID(1);
         PlayerController player = PlayerController.Instance;
         Assert.IsTrue(player != null);
-        HealthShot healthShot = ItemManager.Instance._equippedItems.OfType<HealthShot>().FirstOrDefault();
+        HealthShot healthShot = ItemManager.Instance.EquippedItems.OfType<HealthShot>().FirstOrDefault();
         Assert.IsTrue(healthShot != null);
 
         player.Stats.SetStat(StatType.Health, 1);
@@ -194,7 +194,7 @@ public class ItemsTests
         Assert.IsTrue(player != null);
         int playerBasicDmg = player.Stats.GetStat(StatType.Damage);
         ItemManager.Instance.AddItemByID(2);
-        UnfathomMalice malice = ItemManager.Instance._equippedItems.OfType<UnfathomMalice>().FirstOrDefault();
+        UnfathomMalice malice = ItemManager.Instance.EquippedItems.OfType<UnfathomMalice>().FirstOrDefault();
         Assert.IsTrue(malice != null);
 
         Assert.AreEqual(playerBasicDmg + 5, player.Stats.GetStat(StatType.Damage));
@@ -221,7 +221,7 @@ public class ItemsTests
         {
             ItemManager.Instance.AddItemByID(2);
         }
-        UnfathomMalice malice = ItemManager.Instance._equippedItems.OfType<UnfathomMalice>().FirstOrDefault();
+        UnfathomMalice malice = ItemManager.Instance.EquippedItems.OfType<UnfathomMalice>().FirstOrDefault();
         Assert.IsTrue(malice != null);
 
         Assert.AreEqual(playerBasicDmg + 5 * duplicates, player.Stats.GetStat(StatType.Damage));
@@ -244,7 +244,7 @@ public class ItemsTests
         Assert.IsTrue(player != null);
         int playerBasicSpeed = player.Stats.GetStat(StatType.Speed);
         ItemManager.Instance.AddItemByID(3);
-        EnergyCore energy = ItemManager.Instance._equippedItems.OfType<EnergyCore>().FirstOrDefault();
+        EnergyCore energy = ItemManager.Instance.EquippedItems.OfType<EnergyCore>().FirstOrDefault();
         Assert.IsTrue(energy != null);
 
         Assert.AreEqual(playerBasicSpeed + 5, player.Stats.GetStat(StatType.Speed));
@@ -265,7 +265,7 @@ public class ItemsTests
         {
             ItemManager.Instance.AddItemByID(3);
         }
-        EnergyCore energy = ItemManager.Instance._equippedItems.OfType<EnergyCore>().FirstOrDefault();
+        EnergyCore energy = ItemManager.Instance.EquippedItems.OfType<EnergyCore>().FirstOrDefault();
         Assert.IsTrue(energy != null);
 
         Assert.AreEqual(playerBasicSpeed + 5 * duplicates, player.Stats.GetStat(StatType.Speed));
@@ -282,7 +282,7 @@ public class ItemsTests
         Assert.IsTrue(player != null);
         int playerBasicDmg = player.Stats.GetStat(StatType.Damage);
         ItemManager.Instance.AddItemByID(4);
-        NanoSpikeGauntlets gauntlets = ItemManager.Instance._equippedItems.OfType<NanoSpikeGauntlets>().FirstOrDefault();
+        NanoSpikeGauntlets gauntlets = ItemManager.Instance.EquippedItems.OfType<NanoSpikeGauntlets>().FirstOrDefault();
         Assert.IsTrue(gauntlets != null);
 
         Assert.AreEqual(playerBasicDmg + 20, player.Stats.GetStat(StatType.Damage));
@@ -303,7 +303,7 @@ public class ItemsTests
         {
             ItemManager.Instance.AddItemByID(4);
         }
-        NanoSpikeGauntlets gauntlets = ItemManager.Instance._equippedItems.OfType<NanoSpikeGauntlets>().FirstOrDefault();
+        NanoSpikeGauntlets gauntlets = ItemManager.Instance.EquippedItems.OfType<NanoSpikeGauntlets>().FirstOrDefault();
         Assert.IsTrue(gauntlets != null);
 
         Assert.AreEqual(playerBasicDmg + 20 * duplicates, player.Stats.GetStat(StatType.Damage));
