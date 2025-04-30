@@ -69,6 +69,8 @@ namespace EternalDefenders
             if (item != null)
             {
 
+                OnItemPickUp.Invoke(item);
+
                 if (!_equippedItems.Contains(item))
                 {
                     _equippedItems.Add(item);

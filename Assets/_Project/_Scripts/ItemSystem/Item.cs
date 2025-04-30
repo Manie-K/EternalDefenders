@@ -20,7 +20,7 @@ namespace EternalDefenders
         /// <summary>
         /// Item rarity value between 1-4: higher value means better quality.
         /// </summary>
-        [SerializeField] private int _rarity;
+        [SerializeField] private Rarity _rarity;
 
         /// <summary>
         /// Higher value means higher priority, base value - 5.
@@ -33,6 +33,10 @@ namespace EternalDefenders
         [SerializeField] private float _cooldownDuration;
         [SerializeField] private float _cooldownRemaining;
         [SerializeField] private float _duplicateCount;
+
+        private bool _unique;
+        private Sprite _icon;
+        protected List<TowerBundle.ResourceCost> _cost;
 
         private ItemType _itemType;
         private ItemTarget _itemTarget;
@@ -59,7 +63,7 @@ namespace EternalDefenders
             get { return _id; }
         }
 
-        public int Rarity
+        public Rarity Rarity
         {
             get { return _rarity; }
             protected set { _rarity = value; }
@@ -105,20 +109,40 @@ namespace EternalDefenders
             protected set { _itemEffects = value; }
         }
 
+        public bool Unique
+        {
+            get { return _unique; }
+        }
+        public Sprite icon
+        {
+            get { return _icon; }
+            protected set { _icon = value; }
+        }
+
+        public List<TowerBundle.ResourceCost> Cost
+        {
+            get { return _cost; }
+            protected set { _cost = value; }
+        }
+
         #endregion
 
         public abstract void Initialize(int id, string name);
 
         protected void InitializeCommon(
-            string name, string description, int id, int rarity, 
-            int priority, float cooldownDuration, float cooldownRemaining,
+            string name, string description, int id, Sprite icon, Rarity rarity, 
+            List<TowerBundle.ResourceCost> cost, int priority, bool unique, 
+            float cooldownDuration, float cooldownRemaining,
             ItemType itemType, ItemTarget itemTarget)
         {
             this._name = name;
             this._description = description;
             this._id = id;
+            this._icon = icon;
             this._rarity = rarity;
+            this._cost = cost;
             this._priority = priority;
+            this._unique = unique;
             this._cooldownDuration = cooldownDuration;
             this._cooldownRemaining = cooldownRemaining;
             this._itemType = itemType;

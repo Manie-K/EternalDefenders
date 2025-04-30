@@ -1,5 +1,7 @@
 using Mono.Cecil;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEditor.Graphs;
 using UnityEngine;
@@ -7,11 +9,16 @@ using static EternalDefenders.TowerBundle;
 
 namespace EternalDefenders
 {
-    [CreateAssetMenu(fileName = "Nano-SpikeGauntlets", menuName = "EternalDefenders/ItemSystem/Items/Nano-SpikeGauntlets")]
-    public class NanoSpikeGauntlets : Item
+    [CreateAssetMenu(fileName = "Cascade", menuName = "EternalDefenders/ItemSystem/Items/Cascade")]
+    public class Cascade : Item
     {
 
-        [SerializeField] private readonly int _flatDamageBoost = 10;
+        private readonly Dictionary<StatType, int> boosts = new()
+        {
+            { StatType.Damage, 5 },
+            { StatType.Speed, 2 },
+            { StatType.MaxHealth, 20 },
+        };
 
         public override void Initialize(int id, string name)
         {
@@ -19,23 +26,23 @@ namespace EternalDefenders
                 new ResourceCost
                 {
                     resource = new(),
-                    amount = 200
+                    amount = 600
                 },
                 new ResourceCost
                 {
                     resource = new(),
-                    amount = 200
+                    amount = 600
                 }
             };
 
             InitializeCommon(
                 name: name,
-                description: $"Adds {_flatDamageBoost} flat damage buff to player",
+                description: $"Adds permament random flat buff to player on item pick up",
                 id: id,
                 icon: null,
-                rarity: Rarity.Common,
+                rarity: Rarity.Legendary,
                 cost: cost,
-                unique: false,
+                unique: true,
                 priority: 5,
                 cooldownDuration: 0,
                 cooldownRemaining: 0,
@@ -47,30 +54,35 @@ namespace EternalDefenders
 
         public override void Collect()
         {
-            DuplicateCount++;
-            ApplyStats(true);
+            if (DuplicateCount == 0)
+            {
+                DuplicateCount++;
+                ItemManager.Instance.OnItemPickUp += ApplyRandomStat;
+            }
 
         }
 
         public override void Remove()
         {
-            DuplicateCount--;
-            ApplyStats(false);
+            if (DuplicateCount == 1)
+            {
+                DuplicateCount++;
+                ItemManager.Instance.OnItemPickUp -= ApplyRandomStat;
+            }
+
         }
 
-        private void ApplyStats(bool wasDuplicateCountRaised)
+        private void ApplyRandomStat(Item item)
         {
             Stats playerStats = PlayerController.Instance.Stats;
-
-            int damageBoost = wasDuplicateCountRaised ? _flatDamageBoost : -_flatDamageBoost;
+            KeyValuePair<StatType, int> randomBoost = boosts.ElementAt(UnityEngine.Random.Range(0, boosts.Count));
 
             InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
-            modifier.statType = StatType.Damage;
+            modifier.statType =randomBoost.Key;
             modifier.modifierType = ModifierType.Flat;
-            modifier.value = damageBoost;
+            modifier.value = randomBoost.Value;
 
             playerStats.ApplyModifier(modifier);
-
         }
     }
 }

@@ -1,13 +1,17 @@
+using Codice.Client.Common.GameUI;
 using Mono.Cecil;
+using System.Collections.Generic;
 using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEditor.Graphs;
 using UnityEngine;
+using static EternalDefenders.TowerBundle;
 
 namespace EternalDefenders
 {
     [CreateAssetMenu(fileName = "UnfathomMalice", menuName = "EternalDefenders/ItemSystem/Items/UnfathomMalice")]
     public class UnfathomMalice : Item
     {
+        [SerializeField] private readonly int _flatDamageBoostPerDuplicate = 1;
         [SerializeField] private readonly int _flatDamageBoost = 5;
         /// <summary>
         /// Value in seconds
@@ -25,12 +29,28 @@ namespace EternalDefenders
 
         public override void Initialize(int id, string name)
         {
+            List<TowerBundle.ResourceCost> cost = new() {
+                new ResourceCost
+                {
+                    resource = new(),
+                    amount = 100
+                },
+                new ResourceCost
+                {
+                    resource = new(),
+                    amount = 400
+                }
+            };
+
             InitializeCommon(
                 name: name,
                 description: $"Gives dame bursts every {_damageBurstsInterval} seconds",
                 id: id,
-                rarity: 4,
+                icon: null,
+                rarity: Rarity.Rare,
+                cost: cost,
                 priority: 5,
+                unique: false,
                 cooldownDuration: 0,
                 cooldownRemaining: 0,
                 itemType: ItemType.Passive,
@@ -48,7 +68,9 @@ namespace EternalDefenders
                 _triggerTime = Time.time;
                 ApplyStats();
             }
-            
+            ApplyStatsDuplicate(true);
+
+
         }
 
         public override void Remove()
@@ -58,6 +80,20 @@ namespace EternalDefenders
             if (DuplicateCount == 0)
             {
                 ApplyStats();
+            }
+            ApplyStatsDuplicate(false);
+        }
+
+        private void ApplyStatsDuplicate(bool wasDuplicateCountRaised)
+        {
+            if (Mathf.Abs(DuplicateCount) > 1)
+            {
+                int flatDamageBoostPerDuplicate = wasDuplicateCountRaised ? _flatDamageBoostPerDuplicate : -_flatDamageBoostPerDuplicate;
+
+                InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
+                modifier.statType = StatType.Damage;
+                modifier.modifierType = ModifierType.Flat;
+                modifier.value = flatDamageBoostPerDuplicate;
             }
         }
 

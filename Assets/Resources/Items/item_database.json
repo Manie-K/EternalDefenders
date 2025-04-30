@@ -29,6 +29,16 @@
       "Id": 5,
       "Name": "Overclock",
       "Type": "Overclock"
+    },
+    {
+      "Id": 6,
+      "Name": "Cascade",
+      "Type": "Cascade"
+    },
+    {
+      "Id": 7,
+      "Name": "Lard",
+      "Type": "Lard"
     }
   ]
 }

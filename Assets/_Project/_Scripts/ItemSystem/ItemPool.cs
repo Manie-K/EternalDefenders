@@ -1,4 +1,5 @@
 using MG_Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -8,7 +9,6 @@ namespace EternalDefenders
     public class ItemPool
     {
         private readonly Dictionary<ItemPoolCategory, List<int>> _pool = new();
-        private const int MaxRarity = 4;
 
         public enum ItemPoolCategory
         {
@@ -70,9 +70,10 @@ namespace EternalDefenders
             ItemDatabase itemDatabase = ItemManager.Instance.ItemDictionary;
 
             int totalWeight = 0;
+            int maxRarity = Enum.GetValues(typeof(Rarity)).Length;
             foreach (int itemId in itemIds)
             {
-                int itemWeight = MaxRarity - itemDatabase.Items[itemId].Item.Rarity + 1;
+                int itemWeight = maxRarity - (int)itemDatabase.Items[itemId].Item.Rarity;
                 itemWeights.Add(itemWeight);
                 totalWeight += itemWeight;
             }
