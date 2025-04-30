@@ -76,6 +76,7 @@ MonoBehaviour:
   targetStrategy: {fileID: 11400000, guid: d2e7f46423fb01f498e3400fa29e7e33, type: 2}
   attackStrategy: {fileID: 11400000, guid: 4277bac39257c35419b7b660807d8c2a, type: 2}
   retargetingInterval: 3.25
+  deathEffectPrefab: {fileID: 4021103657954561961, guid: 5c755f9bc5253ea418e919994537dcc7, type: 3}
 --- !u!114 &1995334456691489260
 MonoBehaviour:
   m_ObjectHideFlags: 0

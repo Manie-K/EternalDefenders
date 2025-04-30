@@ -121,8 +121,8 @@ namespace EternalDefenders
 
             _doc.rootVisualElement.style.display = DisplayStyle.None;
 
-            BuildingManager.Instance.OnBuildingModeEnter += OnBuildingModeEnter_Delegate;
-            BuildingManager.Instance.OnBuildingModeExit += OnBuildingModeExit_Delegate;
+            InputManager.Instance.OnStoreModeEnter += OnStoreModeEnter_Delegate;
+            InputManager.Instance.OnStoreModeExit += OnStoreModeExit_Delegate;
 
             OnTowersButtonClicked();
 
@@ -131,15 +131,15 @@ namespace EternalDefenders
 
         void OnDisable()
         {
-            BuildingManager buildingManager = BuildingManager.Instance;
-            if (buildingManager == null) return;
-            buildingManager.OnBuildingModeEnter -= OnBuildingModeEnter_Delegate;
-            buildingManager.OnBuildingModeExit -= OnBuildingModeExit_Delegate;
+            InputManager inputManager = InputManager.Instance;
+            if (inputManager == null) return;
+            inputManager.OnStoreModeEnter -= OnStoreModeEnter_Delegate;
+            inputManager.OnStoreModeExit -= OnStoreModeExit_Delegate;
         }
 
-        void OnBuildingModeExit_Delegate() => _doc.rootVisualElement.style.display = DisplayStyle.None;
+        void OnStoreModeExit_Delegate() => _doc.rootVisualElement.style.display = DisplayStyle.None;
 
-        void OnBuildingModeEnter_Delegate() => _doc.rootVisualElement.style.display = DisplayStyle.Flex;
+        void OnStoreModeEnter_Delegate() => _doc.rootVisualElement.style.display = DisplayStyle.Flex;
 
 
         private void InitializeItemsPanel()
@@ -273,7 +273,7 @@ namespace EternalDefenders
                 inventory.RemoveResource(tower.cost[1].resource, stoneCost);
                 inventory.RemoveResource(tower.cost[0].resource, woodCost);
 
-                OnBuildingModeExit_Delegate();
+                OnStoreModeExit_Delegate();
 
                 OnBuildingSelected?.Invoke(tower);
 

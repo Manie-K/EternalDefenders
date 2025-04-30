@@ -11,15 +11,17 @@ namespace EternalDefenders
         [SerializeField] Transform towersParent;
         [SerializeField] Color ghostValidColor;
         [SerializeField] Color ghostInvalidColor;
-        public event Action OnBuildingModeEnter;
-        public event Action OnBuildingModeExit;
-        
+        //public event Action OnBuildModeEnter;
+        //public event Action OnBuildModeExit;
+        public event Action OnBuildFinished;
+
         MeshFilter _ghostFilter;
         MeshRenderer _ghostRenderer;
         GameObject _ghost;
         TowerController _selectedTower;
         bool _isEnabled = false;
-        
+        bool _canPlaceBuilding = false;
+
         void Start()
         {
             _ghost = transform.GetChild(0).gameObject;
@@ -35,20 +37,22 @@ namespace EternalDefenders
                 Debug.LogError("Ghost mesh not found!");
             }
             
-            OnBuildingModeEnter += () =>
+            InputManager.Instance.OnBuildModeEnter += () =>
             {
                 _isEnabled = true;
                 _ghost.SetActive(true);
             };
-            OnBuildingModeExit += () =>
+            InputManager.Instance.OnBuildModeExit += () =>
             {
                 _isEnabled = false;
                 _selectedTower = null;
                 _ghostFilter.mesh = null;
                 _ghost.SetActive(false);
+                _canPlaceBuilding = false;
             };
 
             Tower_Building_Panel_Controller.Instance.OnBuildingSelected += OnBuildingSelected_Delegate;
+            InputManager.Instance.OnBuildingPlace += OnBuildingPlace_Delegate;
         }
 
         void OnDisable()
@@ -59,13 +63,6 @@ namespace EternalDefenders
         }
         void Update()
         {
-            //TODO: Refactor to use input system, maybe change event origin.
-            if(Input.GetKeyDown(KeyCode.B))
-            {
-                if(_isEnabled) OnBuildingModeExit?.Invoke();
-                else OnBuildingModeEnter?.Invoke();
-            }   
-                
             if(!_isEnabled || _selectedTower == null) return;
 
             //Optimization: Might be a bit expensive
@@ -75,11 +72,10 @@ namespace EternalDefenders
             
             _ghostRenderer.material.color = tile.CanBuild() ? ghostValidColor : ghostInvalidColor;
             _ghost.transform.position = tile.transform.position;
-            
-            if(Input.GetMouseButtonDown(0) && tile.CanBuild())
+
+            if (_canPlaceBuilding && tile.CanBuild())
             {
                 BuildTower(tile);
-                OnBuildingModeExit?.Invoke();
             }
         }
 
@@ -89,17 +85,26 @@ namespace EternalDefenders
             _ghostFilter.mesh = towerBundle.combinedMesh;
         }
 
-        void BuildTower(HexTile tile)
+        void OnBuildingPlace_Delegate()
+        {
+            _canPlaceBuilding = true;   
+        }
+
+        public void BuildTower(HexTile tile)
         {
             if(!tile.CanBuild())
             {
                 Debug.LogError("Trying to build on invalid tile!");
+                _canPlaceBuilding = false;
+                OnBuildFinished?.Invoke();
                 return;
             }
             
             var tower = Instantiate(_selectedTower, tile.transform.position.With(y: tile.BuildingHeight), Quaternion.identity
                 , towersParent);
             tile.SetBuilding(tower);
+            _canPlaceBuilding = false;
+            OnBuildFinished?.Invoke();
         }
     }
 }

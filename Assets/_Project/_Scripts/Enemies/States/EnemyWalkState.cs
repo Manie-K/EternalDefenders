@@ -12,7 +12,7 @@ namespace EternalDefenders
         
         //Update target position every X frames
         const int UpdateTargetPositionFrameInterval = 60;
-        int frameCounter;
+        int _frameCounter;
         
         public EnemyWalkState(EnemyBrain brain, EnemyController enemy, NavMeshAgent navMeshAgent)
             : base("EnemyWalk", brain)
@@ -24,7 +24,7 @@ namespace EternalDefenders
         public override void OnEnter()
         {
             base.OnEnter();
-            frameCounter = 0;
+            _frameCounter = 0;
             ChangeAnimation(_walkHash);
             SetDestination();
         }
@@ -34,14 +34,12 @@ namespace EternalDefenders
         {
             base.OnUpdate();
             _navMeshAgent.speed = _enemyController.Stats.GetStat(StatType.Speed);
-            //TODO: Uncomment this after implementing attacking player logic
-            //Update target position (i.e player moves)
             
-            frameCounter++;
-            if(frameCounter >= UpdateTargetPositionFrameInterval)
+            _frameCounter++;
+            if(_frameCounter >= UpdateTargetPositionFrameInterval)
             {
                 SetDestination();
-                frameCounter = 0;
+                _frameCounter = 0;
             }
             
             if(_navMeshAgent.velocity.normalized != Vector3.zero)
