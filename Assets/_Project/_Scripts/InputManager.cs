@@ -39,6 +39,7 @@ namespace EternalDefenders
         protected override void Awake()
         {
             base.Awake();
+            OnPlayModeExit += OnPlayModeExit_Delegate;
             _currentGameMode = GameMode.Playing;
         }
 
@@ -125,8 +126,16 @@ namespace EternalDefenders
 
         void OnBuildFinished_Delegate()
         {
-            _currentGameMode = GameMode.Playing;
             OnBuildModeExit?.Invoke();
+            _currentGameMode = GameMode.Playing;
+        }
+
+        void OnPlayModeExit_Delegate()
+        {
+            IsPlayerMoving = false;
+            IsPlayerSprinting = false;
+            IsPlayerJumping = false;
+            IsPlayerFighting = false;
         }
 
     }
