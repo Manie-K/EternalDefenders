@@ -33,7 +33,7 @@ namespace EternalDefenders
             {
                 yield return new WaitForSeconds(interval);
                 Debug.Log($"Generated {amountPerInterval} of {resource.name}");
-                //TODO: Add resource to the player's inventory or resource pool.
+                PlayerResourceInventory.Instance.AddResource(resource, amountPerInterval);
             }
         }
     }
