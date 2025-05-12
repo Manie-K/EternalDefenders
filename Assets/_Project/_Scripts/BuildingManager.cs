@@ -18,7 +18,7 @@ namespace EternalDefenders
         MeshFilter _ghostFilter;
         MeshRenderer _ghostRenderer;
         GameObject _ghost;
-        TowerController _selectedTower;
+        TowerBase _selectedTower;
         bool _isEnabled = false;
         bool _canPlaceBuilding = false;
 
