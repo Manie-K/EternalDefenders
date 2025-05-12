@@ -63,6 +63,7 @@ namespace EternalDefenders
             {
                 _cooldownTimer.Start(_stats.GetStat(StatType.Cooldown));
                 attackStrategy.Attack(this, _target);
+                this.GetComponentInParent<AudioHelper>().PlaySound(SoundType.ATTACK, 0);
             }
             //==================
         }
