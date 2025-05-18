@@ -12,9 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0084076e88314363a2dc0c68d49bbce7, type: 3}
   m_Name: ResourceTowerBundle
   m_EditorClassIdentifier: 
-  towerPrefab: {fileID: 5895215343470559728, guid: f575f39d616af944f9982c50fc1ab28c, type: 3}
-  combinedMesh: {fileID: 4300006, guid: b84567b538c94c64196f60e963300ff7, type: 3}
+  towerPrefab: {fileID: 5895215343470559728, guid: 38117a847279bff45849171f012e6f49, type: 3}
+  combinedMesh: {fileID: 1149973307703454695, guid: e46cc3dc2d67ab840b3477aaf2751bc0, type: 3}
   icon: {fileID: 21300004, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
   cost:
   - resource: {fileID: 11400000, guid: bfa98661e90d8dd4ca62abd0c758c6e2, type: 2}
-    amount: 5
+    amount: 120
+  - resource: {fileID: 11400000, guid: fd41a69815d404d45a2295472ef0266d, type: 2}
+    amount: 150
