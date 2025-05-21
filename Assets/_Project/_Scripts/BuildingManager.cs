@@ -71,7 +71,7 @@ namespace EternalDefenders
                );
             
             _ghostRenderer.material.color = tile.CanBuild() ? ghostValidColor : ghostInvalidColor;
-            _ghost.transform.position = tile.transform.position;
+            _ghost.transform.position = tile.transform.position.With(y: tile.BuildingHeight);
 
             if (_canPlaceBuilding && tile.CanBuild())
             {

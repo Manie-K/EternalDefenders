@@ -75,7 +75,7 @@ namespace EternalDefenders
         {
             List<HexTile> neighbours = new List<HexTile>(6);
 
-            if (x < 0 || x >= MapWidthChunks || y < 0 || y >= MapHeightChunks)
+            if (x < 0 || x >= MapWidthChunks * 3 || y < 0 || y >= MapHeightChunks * 2)
             {
                 throw new ArgumentException("Wrong tile coordinates");
             }

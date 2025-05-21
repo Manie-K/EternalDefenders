@@ -6,6 +6,7 @@ namespace EternalDefenders
 {
     public class SpawnManager : MonoBehaviour
     {
+        [SerializeField] bool populateMapOnStartEnabled = true;
         [SerializeField] Transform enemiesParent;
         [SerializeField] List<EnemyController> enemyTier1Prefabs;
         [SerializeField] List<EnemyController> enemyTier2Prefabs;
@@ -25,7 +26,8 @@ namespace EternalDefenders
             CalcEnemyTierWaveDifficulty();
             _enemySpawners = FindObjectsByType<SpawnerSpawnPoint>(FindObjectsSortMode.InstanceID);
             _enemySpawnPointsForLevelStart = FindObjectsByType<MapSpawnPoint>(FindObjectsSortMode.InstanceID);
-            PopulateMap();
+            if (populateMapOnStartEnabled)
+                PopulateMap();
         }
 
         public IEnumerator SpawnWave()
