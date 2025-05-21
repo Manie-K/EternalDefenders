@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   modifiers:
   - {fileID: 11400000, guid: 888decb25c867c045acc3d56dc51b20d, type: 2}
-  particleSystem: {fileID: 8746978703178695197, guid: f7cba5ea953e5504b8d93f3979db01d9, type: 3}
+  particleSystem: {fileID: 2740321307519119334, guid: 5bc9a0bf98f67d240a936bf476ba2082, type: 3}

@@ -16,19 +16,14 @@ namespace EternalDefenders
         [SerializeField] float maxRotation;
 
         private Bullet _currentBullet;
-        private string _enemyTag;
         private bool _isReloading;
         private PlayerController _playerController;
         private float _firePower;
         private bool _fire;
-        private bool _isFighting = false;
-        private bool _canFight = true;
         private Stats _playerStats;
 
         void Awake()
         {
-            _isFighting = false;
-            _canFight = true;
             Reload();
         }
 
@@ -38,9 +33,9 @@ namespace EternalDefenders
             reloadTime = _playerStats.GetStat(StatType.Cooldown);
 
             _playerController = GetComponentInParent<PlayerController>();
-            _playerController.OnPlayerFight += ChangeFightState;
-            _playerController.OnPlayerDeath += OnPlayerDeath;
-            _playerController.OnPlayerRespawn += OnPlayerRespawn;
+            _playerController.OnDeath += OnPlayerDeath_Delegate;
+            _playerController.OnRespawn += OnPlayerRespawn_Delegate;
+            _playerController.OnFight += OnPlayerFight_Delegate;
         }
 
         void Update()
@@ -49,56 +44,46 @@ namespace EternalDefenders
             {
                 Reload();
             }
-
-            PlayerInput();
         }
 
-        void PlayerInput()
-        {
-            if (_canFight)
-            {
-                if (Input.GetMouseButton(0) && _isFighting)
-                {
-                    StartCoroutine(WaitForFightAndFire(0f));
-                }
-                else if (Input.GetMouseButton(0) && !_isFighting)
-                {
-                    _playerController.ChangeDirection();
-                    _playerController.ChangeAnimation(_playerController._aimingSniperRifleHash, 0.03f);
-                    StartCoroutine(WaitForFightAndFire(0.3f));
-                }
-            }
-            else
-            {
-                _playerController.ChangeAnimation(_playerController._deathRifleHash);
-            }
-
-        }
-
-        private IEnumerator WaitForFightAndFire(float waitingTime)
+        private IEnumerator WaitAndFire(float waitingTime)
         {
             yield return new WaitForSeconds(waitingTime);
-
-            _isFighting = true;
 
             _firePower = maxFirePower;
             Fire(_firePower);
             _firePower = 0;
         }
 
-        private void ChangeFightState(bool isFighting)
+        private void OnPlayerDeath_Delegate()
         {
-            _isFighting = isFighting;
+            _playerController.ChangeAnimation(_playerController._deathRifleHash);
         }
 
-        private void OnPlayerDeath()
+        private void OnPlayerRespawn_Delegate()
         {
-            _canFight = false;
         }
 
-        private void OnPlayerRespawn()
+        private void OnPlayerFight_Delegate()
         {
-            _canFight = true;
+            if (_playerController.CanFight && !_isReloading && _currentBullet != null)
+            {
+                if (_playerController.CurrentState == PlayerState.ReadyToFight)
+                {
+                    _playerController.CurrentState = PlayerState.Fight;
+                    _playerController.CanMove = false;
+                    _playerController.ChangeDirection360();
+                    StartCoroutine(WaitAndFire(0f));
+                }
+                else if (_playerController.CurrentState != PlayerState.ReadyToFight)
+                {
+                    _playerController.CurrentState = PlayerState.Fight;
+                    _playerController.CanMove = false;
+                    _playerController.ChangeDirection360();
+                    _playerController.ChangeAnimation(_playerController._aimingSniperRifleHash, 0.03f);
+                    StartCoroutine(WaitAndFire(0.3f));
+                }
+            }
         }
 
         public void Reload()
@@ -112,16 +97,21 @@ namespace EternalDefenders
         {
             yield return new WaitForSeconds(reloadTime);
             _currentBullet = Instantiate(bulletPrefab, spawnPoint);
-            _currentBullet.SetEnemyTag(_enemyTag);
+            _currentBullet.SetEnemyTag(enemyTag);
             _currentBullet.transform.localPosition = Vector3.zero;
             _isReloading = false;
         }
 
         public void Fire(float firePower)
         {
-            if (_isReloading || _currentBullet == null || _canFight == false) return;
+            if (_isReloading || _currentBullet == null || _playerController.CanFight == false)
+            {
+                _playerController.CanMove = true;
+                _playerController.CurrentState = PlayerState.ReadyToFight;
+                return;
+            }
 
-            _playerController.ChangeAnimation(_playerController._fireSniperRifleHash, 0.03f, 0, true);
+            _playerController.ChangeAnimation(_playerController._fireSniperRifleHash, 0.03f);
 
             var force = spawnPoint.TransformDirection(Vector3.forward * firePower);
 
@@ -129,6 +119,8 @@ namespace EternalDefenders
             _currentBullet = null;
             
             Reload();
+            _playerController.CanMove = true;
+            _playerController.CurrentState = PlayerState.ReadyToFight;
         }
 
         bool IsReady()

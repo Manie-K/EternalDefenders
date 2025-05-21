@@ -1,4 +1,9 @@
+using Mono.Cecil;
+using System.Collections.Generic;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
+using UnityEditor.Graphs;
 using UnityEngine;
+using static EternalDefenders.TowerBundle;
 
 namespace EternalDefenders
 {
@@ -6,15 +11,31 @@ namespace EternalDefenders
     public class NanoSpikeGauntlets : Item
     {
 
-        [SerializeField] private int _flatDamageBoost = 20;
+        [SerializeField] private readonly int _flatDamageBoost = 10;
 
         public override void Initialize(int id, string name)
         {
+            List<TowerBundle.ResourceCost> cost = new() {
+                new ResourceCost
+                {
+                    resource = new(),
+                    amount = 200
+                },
+                new ResourceCost
+                {
+                    resource = new(),
+                    amount = 200
+                }
+            };
+
             InitializeCommon(
                 name: name,
-                description: "Adds flat damage buff to player",
+                description: $"Adds {_flatDamageBoost} flat damage buff to player",
                 id: id,
-                rarity: 1,
+                icon: null,
+                rarity: Rarity.Common,
+                cost: cost,
+                unique: false,
                 priority: 5,
                 cooldownDuration: 0,
                 cooldownRemaining: 0,
@@ -26,34 +47,27 @@ namespace EternalDefenders
 
         public override void Collect()
         {
-            if (DuplicateCount == 0)
-            {
-                ApplyStats();
-            }
             DuplicateCount++;
+            ApplyStats(true);
+
         }
 
         public override void Remove()
         {
-            if (DuplicateCount == 1)
-            {
-                ApplyStats();
-            }
             DuplicateCount--;
+            ApplyStats(false);
         }
 
-        private void ApplyStats()
+        private void ApplyStats(bool wasDuplicateCountRaised)
         {
             Stats playerStats = PlayerController.Instance.Stats;
 
-            int damageBoost = DuplicateCount == 1 ? _flatDamageBoost : -_flatDamageBoost;
+            int damageBoost = wasDuplicateCountRaised ? _flatDamageBoost : -_flatDamageBoost;
 
-            InstantModifier modifier = new InstantModifier()
-            {
-                statType = StatType.Damage,
-                modifierType = ModifierType.Flat,
-                value = damageBoost
-            };
+            InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
+            modifier.statType = StatType.Damage;
+            modifier.modifierType = ModifierType.Flat;
+            modifier.value = damageBoost;
 
             playerStats.ApplyModifier(modifier);
 

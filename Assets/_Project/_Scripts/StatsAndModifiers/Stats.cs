@@ -89,7 +89,7 @@ namespace EternalDefenders
                 //change value back to original ???
                 if(modifier.persistAfterFinish)
                 {
-                    _baseValue -= modifier.value;
+                    _baseValue += modifier.value;
                 }
                 _modifiers.Remove(modifier);
                 _isDirty = true;

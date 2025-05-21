@@ -1,4 +1,9 @@
+using Mono.Cecil;
+using System.Collections.Generic;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
+using UnityEditor.Graphs;
 using UnityEngine;
+using static EternalDefenders.TowerBundle;
 
 namespace EternalDefenders
 {
@@ -11,12 +16,28 @@ namespace EternalDefenders
 
         public override void Initialize(int id, string name)
         {
+            List<TowerBundle.ResourceCost> cost = new() {
+                new ResourceCost
+                {
+                    resource = new(),
+                    amount = 50
+                },
+                new ResourceCost
+                {
+                    resource = new(),
+                    amount = 50
+                }
+            };
+
             InitializeCommon(
                 name: name,
-                description: "Gives boost to player attack and movement speed",
+                description: "Gives player movement speed boost",
                 id: id,
-                rarity: 1,
+                icon: null,
+                rarity: Rarity.Rare,
+                cost: cost,
                 priority: 5,
+                unique: false,
                 cooldownDuration: 0,
                 cooldownRemaining: 0,
                 itemType: ItemType.Passive,
@@ -33,6 +54,7 @@ namespace EternalDefenders
             {
                 ApplyStats();
             }
+            ApplyStatsDuplicate(true);
         }
 
         public override void Remove()
@@ -43,6 +65,20 @@ namespace EternalDefenders
             {
                 ApplyStats();
             }
+            ApplyStatsDuplicate(false);
+        }
+
+        private void ApplyStatsDuplicate(bool wasDuplicateCountRaised)
+        {
+            if (Mathf.Abs(DuplicateCount) > 1)
+            {
+                int speedBoostPerDuplicate = wasDuplicateCountRaised ? _speedBoostPerDuplicate : -_speedBoostPerDuplicate;
+
+                InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
+                modifier.statType = StatType.Speed;
+                modifier.modifierType = ModifierType.Flat;
+                modifier.value = speedBoostPerDuplicate;
+            }
         }
 
         private void ApplyStats()
@@ -51,12 +87,10 @@ namespace EternalDefenders
 
             int speedBoost = DuplicateCount == 1 ? _speedBoost : -_speedBoost;
 
-            InstantModifier modifier = new InstantModifier()
-            {
-                statType = StatType.Speed,
-                modifierType = ModifierType.Flat,
-                value = speedBoost
-            };
+            InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
+            modifier.statType = StatType.Speed;
+            modifier.modifierType = ModifierType.Flat;
+            modifier.value = speedBoost;
 
             playerStats.ApplyModifier(modifier);
 

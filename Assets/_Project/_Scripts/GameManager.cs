@@ -12,14 +12,16 @@ namespace EternalDefenders
 
         void Start()
         {
+            Time.timeScale = 1f;
+
             MainBaseController.Instance.OnMainBaseDestroyed += GameOver;
         }
 
         void GameOver()
         {
             Debug.Log("======= Game Over =======");
-            PauseTime();
-            EditorApplication.isPaused = true;
+            PauseTime(); 
+            //EditorApplication.isPaused = true;
         }
         
         public void PauseTime() => Time.timeScale = 0f;

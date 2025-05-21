@@ -1,5 +1,5 @@
 .menu-button {
-    font-size: 600%;
+    font-size: 500%;
     -unity-font-definition: resource('FlatSkin/Font/Roboto-Bold');
     background-color: rgba(22, 52, 90, 0);
     border-left-color: rgba(0, 0, 0, 0);
@@ -14,7 +14,7 @@
 .menu-button:hover {
     font-size: 500%;
     color: rgb(148, 182, 232);
-    rotate: -7deg;
+    rotate: 0;
     transition-duration: 0.3s;
 }
 

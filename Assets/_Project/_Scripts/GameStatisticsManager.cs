@@ -24,7 +24,7 @@ namespace EternalDefenders
         void SubscribeToEvents()
         {
             TowerController.OnTowerDestroyed += (_) => TowersDestroyed++;
-            PlayerController.Instance.OnPlayerDeath += () => PlayerDeaths++;
+            PlayerController.Instance.OnDeath += () => PlayerDeaths++;
         }
     }
 }

@@ -1,2 +1,16 @@
 fileFormatVersion: 2
 guid: 1da7d19597a427148b3f516058eb9bda
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - statsConfig: {instanceID: 0}
+  - attackEffect: {instanceID: 0}
+  - targetStrategy: {instanceID: 0}
+  - attackStrategy: {instanceID: 0}
+  - deathEffectPrefab: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

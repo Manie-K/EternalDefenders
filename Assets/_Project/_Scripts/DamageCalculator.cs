@@ -79,9 +79,14 @@ namespace EternalDefenders
             }
             
             DamagePopupText.Create(player.transform.position.With(y: 1.75f), enemyStats.GetStat(StatType.Damage));
+            
+            if (player.CurrentState != PlayerState.Dead)
+            {
+                StartCoroutine(player.OnDamage());
+            }
         }
 
-        public void BulletHitEnemy(EnemyController enemy)
+        public void PlayerAttackEnemy(EnemyController enemy)
         {
             Stats playerStats = PlayerController.Instance.Stats;
             Stats enemyStats = enemy.Stats;

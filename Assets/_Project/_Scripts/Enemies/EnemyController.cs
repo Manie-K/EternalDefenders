@@ -11,6 +11,10 @@ namespace EternalDefenders
         [SerializeField] EnemyTargetStrategy targetStrategy;
         [SerializeField] EnemyAttackStrategy attackStrategy;
         [SerializeField] float retargetingInterval = 2f;
+
+        [SerializeField] private GameObject deathEffectPrefab;
+        [SerializeField] private Vector3 deathEffectOffset = new Vector3(0, 0.5f, 0);
+
         public Stats Stats { get; private set; }
         public Effect Effect { get; private set; }
         public IEnemyTarget Target { get; private set; }
@@ -18,6 +22,7 @@ namespace EternalDefenders
         public event Action OnRetarget;
 
         CountdownTimer _retargetingTimer;
+        float _lastAttackTime;
         
         void Awake()
         {
@@ -58,14 +63,40 @@ namespace EternalDefenders
         {
             while(attackStrategy.TargetIsValid(this, Target))
             {
+                int cooldown = Stats.GetStat(StatType.Cooldown);
+                if(Time.time - _lastAttackTime < cooldown)
+                {
+                    Debug.Log($"Prevented attack for {Time.time - _lastAttackTime}");
+                    yield return new WaitForSeconds(cooldown - (Time.time - _lastAttackTime));
+                }
+                
+                if(gameObject.GetComponent<EnemyBrain>().CurrentState.GetType() != typeof(EnemyAttackState))
+                {
+                    Debug.LogError($"Attacking while in different state ({gameObject.GetComponent<EnemyBrain>().CurrentState.Name})!");
+                    yield break;
+                }
+                
                 attackStrategy.Attack(this, Target);
-                yield return new WaitForSeconds(Stats.GetStat(StatType.Cooldown));
+                _lastAttackTime = Time.time;
+                
+                yield return new WaitForSeconds(cooldown);
             }
+            OnRetarget?.Invoke();
         }
         public void Die()
         {
             Debug.Log("I'm dead");
-            
+
+            if (deathEffectPrefab != null)
+            {
+                Vector3 spawnPosition = transform.position + deathEffectOffset;
+                GameObject deathEffect = Instantiate(deathEffectPrefab, spawnPosition, Quaternion.identity);
+
+                deathEffect.transform.localScale *= 0.9f;
+
+                Destroy(deathEffect, 5f);
+            }
+
             OnDeath?.Invoke();
             GameStatisticsManager.Instance?.NotifyEnemyKilled();
             FSMEntitiesManager.Instance?.UnregisterEntity(GetComponent<EnemyBrain>());

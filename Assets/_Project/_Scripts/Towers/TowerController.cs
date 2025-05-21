@@ -5,13 +5,15 @@ using UnityEngine.Serialization;
 
 namespace EternalDefenders
 {
-    public class TowerController : MonoBehaviour, IEnemyTarget
+    public class TowerController : TowerBase, IEnemyTarget
     {
         [SerializeField] TowerStats statsConfig;
         [SerializeField] Effect attackEffect;
         [SerializeField] TowerTargetStrategy targetStrategy;
         [SerializeField] TowerAttackStrategy attackStrategy;
-        
+
+        [SerializeField] private GameObject deathEffectPrefab;
+
         public static event Action<TowerController> OnTowerDestroyed;
 
         public Stats Stats
@@ -61,6 +63,7 @@ namespace EternalDefenders
             {
                 _cooldownTimer.Start(_stats.GetStat(StatType.Cooldown));
                 attackStrategy.Attack(this, _target);
+                this.GetComponentInParent<AudioHelper>().PlaySound(SoundType.ATTACK, 0);
             }
             //==================
         }
@@ -75,6 +78,14 @@ namespace EternalDefenders
 
             OnTowerDestroyed?.Invoke(this);
             Debug.Log("Tower destroyed");
+
+            if (deathEffectPrefab != null)
+            {
+                GameObject deathEffect = Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
+
+                Destroy(deathEffect, 5f);
+            }
+
             Destroy(gameObject);
         }
     }

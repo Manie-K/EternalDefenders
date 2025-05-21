@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: cadd5e23ac0333f448cd7ceee9f15865
+timeCreated: 1512046719
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 107207
+  packageName: Demon Girl
+  packageVersion: 1.1.2
+  assetPath: Assets/_DLNK/Characters/Demon Girl/Source/Materials/dlnk_DemonGirl_hairpiece_op.mat
+  uploadId: 552146
