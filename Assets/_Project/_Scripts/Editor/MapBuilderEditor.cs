@@ -14,7 +14,7 @@ namespace EternalDefenders.Editor
 
             if (GUILayout.Button("Generate Map"))
             {
-                myScript.GenerateChunks();
+                myScript.GenerateMap();
             }
         }
     }
