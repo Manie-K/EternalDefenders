@@ -51,7 +51,7 @@ namespace EternalDefenders
             
             int amountToRemove = Mathf.Min(amount, _resources[resourceType]);
             _resources[resourceType] -= amountToRemove;
-            if (_resources[resourceType] <= 0)
+            if (_resources[resourceType] < 0)
             {
                 _resources.Remove(resourceType);
             }
