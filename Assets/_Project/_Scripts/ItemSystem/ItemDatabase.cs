@@ -75,7 +75,7 @@ namespace EternalDefenders
                 _items.Add(itemData.Id, itemInfo);
             }
 
-            Debug.Log("Item database loaded. Total items: " + _items.Count);
+            Debug.Log("Item database loaded. Total items: " + Items.Count);
         }
 
         private Item CreateItemByType(string typeName)

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using MG_Utilities;
 using UnityEngine;
@@ -58,9 +59,12 @@ namespace EternalDefenders
         private VisualElement[] _ItemsRows;
 
 
-        void Start()
+        IEnumerator Start()
         {
             _doc = GetComponent<UIDocument>();
+
+
+            _doc.rootVisualElement.style.display = DisplayStyle.None;
 
             Towers_Button = _doc.rootVisualElement.Q<Button>("TowersContener_Panel");
             Towers_Button.clicked += OnTowersButtonClicked;
@@ -74,6 +78,9 @@ namespace EternalDefenders
             InitializeItemsPanel();
 
             AcctualPage = 0;
+
+            yield return new WaitUntil(() => ItemManager.Instance?.ItemDictionary?.Items?.Count > 0);
+
             _ItemsDatabase = ItemManager.Instance.ItemDictionary;
             SizeOfItems = _ItemsDatabase.Items.Count;
 
@@ -118,8 +125,6 @@ namespace EternalDefenders
             }
 
             SetTowerPrices();
-
-            _doc.rootVisualElement.style.display = DisplayStyle.None;
 
             InputManager.Instance.OnStoreModeEnter += OnStoreModeEnter_Delegate;
             InputManager.Instance.OnStoreModeExit += OnStoreModeExit_Delegate;
@@ -220,6 +225,7 @@ namespace EternalDefenders
 
         void OnBackButtonClicked()
         {
+
             if (AcctualPage > 0)
             {
                 AcctualPage--;
