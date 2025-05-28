@@ -2,6 +2,7 @@ using MG_Utilities;
 using System;
 using Unity.Plastic.Newtonsoft.Json.Bson;
 using UnityEngine;
+using System.Threading.Tasks;
 
 namespace EternalDefenders
 {
@@ -124,9 +125,10 @@ namespace EternalDefenders
             _currentGameMode = GameMode.Building;
         }
 
-        void OnBuildFinished_Delegate()
+        async void OnBuildFinished_Delegate()
         {
             OnBuildModeExit?.Invoke();
+            await Task.Delay(300);
             _currentGameMode = GameMode.Playing;
         }
 
