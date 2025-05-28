@@ -19,4 +19,4 @@ MonoBehaviour:
   - resource: {fileID: 11400000, guid: bfa98661e90d8dd4ca62abd0c758c6e2, type: 2}
     amount: 100
   - resource: {fileID: 11400000, guid: fd41a69815d404d45a2295472ef0266d, type: 2}
-    amount: 50
+    amount: 0

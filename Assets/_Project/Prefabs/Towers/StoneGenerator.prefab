@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resource: {fileID: 11400000, guid: fd41a69815d404d45a2295472ef0266d, type: 2}
-  amountPerInterval: 50
+  amountPerInterval: 5
   interval: 5
 --- !u!64 &-2846533335373036486
 MeshCollider:

@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   damage: 20
-  range: 10
+  range: 15
   cooldown: 4

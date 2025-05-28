@@ -16,9 +16,9 @@ namespace EternalDefenders
         SpawnerSpawnPoint[] _enemySpawners;
         MapSpawnPoint[] _enemySpawnPointsForLevelStart;
         List<int> _minWavePowerForTier;
-        
+
         //TODO change enemy power to list for each tier or add individual power for each enemy
-        int _singleEnemyWavePower = 1;
+        List<int> _singleEnemyTierPower = new List<int> { 1, 2, 3, 4 };
         float _timeBetweenEnemySpawns = 0.5f;
 
         void Start()
@@ -59,10 +59,10 @@ namespace EternalDefenders
                 { 
                     case 1:
                         enemyIndex = Random.Range(0, enemyTier1Prefabs.Count);
-                        if (_singleEnemyWavePower + enemiesWavePower <= GameManager.Instance.WavePower)
+                        if (_singleEnemyTierPower[tier - 1] + enemiesWavePower <= GameManager.Instance.WavePower)
                         {
                             enemiesToSpawn.Add(enemyTier1Prefabs[enemyIndex]);
-                            enemiesWavePower += _singleEnemyWavePower;
+                            enemiesWavePower += _singleEnemyTierPower[tier - 1];
                         }
                         else
                         { 
@@ -71,10 +71,10 @@ namespace EternalDefenders
                         break;
                     case 2:
                         enemyIndex = Random.Range(0, enemyTier2Prefabs.Count);
-                        if (_singleEnemyWavePower + enemiesWavePower <= GameManager.Instance.WavePower)
+                        if (_singleEnemyTierPower[tier - 1] + enemiesWavePower <= GameManager.Instance.WavePower)
                         {
                             enemiesToSpawn.Add(enemyTier2Prefabs[enemyIndex]);
-                            enemiesWavePower += _singleEnemyWavePower;
+                            enemiesWavePower += _singleEnemyTierPower[tier - 1];
                         }
                         else
                         {
@@ -83,10 +83,10 @@ namespace EternalDefenders
                         break;
                     case 3:
                         enemyIndex = Random.Range(0, enemyTier3Prefabs.Count);
-                        if (_singleEnemyWavePower + enemiesWavePower <= GameManager.Instance.WavePower)
+                        if (_singleEnemyTierPower[tier - 1] + enemiesWavePower <= GameManager.Instance.WavePower)
                         {
                             enemiesToSpawn.Add(enemyTier3Prefabs[enemyIndex]);
-                            enemiesWavePower += _singleEnemyWavePower;
+                            enemiesWavePower += _singleEnemyTierPower[tier - 1];
                         }
                         else
                         {
@@ -95,10 +95,10 @@ namespace EternalDefenders
                         break;
                     case 4:
                         enemyIndex = Random.Range(0, enemyTier4Prefabs.Count);
-                        if (_singleEnemyWavePower + enemiesWavePower <= GameManager.Instance.WavePower)
+                        if (_singleEnemyTierPower[tier - 1] + enemiesWavePower <= GameManager.Instance.WavePower)
                         {
                             enemiesToSpawn.Add(enemyTier4Prefabs[enemyIndex]);
-                            enemiesWavePower += _singleEnemyWavePower;
+                            enemiesWavePower += _singleEnemyTierPower[tier - 1];
                         }
                         else
                         {
@@ -116,7 +116,7 @@ namespace EternalDefenders
 
         void CalcEnemyTierWaveDifficulty()
         {
-            _minWavePowerForTier = new List<int>(4) {0, 2, 3, 4};
+            _minWavePowerForTier = new List<int>(4) { 0, 6, 12, 18 };
         }
 
         void PopulateMap()

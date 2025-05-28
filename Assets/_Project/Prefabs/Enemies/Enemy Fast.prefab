@@ -200,7 +200,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statsConfig: {fileID: 11400000, guid: cca0925ec95e8e84e8dd5b9a6114e991, type: 2}
-  attackEffect: {fileID: 11400000, guid: 8e71a668601e5424fa33d6a77c449c4c, type: 2}
+  attackEffect: {fileID: 11400000, guid: 68a525725573b10448c125c45a5dbf5e, type: 2}
   targetStrategy: {fileID: 11400000, guid: d2e7f46423fb01f498e3400fa29e7e33, type: 2}
   attackStrategy: {fileID: 11400000, guid: 4277bac39257c35419b7b660807d8c2a, type: 2}
   retargetingInterval: 3.25

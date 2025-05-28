@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: IceTowerStats
   m_EditorClassIdentifier: 
   health: 120
-  damage: 15
-  range: 12
+  damage: 10
+  range: 20
   cooldown: 5

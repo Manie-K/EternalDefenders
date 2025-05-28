@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   resource: {fileID: 11400000, guid: bfa98661e90d8dd4ca62abd0c758c6e2, type: 2}
-  amountPerInterval: 50
+  amountPerInterval: 10
   interval: 5
 --- !u!1001 &1772429762600822278
 PrefabInstance:

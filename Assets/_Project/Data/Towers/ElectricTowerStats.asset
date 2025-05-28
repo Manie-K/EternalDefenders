@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bb579d3dc842f747901606d58316e28, type: 3}
   m_Name: ElectricTowerStats
   m_EditorClassIdentifier: 
-  health: 80
-  damage: 30
-  range: 12
-  cooldown: 5
+  health: 200
+  damage: 300
+  range: 40
+  cooldown: 10
