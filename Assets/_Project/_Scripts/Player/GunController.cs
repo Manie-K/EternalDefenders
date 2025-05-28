@@ -31,6 +31,7 @@ namespace EternalDefenders
         {
             _playerStats = PlayerController.Instance.Stats;
             reloadTime = _playerStats.GetStat(StatType.Cooldown);
+            maxFirePower = _playerStats.GetStat(StatType.Range) * 4;
 
             _playerController = GetComponentInParent<PlayerController>();
             _playerController.OnDeath += OnPlayerDeath_Delegate;

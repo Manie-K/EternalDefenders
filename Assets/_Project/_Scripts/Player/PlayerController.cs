@@ -308,7 +308,7 @@ namespace EternalDefenders
 
             ChangeAnimation(_currentHitHash, 0.01f);
 
-            List<EnemyController> enemiesToHit = GetEnemiesInFront();
+            List<EnemyController> enemiesToHit = GetEnemiesInFront(Stats.GetStat(StatType.Range));
             foreach (var enemy in enemiesToHit)
             {
                 if (enemy != null)
@@ -465,7 +465,7 @@ namespace EternalDefenders
             CanFight = true;
         }
 
-        private List<EnemyController> GetEnemiesInFront(float detectionRadius = 10f, float angle = 90f)
+        private List<EnemyController> GetEnemiesInFront(int detectionRadius = 10, float angle = 90f)
         {
             List<EnemyController> enemiesInFront = new List<EnemyController>();
             Collider[] hitColliders = Physics.OverlapSphere(_playerTransform.position, detectionRadius);
