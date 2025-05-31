@@ -77,6 +77,7 @@ namespace EternalDefenders
             {
                 BuildTower(tile);
             }
+            else _canPlaceBuilding = false;
         }
 
         void OnBuildingSelected_Delegate(TowerBundle towerBundle)
