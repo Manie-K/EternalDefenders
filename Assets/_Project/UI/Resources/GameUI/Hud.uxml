@@ -3,10 +3,16 @@
         <HudElements.HealthBar fill-color="#FF191CFF" name="HealthBar" style="position: absolute; top: 5%; left: 1%;" />
         <HudElements.HealthBar fill-color="#64AECDFF" name="ShieldBar" _fill-color="#20C3C3FF" style="position: absolute; left: 1%; top: 12%;" />
         <HudElements.HealthBar name="BaseHeartBar" width="601" fill-color="#F013D1FF" value="1" _fill-color="#D755B1FF" style="position: absolute; top: 1%; left: 35%; width: 300px;" />
-        <engine:VisualElement name="Materials" style="flex-grow: 0; position: absolute; width: 180px; height: 8%; top: 20%; left: 1%;">
-            <engine:VisualElement name="WoodCounter" style="flex-grow: 1;" />
-            <engine:VisualElement name="StoneCounter" style="flex-grow: 1; top: 10%; margin-top: 0; padding-top: 0;" />
+        <engine:VisualElement name="Materials" style="flex-grow: 0; position: absolute; width: 16%; height: 14%; top: 86%; left: 84%; background-image: resource(&apos;Panel 1920x1080px&apos;); -unity-background-image-tint-color: rgb(255, 255, 255); margin-bottom: 0; padding-bottom: 0; align-self: center; flex-direction: row; justify-content: flex-start; align-content: flex-start; align-items: stretch;">
+            <engine:VisualElement name="Resources" style="flex-grow: 1; left: 10%; -unity-text-align: middle-left;">
+                <engine:VisualElement name="WoodCounter" style="flex-grow: 1; left: 0; align-self: auto;" />
+                <engine:VisualElement name="StoneCounter" style="flex-grow: 1; top: 0; margin-top: 0; padding-top: 0; left: 0;" />
+            </engine:VisualElement>
+            <engine:VisualElement name="MobsStats" style="flex-grow: 1; left: 23%;">
+                <engine:VisualElement name="AliveMobs" style="flex-grow: 1; align-self: auto; justify-content: center;" />
+                <engine:VisualElement name="DeadMobs" style="flex-grow: 1; justify-content: flex-start;" />
+            </engine:VisualElement>
         </engine:VisualElement>
-        <engine:VisualElement name="WaveTimer" style="flex-grow: 0; width: 9%; height: 6%; position: absolute; top: 1%; left: 90%;" />
+        <engine:VisualElement name="WaveTimer" style="flex-grow: 0; width: 9%; height: 6%; position: absolute; top: 2%; left: 89%;" />
     </engine:VisualElement>
 </engine:UXML>

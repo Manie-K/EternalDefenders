@@ -1,10 +1,11 @@
+using MG_Utilities;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace EternalDefenders
 {
-    public class SpawnManager : MonoBehaviour
+    public class SpawnManager : Singleton<SpawnManager>
     {
         [SerializeField] bool populateMapOnStartEnabled = true;
         [SerializeField] Transform enemiesParent;
@@ -40,6 +41,11 @@ namespace EternalDefenders
                 _enemySpawners[spawnerIndex].Spawn(enemy, enemiesParent);
                 yield return new WaitForSeconds(_timeBetweenEnemySpawns);
             }
+        }
+
+        public Transform GetEnemiersParent()
+        {
+            return enemiesParent;
         }
 
         List<EnemyController> GetEnemiesToSpawn()

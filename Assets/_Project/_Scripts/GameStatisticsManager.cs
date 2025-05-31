@@ -1,4 +1,5 @@
 ﻿using MG_Utilities;
+using System;
 
 namespace EternalDefenders
 {
@@ -8,7 +9,7 @@ namespace EternalDefenders
         public int PlayerDeaths { get; private set; }
         public int EnemiesKilled { get; private set; }
         //later we will add more etc.
-        
+        public event Action OnEnemyDead;
         void Start()
         {
             TowersDestroyed = 0;
@@ -18,7 +19,11 @@ namespace EternalDefenders
             SubscribeToEvents();
         }
 
-        public void NotifyEnemyKilled() => EnemiesKilled++;
+        public void NotifyEnemyKilled()
+        {
+            EnemiesKilled++;
+            OnEnemyDead?.Invoke();
+        }
         
         //TODO manage cleanup (unlinking on destroy)
         void SubscribeToEvents()
