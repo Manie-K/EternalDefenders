@@ -7,7 +7,6 @@ namespace EternalDefenders
     [CreateAssetMenu(fileName = "Item", menuName = "EternalDefenders/ItemSystem/Item")]
     public abstract class Item : ScriptableObject
     {
-
         #region Fields
         
         private string _name;
@@ -31,12 +30,13 @@ namespace EternalDefenders
         /// Value in seconds
         /// </summary>
         [SerializeField] private float _cooldownDuration;
-        [SerializeField] private float _cooldownRemaining;
-        [SerializeField] private float _duplicateCount;
+        private float _cooldownRemaining;
+        private float _duplicateCount;
 
-        private bool _unique;
+
+        [SerializeField] private bool _unique;
         private Sprite _icon;
-        protected List<TowerBundle.ResourceCost> _cost;
+        [SerializeField] public List<TowerBundle.ResourceCost> _cost;
 
         private ItemType _itemType;
         private ItemTarget _itemTarget;

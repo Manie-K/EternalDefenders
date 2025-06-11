@@ -15,10 +15,14 @@
                 <engine:Label text="Enemies killed" name="Enemies_Killed" class="Text" style="height: auto; align-self: stretch; font-size: 50%; flex-grow: 0; text-overflow: ellipsis;" />
                 <engine:Label text=" 0" name="Enemies_Killed_Number" class="Text" style="font-size: 50%; flex-grow: 0;" />
             </engine:VisualElement>
+            <engine:VisualElement name="Forth_Stat" style="flex-grow: 1; flex-direction: row; align-self: center;">
+                <engine:Label text="Score  " name="Final_Score" class="Text" style="height: auto; flex-grow: 0; flex-shrink: 1; font-size: 50%; align-self: auto; align-items: stretch; align-content: flex-start; flex-direction: row; position: relative; left: auto;" />
+                <engine:Label text=" 0" name="Final_Score_Number" class="Text" style="flex-grow: 0; flex-shrink: 1; font-size: 50%; padding-left: 10%;" />
+            </engine:VisualElement>
         </engine:VisualElement>
-        <engine:VisualElement name="Buttons" style="flex-grow: 0; align-content: flex-start; align-self: auto; flex-direction: column-reverse;">
-            <engine:Button text="Exit" name="Exit" class="menu-button" style="font-size: 60%;" />
-            <engine:Button text="Play again" name="PlayAgain" enable-rich-text="false" class="menu-button" style="font-size: 60%; top: 15%;" />
+        <engine:VisualElement name="Buttons" style="flex-grow: 1; flex-direction: row; align-self: center;">
+            <engine:Button text="Exit" name="Exit" class="menu-button" style="height: auto; align-self: stretch; font-size: 50%; flex-grow: 0; text-overflow: ellipsis;" />
+            <engine:Button text="Play again" name="PlayAgain" enable-rich-text="false" class="menu-button" style="font-size: 50%; flex-grow: 0;" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

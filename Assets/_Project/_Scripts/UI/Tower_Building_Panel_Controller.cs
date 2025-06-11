@@ -248,8 +248,8 @@ namespace EternalDefenders
                     var currentItem = _ItemsDatabase.Items[itemIndex].Item;
 
                     _ItemsNamesLabels[i, 0].text = currentItem.Name;
-                    _ItemsPriceLabels[i, 0].text = "30";
-                    _ItemsPriceLabels[i, 1].text = "30";
+                    _ItemsPriceLabels[i, 0].text = currentItem.Cost[0].amount.ToString();
+                    _ItemsPriceLabels[i, 1].text = currentItem.Cost[1].amount.ToString();
                     _ItemsDescriptionsLabels[i, 0].text = currentItem.Description;
 
                     _ItemsSprites[i, 0].style.backgroundImage = new StyleBackground(icon);
@@ -299,14 +299,17 @@ namespace EternalDefenders
 
             var selectedItem = _ItemsDatabase.Items[itemIndex].Item;
             PlayerResourceInventory inventory = PlayerResourceInventory.Instance;
+            var selectedItemCost = selectedItem.Cost;
+            var stoneCost = selectedItemCost[1].amount;
+            var woodCost = selectedItemCost[0].amount;
 
-            if (inventory.HasEnoughOfResource(res_stone, 30) && inventory.HasEnoughOfResource(res_wood, 30))
+            if (inventory.HasEnoughOfResource(selectedItemCost[1].resource, stoneCost) && inventory.HasEnoughOfResource(selectedItemCost[0].resource, woodCost))
             {
                 //ten warunek mozna zmienic pozniej
                 if (!ItemManager.Instance.EquippedItems.Contains(selectedItem))
                 {
-                    inventory.RemoveResource(res_stone, 30);
-                    inventory.RemoveResource(res_wood, 30);
+                    inventory.RemoveResource(selectedItemCost[1].resource, stoneCost);
+                    inventory.RemoveResource(selectedItemCost[0].resource, woodCost);
                     ItemManager.Instance.AddItemByID(selectedItem.Id);
                 }
             }

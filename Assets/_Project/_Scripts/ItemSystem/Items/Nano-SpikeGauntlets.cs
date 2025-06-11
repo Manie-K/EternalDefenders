@@ -10,23 +10,10 @@ namespace EternalDefenders
     [CreateAssetMenu(fileName = "Nano-SpikeGauntlets", menuName = "EternalDefenders/ItemSystem/Items/Nano-SpikeGauntlets")]
     public class NanoSpikeGauntlets : Item
     {
-
         [SerializeField] private readonly int _flatDamageBoost = 10;
 
         public override void Initialize(int id, string name)
         {
-            List<TowerBundle.ResourceCost> cost = new() {
-                new ResourceCost
-                {
-                    resource = new(),
-                    amount = 200
-                },
-                new ResourceCost
-                {
-                    resource = new(),
-                    amount = 200
-                }
-            };
 
             InitializeCommon(
                 name: name,
@@ -34,7 +21,7 @@ namespace EternalDefenders
                 id: id,
                 icon: null,
                 rarity: Rarity.Common,
-                cost: cost,
+                cost: Cost,
                 unique: false,
                 priority: 5,
                 cooldownDuration: 0,

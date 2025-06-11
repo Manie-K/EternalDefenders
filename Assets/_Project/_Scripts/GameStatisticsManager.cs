@@ -8,6 +8,7 @@ namespace EternalDefenders
         public int TowersDestroyed { get; private set; }
         public int PlayerDeaths { get; private set; }
         public int EnemiesKilled { get; private set; }
+        public int Score {  get; private set; }
         //later we will add more etc.
         public event Action OnEnemyDead;
         void Start()
@@ -17,6 +18,12 @@ namespace EternalDefenders
             EnemiesKilled = 0;
             
             SubscribeToEvents();
+        }
+
+        public int GetFinalScore()
+        {
+            int gameLengthScore = (int)((GameManager.Instance.GameLength - GameManager.Instance.EndGameTimeRemaining) * 100f);
+            return TowersDestroyed * -100 + PlayerDeaths * -1000 + EnemiesKilled * 100 + gameLengthScore;
         }
 
         public void NotifyEnemyKilled()

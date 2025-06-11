@@ -116,6 +116,11 @@ namespace EternalDefenders
                 weaponsController.SetNextArsenal();
                 OnPlayerWeaponChange?.Invoke();
             }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                ItemManager.Instance.UseActiveItem();
+            }
         }
         
         void OnBuildingSelected_Delegate(TowerBundle towerBundle)

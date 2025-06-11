@@ -11,7 +11,7 @@ namespace EternalDefenders
     public class HudManager : MonoBehaviour
     {
 
-        [SerializeField] private float waveTimeRemaining;
+        // [SerializeField] private float endGameTimeRemaining;
 
         public VisualTreeAsset counterUXML;
 
@@ -25,7 +25,7 @@ namespace EternalDefenders
         private Label counterStoneLabel;
         private Label counterDeadMobsLabel;
         private Label counterAliveMobsLabel;
-        private Label counterWaveLabel;
+        private Label counterGameEndLabel;
 
         public Sprite woodIcon;
         public Sprite stoneIcon;
@@ -69,10 +69,10 @@ namespace EternalDefenders
             counterStoneLabel = rockCounterContainer.Q<Label>("counter");
             counterAliveMobsLabel = aliveMobsCounterContainer.Q<Label>("counter");
             counterDeadMobsLabel = deadMobsCounterContainer.Q<Label>("counter");
-            counterWaveLabel = waveTimerContainer.Q<Label>("counter");
+            counterGameEndLabel = waveTimerContainer.Q<Label>("counter");
 
-            counterWaveLabel.text = "0";
-            counterWaveLabel.style.fontSize = new StyleLength(Length.Percent(55));
+            counterGameEndLabel.text = "0";
+            counterGameEndLabel.style.fontSize = new StyleLength(Length.Percent(55));
             counterAliveMobsLabel.text = "0";
             counterDeadMobsLabel.text = "0";
 
@@ -87,7 +87,7 @@ namespace EternalDefenders
 
         private void Update()
         {
-            UpdateWaveTimer();
+            UpdateGameTimer();
         }
 
         private void LoadCounterUI(VisualElement container)
@@ -149,13 +149,14 @@ namespace EternalDefenders
             }
         }
 
-        private void UpdateWaveTimer()
+        private void UpdateGameTimer()
         {
+            float endGameTimeRemaining = GameManager.Instance.EndGameTimeRemaining;
 
-            int minutes = Mathf.FloorToInt(waveTimeRemaining / 60f);
-            int seconds = Mathf.FloorToInt(waveTimeRemaining % 60f);
+            int minutes = Mathf.FloorToInt(endGameTimeRemaining / 60f);
+            int seconds = Mathf.FloorToInt(endGameTimeRemaining % 60f);
 
-            counterWaveLabel.text = $"{minutes:00}:{seconds:00}";
+            counterGameEndLabel.text = $"{minutes:00}:{seconds:00}";
 
         }
 
