@@ -12,9 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62d37239b4a93f449be9734af9237a09, type: 3}
   m_Name: GuardianAngel
   m_EditorClassIdentifier: 
-  _rarity: 0
-  _priority: 0
+  _name: Guardian Angel
+  _description: Revives fallen tower with its 100% health back
+  _id: 2
+  _rarity: 3
+  _priority: 5
   _cooldownDuration: 0
-  _cooldownRemaining: 0
-  _duplicateCount: 0
-  _protectionCooldown: 0
+  _unique: 1
+  _icon: {fileID: 21300000, guid: 92ef92efcbc9cde4da5ed1de0a11f35c, type: 3}
+  _cost:
+  - resource: {fileID: 11400000, guid: bfa98661e90d8dd4ca62abd0c758c6e2, type: 2}
+    amount: 10
+  - resource: {fileID: 11400000, guid: fd41a69815d404d45a2295472ef0266d, type: 2}
+    amount: 10
+  _itemType: 0
+  _itemTarget: 1
+  _itemEffects: 0100000000000000
+  _protectionCooldown: 150
+  _perctentageHealthRecovery: 100

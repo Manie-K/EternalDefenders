@@ -20,6 +20,8 @@ namespace EternalDefenders
 
         void Start()
         {
+            _equippedItems = ItemManager.Instance.EquippedItems;
+
             _doc = GetComponent<UIDocument>();
             _isEnabled = false;
 
@@ -65,16 +67,20 @@ namespace EternalDefenders
         //testowanie kupowania itemow
         private void UpdateEquippedItems()
         {
-             _equippedItems = ItemManager.Instance.EquippedItems;
-
             for (int i = 0; i < _equippedItems.Count; i++)
             {
                 _ItemsSprites[i].style.backgroundImage = null;
             }
 
-            for (int i = 0; i < _equippedItems.Count && i < _ItemsSprites.Length; i++)
+            int k = 0;
+            foreach (var item in _equippedItems)
             {
-                 _ItemsSprites[i].style.backgroundImage = new StyleBackground(icon);           
+                for (int i = 0; item.DuplicateCount > i; i++)
+                {
+                    k++;
+                    _ItemsSprites[i].style.backgroundImage = new StyleBackground(icon);
+                    if (k >= _ItemsSprites.Length) return;
+                }
             }
         }
 

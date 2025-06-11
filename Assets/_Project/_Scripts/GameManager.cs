@@ -8,25 +8,49 @@ namespace EternalDefenders
     public class GameManager : Singleton<GameManager>
     {
         //TODO everything 
-        public int WavePower { get; set; } = 3;
-        public float EndGameTimeRemaining;
+        #region Fields
+        
+        /// <summary>
+        /// Time in minutes
+        /// </summary>
+        [SerializeField] private float _gameLength;
+        [SerializeField] private int _wavePower;
 
-        public float GameLength = 20; // in minutes
-
+        private float _endGameTimeRemaining;
         public event Action OnGameOver;
+
+        #endregion
+
+        #region Properties
+
+        public float EndGameTimeRemaining
+        {
+            get { return _endGameTimeRemaining; }
+        }
+        public float GameLength
+        {
+            get { return _gameLength; }
+        }
+        public int WavePower 
+        { 
+            get { return _wavePower; }
+            set { _wavePower = value; }
+        }
+
+        #endregion
 
         void Start()
         {
             Time.timeScale = 1f;
-            EndGameTimeRemaining = GameLength * 60;
+            _endGameTimeRemaining = GameLength * 60;
 
             MainBaseController.Instance.OnMainBaseDestroyed += GameOver;
         }
 
         private void Update()
         {
-            EndGameTimeRemaining -= Time.deltaTime;
-            EndGameTimeRemaining = Math.Max(EndGameTimeRemaining, 0f);
+            _endGameTimeRemaining -= Time.deltaTime;
+            _endGameTimeRemaining = Math.Max(EndGameTimeRemaining, 0f);
 
             if (EndGameTimeRemaining <= 0)
             {

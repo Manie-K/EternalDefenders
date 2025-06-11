@@ -67,13 +67,13 @@ namespace EternalDefenders
             List<int> itemIds = _pool[category];
             List<int> itemWeights = new();
 
-            ItemDatabase itemDatabase = ItemManager.Instance.ItemDictionary;
+            ItemDatabaseSO itemDatabase = ItemManager.Instance.ItemDictionary;
 
             int totalWeight = 0;
             int maxRarity = Enum.GetValues(typeof(Rarity)).Length;
             foreach (int itemId in itemIds)
             {
-                int itemWeight = maxRarity - (int)itemDatabase.Items[itemId].Item.Rarity;
+                int itemWeight = maxRarity - (int)itemDatabase.Items[itemId].Rarity;
                 itemWeights.Add(itemWeight);
                 totalWeight += itemWeight;
             }

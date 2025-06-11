@@ -11,52 +11,21 @@ namespace EternalDefenders
     [CreateAssetMenu(fileName = "UnfathomMalice", menuName = "EternalDefenders/ItemSystem/Items/UnfathomMalice")]
     public class UnfathomMalice : Item
     {
-        [SerializeField] private readonly int _flatDamageBoostPerDuplicate = 1;
-        [SerializeField] private readonly int _flatDamageBoost = 5;
+        [Header("Private fields")]
+        [SerializeField] private int _flatDamageBoostPerDuplicate;
+        [SerializeField] private int _flatDamageBoost;
         /// <summary>
         /// Value in seconds
         /// </summary>
-        [SerializeField] private readonly float _damageBurstsInterval = 10;
-        [SerializeField] private readonly int _damageBurstValue = 10;
-        [SerializeField] private readonly int _damageBurstDuration = 5;
+        [SerializeField] private float _damageBurstsInterval;
+        [SerializeField] private int _damageBurstValue;
+        [SerializeField] private int _damageBurstDuration;
 
         private float _triggerTime;
 
         public float TriggerTime
         {
             get { return _triggerTime; }
-        }
-
-        public override void Initialize(int id, string name)
-        {
-            List<TowerBundle.ResourceCost> cost = new() {
-                new ResourceCost
-                {
-                    resource = new(),
-                    amount = 100
-                },
-                new ResourceCost
-                {
-                    resource = new(),
-                    amount = 400
-                }
-            };
-
-            InitializeCommon(
-                name: name,
-                description: $"Gives dame bursts every {_damageBurstsInterval} seconds",
-                id: id,
-                icon: null,
-                rarity: Rarity.Rare,
-                cost: cost,
-                priority: 5,
-                unique: false,
-                cooldownDuration: 0,
-                cooldownRemaining: 0,
-                itemType: ItemType.Passive,
-                itemTarget: ItemTarget.Player
-            );
-
         }
 
         public override void Collect()

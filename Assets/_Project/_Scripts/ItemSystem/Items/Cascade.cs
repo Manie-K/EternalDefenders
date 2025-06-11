@@ -13,44 +13,14 @@ namespace EternalDefenders
     public class Cascade : Item
     {
 
-        private readonly Dictionary<StatType, int> boosts = new()
+        [SerializeField] Dictionary<StatType, int> _boosts;
+            /*
         {
             { StatType.Damage, 5 },
             { StatType.Speed, 2 },
             { StatType.MaxHealth, 20 },
         };
-
-        public override void Initialize(int id, string name)
-        {
-            List<TowerBundle.ResourceCost> cost = new() {
-                new ResourceCost
-                {
-                    resource = new(),
-                    amount = 600
-                },
-                new ResourceCost
-                {
-                    resource = new(),
-                    amount = 600
-                }
-            };
-
-            InitializeCommon(
-                name: name,
-                description: $"Adds permament random flat buff to player on item pick up",
-                id: id,
-                icon: null,
-                rarity: Rarity.Legendary,
-                cost: cost,
-                unique: true,
-                priority: 5,
-                cooldownDuration: 0,
-                cooldownRemaining: 0,
-                itemType: ItemType.Passive,
-                itemTarget: ItemTarget.Player
-            );
-        }
-
+            */
 
         public override void Collect()
         {
@@ -75,7 +45,7 @@ namespace EternalDefenders
         private void ApplyRandomStat(Item item)
         {
             Stats playerStats = PlayerController.Instance.Stats;
-            KeyValuePair<StatType, int> randomBoost = boosts.ElementAt(UnityEngine.Random.Range(0, boosts.Count));
+            KeyValuePair<StatType, int> randomBoost = _boosts.ElementAt(UnityEngine.Random.Range(0, _boosts.Count));
 
             InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
             modifier.statType =randomBoost.Key;

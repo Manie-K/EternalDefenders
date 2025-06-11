@@ -11,40 +11,8 @@ namespace EternalDefenders
     public class EnergyCore : Item
     {
 
-        [SerializeField] private int _speedBoost = 5;
-        [SerializeField] private int _speedBoostPerDuplicate = 1;
-
-        public override void Initialize(int id, string name)
-        {
-            List<TowerBundle.ResourceCost> cost = new() {
-                new ResourceCost
-                {
-                    resource = new(),
-                    amount = 50
-                },
-                new ResourceCost
-                {
-                    resource = new(),
-                    amount = 50
-                }
-            };
-
-            InitializeCommon(
-                name: name,
-                description: "Gives player movement speed boost",
-                id: id,
-                icon: null,
-                rarity: Rarity.Rare,
-                cost: cost,
-                priority: 5,
-                unique: false,
-                cooldownDuration: 0,
-                cooldownRemaining: 0,
-                itemType: ItemType.Passive,
-                itemTarget: ItemTarget.Player
-            );
-
-        }
+        [SerializeField] private int _speedBoost;
+        [SerializeField] private int _speedBoostPerDuplicate;
 
         public override void Collect()
         {
@@ -72,12 +40,16 @@ namespace EternalDefenders
         {
             if (Mathf.Abs(DuplicateCount) > 1)
             {
+                Stats playerStats = PlayerController.Instance.Stats;
+
                 int speedBoostPerDuplicate = wasDuplicateCountRaised ? _speedBoostPerDuplicate : -_speedBoostPerDuplicate;
 
                 InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
                 modifier.statType = StatType.Speed;
                 modifier.modifierType = ModifierType.Flat;
                 modifier.value = speedBoostPerDuplicate;
+
+                playerStats.ApplyModifier(modifier);
             }
         }
 

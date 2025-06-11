@@ -58,11 +58,21 @@ namespace EternalDefenders
             OnInventoryChanged?.Invoke();
             return amountToRemove;
         }
+
+        public int RemoveResourceNetagive(ResourceSO resourceType, int amount)
+        {
+            if (amount <= 0) return 0;
+            if (!_resources.ContainsKey(resourceType))
+                return 0;
+
+
+            _resources[resourceType] -= amount;
+            OnInventoryChanged?.Invoke();
+            return amount;
+        }
         
         public bool HasEnoughOfResource(ResourceSO resourceType, int amount)
-        {
-            if(amount <= 0) return true;
-            
+        {            
             return _resources.ContainsKey(resourceType) && _resources[resourceType] >= amount;
         }
     }

@@ -5,42 +5,12 @@ using static EternalDefenders.TowerBundle;
 
 namespace EternalDefenders
 {
+    [CreateAssetMenu(fileName = "Overclock", menuName = "EternalDefenders/ItemSystem/Items/Overclock")]
     public class Overclock : Item
     {
-        [SerializeField] private readonly int _attackSpeedBoost = -2;
-        [SerializeField] private readonly int _priceChangeMutiplier = 2;
-        [SerializeField] private readonly int _priceChangeFlat = 50;
-        public override void Initialize(int id, string name)
-        {
-            List<TowerBundle.ResourceCost> cost = new() {
-                new ResourceCost
-                {
-                    resource = new(),
-                    amount = 50
-                },
-                new ResourceCost
-                {
-                    resource = new(),
-                    amount = 50
-                }
-            };
-
-            InitializeCommon(
-                name: name,
-                description: $"Boosts attack speed of a player",
-                id: id,
-                icon: null,
-                rarity: Rarity.Uncommon,
-                cost: cost,
-                priority: 5,
-                unique: false,
-                cooldownDuration: 0,
-                cooldownRemaining: 0,
-                itemType: ItemType.Passive,
-                itemTarget: ItemTarget.Player
-            );
-
-        }
+        [SerializeField] private int _attackSpeedBoost = -2;
+        [SerializeField] private int _priceChangeMutiplier = 2;
+        [SerializeField] private int _priceChangeFlat = 50; 
 
         public override void Collect()
         {

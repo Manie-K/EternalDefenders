@@ -8,44 +8,13 @@ namespace EternalDefenders
     [CreateAssetMenu(fileName = "HealthShot", menuName = "EternalDefenders/ItemSystem/Items/HealthShot")]
     public class HealthShot : Item
     {
-        [SerializeField] private float _healthPercentageRegenPerDuplicate = 0.5f;
-        [SerializeField] private float _healthPercentageRegen = 2.0f;
+        [SerializeField] private float _healthPercentageRegenPerDuplicate;
+        [SerializeField] private float _healthPercentageRegen;
         /// <summary>
         /// Amount of updates in a second
         /// </summary>
-        [SerializeField] private int _regenerationTickRate = 1;
-        [SerializeField] private int _regenerationDuration = 10;
-
-        public override void Initialize(int id, string name)
-        {
-            List<TowerBundle.ResourceCost> cost = new() {
-                new ResourceCost
-                {
-                    resource = new(),
-                    amount = 100
-                },
-                new ResourceCost
-                {
-                    resource = new(),
-                    amount = 200
-                }
-            };
-
-            InitializeCommon(
-                name: name,
-                description: "Quickly heals player over short period of time.",
-                id: id,
-                icon: null,
-                rarity: Rarity.Uncommon,
-                cost: cost,
-                priority: 5,
-                unique: false,
-                cooldownDuration: 60,
-                cooldownRemaining: 0,
-                itemType: ItemType.Active,
-                itemTarget: ItemTarget.None
-            );
-        }
+        [SerializeField] private int _regenerationTickRate;
+        [SerializeField] private int _regenerationDuration ;
 
         public override void Collect()
         {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using MG_Utilities;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static EternalDefenders.TowerBundle;
@@ -28,7 +29,7 @@ namespace EternalDefenders
 
         private int AcctualPage;
         private int SizeOfItems;
-        private ItemDatabase _ItemsDatabase;
+        private ItemDatabaseSO _ItemsDatabase;
 
         //main
         private Button Towers_Button;
@@ -245,14 +246,14 @@ namespace EternalDefenders
 
                 if (itemIndex < _ItemsDatabase.Items.Count)
                 {
-                    var currentItem = _ItemsDatabase.Items[itemIndex].Item;
+                    var currentItem = _ItemsDatabase.Items[itemIndex];
 
                     _ItemsNamesLabels[i, 0].text = currentItem.Name;
                     _ItemsPriceLabels[i, 0].text = currentItem.Cost[0].amount.ToString();
                     _ItemsPriceLabels[i, 1].text = currentItem.Cost[1].amount.ToString();
                     _ItemsDescriptionsLabels[i, 0].text = currentItem.Description;
 
-                    _ItemsSprites[i, 0].style.backgroundImage = new StyleBackground(icon);
+                    _ItemsSprites[i, 0].style.backgroundImage = currentItem.Icon.texture;
 
 
                     _ItemsRows[i].style.display = DisplayStyle.Flex;
@@ -282,7 +283,7 @@ namespace EternalDefenders
                 OnStoreModeExit_Delegate();
 
                 OnBuildingSelected?.Invoke(tower);
-
+                UpdatePriceColors();
             }
             else
             {
@@ -297,7 +298,7 @@ namespace EternalDefenders
 
             if (itemIndex >= _ItemsDatabase.Items.Count) return;
 
-            var selectedItem = _ItemsDatabase.Items[itemIndex].Item;
+            var selectedItem = _ItemsDatabase.Items[itemIndex];
             PlayerResourceInventory inventory = PlayerResourceInventory.Instance;
             var selectedItemCost = selectedItem.Cost;
             var stoneCost = selectedItemCost[1].amount;
@@ -311,6 +312,8 @@ namespace EternalDefenders
                     inventory.RemoveResource(selectedItemCost[1].resource, stoneCost);
                     inventory.RemoveResource(selectedItemCost[0].resource, woodCost);
                     ItemManager.Instance.AddItemByID(selectedItem.Id);
+
+                    UpdatePriceColors();
                 }
             }
             else
@@ -331,6 +334,7 @@ namespace EternalDefenders
         void UpdatePriceColors()
         {
             PlayerResourceInventory inventory = PlayerResourceInventory.Instance;
+            List<Item> items = ItemManager.Instance.ItemDictionary.Items;
 
             for (int i = 0; i < towerBundles.Count; i++)
             {
@@ -339,10 +343,13 @@ namespace EternalDefenders
             }
 
             //testowanie kupowania itemow
-            for (int i = 0; i < 4; i++)
+            int startIndex = AcctualPage * 4;
+            int endIndex = Math.Min(startIndex + 4, _ItemsDatabase.Items.Count);
+            for (int i = startIndex, j = 0; i < endIndex; i++, j++)
             {
-                UpdateLabelColor2(30, _ItemsPriceLabels[i, 0], inventory, res_wood);
-                UpdateLabelColor2(30, _ItemsPriceLabels[i, 1], inventory, res_stone);
+                var itemCost = items[i].Cost;
+                UpdateLabelColor2(itemCost[0].amount, _ItemsPriceLabels[j, 0], inventory, itemCost[0].resource);
+                UpdateLabelColor2(itemCost[1].amount, _ItemsPriceLabels[j, 1], inventory, itemCost[1].resource);
             }
         }
         void UpdateLabelColor(ResourceCost cost, Label label, PlayerResourceInventory inventory, ResourceSO resource)

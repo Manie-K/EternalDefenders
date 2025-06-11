@@ -11,39 +11,7 @@ namespace EternalDefenders
     [CreateAssetMenu(fileName = "Lard", menuName = "EternalDefenders/ItemSystem/Items/Lard")]
     public class Lard : Item
     {
-        [SerializeField] private int _maxHealthBoost = 50;
-
-        public override void Initialize(int id, string name)
-        {
-            List<TowerBundle.ResourceCost> cost = new() {
-                new ResourceCost
-                {
-                    resource = new(),
-                    amount = 50
-                },
-                new ResourceCost
-                {
-                    resource = new(),
-                    amount = 50
-                }
-            };
-
-            InitializeCommon(
-                name: name,
-                description: $"Gives {_maxHealthBoost} max health",
-                id: id,
-                icon: null,
-                rarity: Rarity.Common,
-                cost: cost,
-                priority: 5,
-                unique: false,
-                cooldownDuration: 0,
-                cooldownRemaining: 0,
-                itemType: ItemType.Passive,
-                itemTarget: ItemTarget.Player
-            );
-
-        }
+        [SerializeField] private int _maxHealthBoost;
 
         public override void Collect()
         {

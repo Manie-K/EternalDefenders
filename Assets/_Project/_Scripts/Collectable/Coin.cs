@@ -8,6 +8,9 @@ namespace EternalDefenders
         [SerializeField] public List<TowerBundle.ResourceCost> _resources;
         private PlayerResourceInventory _inventory;
 
+        [SerializeField] int _minResourceAmount;
+        [SerializeField] int _maxResourceAmount;
+
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
         {
@@ -20,15 +23,15 @@ namespace EternalDefenders
             
         }
 
-        void OnCollisionEnter(Collision collision)
+        private void OnTriggerEnter(Collider other)
         {
-            Debug.Log(collision.transform.root.name);
-            if (collision.transform.root.CompareTag("Player"))
+            Debug.Log(other.transform.root.name);
+            if (other.transform.root.CompareTag("Player"))
             {
                 int option = Random.Range(0, 3);
-                int resourceAmount = Random.Range(10, 30);
+                int resourceAmount = Random.Range(_minResourceAmount, _maxResourceAmount);
 
-                switch(option)
+                switch (option)
                 {
                     case 0:
                         _inventory.AddResource(_resources[0].resource, resourceAmount);
@@ -37,7 +40,7 @@ namespace EternalDefenders
                         _inventory.AddResource(_resources[1].resource, resourceAmount);
                         break;
                     case 2:
-                        int resourceAmount2 = Random.Range(10, 30);
+                        int resourceAmount2 = Random.Range(_minResourceAmount, _maxResourceAmount);
                         _inventory.AddResource(_resources[0].resource, resourceAmount);
                         _inventory.AddResource(_resources[1].resource, resourceAmount2);
                         break;

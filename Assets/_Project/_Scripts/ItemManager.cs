@@ -12,18 +12,18 @@ namespace EternalDefenders
     public class ItemManager : Singleton<ItemManager>
     {
         #region Fields
-
-        private readonly ItemDatabase _itemDictionary = new();
+        [SerializeField] private ItemDatabaseSO _itemDictionary;
         private readonly List<Item> _equippedItems = new();
         private readonly ItemPool _pool = new();
 
         #endregion
 
         #region Properties
-        public ItemDatabase ItemDictionary
+        public ItemDatabaseSO ItemDictionary
         {
             get { return _itemDictionary; }
         }
+
         public List<Item> EquippedItems 
         {
             get { return _equippedItems; }
@@ -35,6 +35,7 @@ namespace EternalDefenders
         #region Events
 
         public event Func<Item, TowerController, bool> ProtectTower;
+        public event Func<Item, Item> ItemToRemove;
         public event Action<Item> OnItemPickUp;
         public event Action<Item> OnItemRemoval;
 
@@ -42,15 +43,23 @@ namespace EternalDefenders
 
         private void Start()
         {
-            _itemDictionary.Initialize();
             _pool.Initialize();
         }
 
         private void Update()
         {
+            List<int> itemsToRemove = new();
+
             foreach (var item in _equippedItems)
             {
                 item.UpdateItem(Time.deltaTime);
+                if (item.ItemEffects?.Contains(ItemEffect.Fragile) == true) {
+                    itemsToRemove.Add(item.Id);
+                }
+            }
+            foreach (var id in itemsToRemove)
+            {
+                RemoveItemByID(id);
             }
         }
 
@@ -64,7 +73,7 @@ namespace EternalDefenders
 
         public void AddItemByID(int itemId)
         {
-            Item item = _itemDictionary.Items[itemId].Item;
+            Item item = Instantiate(ItemDictionary.Items[itemId]);
 
             if (item != null)
             {
@@ -87,7 +96,7 @@ namespace EternalDefenders
 
         public void RemoveItemByID(int itemId)
         {
-            Item item = _equippedItems[itemId];
+            Item item = Instantiate(_equippedItems.Find(i => i.Id == itemId));
 
             if (item != null)
             {
@@ -97,7 +106,7 @@ namespace EternalDefenders
 
                 if (item.DuplicateCount == 0)
                 {
-                    _equippedItems.RemoveAt(itemId);
+                    _equippedItems.RemoveAll(i => i.Id == itemId);
                 }
             }
             else

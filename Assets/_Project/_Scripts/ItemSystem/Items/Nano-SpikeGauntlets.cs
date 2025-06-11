@@ -10,27 +10,7 @@ namespace EternalDefenders
     [CreateAssetMenu(fileName = "Nano-SpikeGauntlets", menuName = "EternalDefenders/ItemSystem/Items/Nano-SpikeGauntlets")]
     public class NanoSpikeGauntlets : Item
     {
-        [SerializeField] private readonly int _flatDamageBoost = 10;
-
-        public override void Initialize(int id, string name)
-        {
-
-            InitializeCommon(
-                name: name,
-                description: $"Adds {_flatDamageBoost} flat damage buff to player",
-                id: id,
-                icon: null,
-                rarity: Rarity.Common,
-                cost: Cost,
-                unique: false,
-                priority: 5,
-                cooldownDuration: 0,
-                cooldownRemaining: 0,
-                itemType: ItemType.Passive,
-                itemTarget: ItemTarget.Player
-            );
-        }
-
+        [SerializeField] private int _flatDamageBoost;
 
         public override void Collect()
         {
