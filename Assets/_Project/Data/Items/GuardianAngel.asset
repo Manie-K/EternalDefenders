@@ -22,9 +22,9 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: cbff79fb8d5ad56479501a406b2c8528, type: 3}
   _cost:
   - resource: {fileID: 11400000, guid: bfa98661e90d8dd4ca62abd0c758c6e2, type: 2}
-    amount: 10
+    amount: 700
   - resource: {fileID: 11400000, guid: fd41a69815d404d45a2295472ef0266d, type: 2}
-    amount: 10
+    amount: 700
   _itemType: 0
   _itemTarget: 1
   _itemEffects: 0100000000000000

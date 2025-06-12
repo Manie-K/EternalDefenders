@@ -16,5 +16,5 @@ MonoBehaviour:
   shield: 100
   damage: 20
   range: 8
-  cooldown: 1
+  cooldown: 10
   speed: 2
