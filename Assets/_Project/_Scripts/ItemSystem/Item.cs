@@ -32,7 +32,7 @@ namespace EternalDefenders
         /// </summary>
         [SerializeField] private float _cooldownDuration;
         private float _cooldownRemaining;
-        private float _duplicateCount = 0;
+        private int _duplicateCount = 0;
 
         [SerializeField] private bool _unique;
         [SerializeField] private Sprite _icon;
@@ -80,7 +80,7 @@ namespace EternalDefenders
             protected set { _cooldownRemaining = value; }
 
         }
-        public float DuplicateCount
+        public int DuplicateCount
         {
             get { return _duplicateCount; }
             protected set { _duplicateCount = value; }

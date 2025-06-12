@@ -15,7 +15,7 @@ namespace EternalDefenders
 
             if (DuplicateCount == 1)
             {
-                CollectResources();
+                GameStatisticsManager.Instance.OnEnemyDead += CollectResources;
             }
             UpdateItemCost(true);
         }
@@ -26,14 +26,19 @@ namespace EternalDefenders
 
             if (DuplicateCount == 0)
             {
-                CollectResources();
+                GameStatisticsManager.Instance.OnEnemyDead -= CollectResources;
             }
             UpdateItemCost(false);
         }
 
         public void CollectResources()
         {
+            var inventory = PlayerResourceInventory.Instance;
 
+            int randomResource = Random.Range(0, Cost.Count);
+            int resourceGainAmount = _resourceGainAmount + (DuplicateCount - 1) * _resourceGainDuplicateAmount;
+
+            inventory.AddResource(Cost[randomResource].resource, resourceGainAmount);
         }
 
         public void UpdateItemCost(bool wasDuplicateCountRaised)
