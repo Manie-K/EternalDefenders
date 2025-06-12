@@ -78,7 +78,7 @@ namespace EternalDefenders
                 for (int i = 0; item.DuplicateCount > i; i++)
                 {
                     k++;
-                    _ItemsSprites[i].style.backgroundImage = new StyleBackground(icon);
+                    _ItemsSprites[i].style.backgroundImage = item.Icon.texture;
                     if (k >= _ItemsSprites.Length) return;
                 }
             }
