@@ -17,52 +17,28 @@ namespace EternalDefenders
         public override void Collect()
         {
             DuplicateCount++;
-
-            if (DuplicateCount == 1)
-            {
-                ApplyStats();
-            }
-            ApplyStatsDuplicate(true);
+            ApplyStats(true);
         }
 
         public override void Remove()
         {
             DuplicateCount--;
-
-            if (DuplicateCount == 0)
-            {
-                ApplyStats();
-            }
-            ApplyStatsDuplicate(false);
+            ApplyStats(false);
         }
 
-        private void ApplyStatsDuplicate(bool wasDuplicateCountRaised)
-        {
-            if (Mathf.Abs(DuplicateCount) > 1)
-            {
-                Stats playerStats = PlayerController.Instance.Stats;
-
-                int speedBoostPerDuplicate = wasDuplicateCountRaised ? _speedBoostPerDuplicate : -_speedBoostPerDuplicate;
-
-                InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
-                modifier.statType = StatType.Speed;
-                modifier.modifierType = ModifierType.Flat;
-                modifier.value = speedBoostPerDuplicate;
-
-                playerStats.ApplyModifier(modifier);
-            }
-        }
-
-        private void ApplyStats()
+        private void ApplyStats(bool wasDuplicateCountRaised)
         {
             Stats playerStats = PlayerController.Instance.Stats;
-
-            int speedBoost = DuplicateCount == 1 ? _speedBoost : -_speedBoost;
+            int speedBoost = wasDuplicateCountRaised
+                ? (DuplicateCount == 1 ? _speedBoost : _speedBoostPerDuplicate)
+                : (DuplicateCount == 0 ? -_speedBoost : -_speedBoostPerDuplicate);
 
             InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
             modifier.statType = StatType.Speed;
             modifier.modifierType = ModifierType.Flat;
             modifier.value = speedBoost;
+            modifier.persistAfterFinish = true;
+            modifier.limitedDurationTime = 0.01f;
 
             playerStats.ApplyModifier(modifier);
 

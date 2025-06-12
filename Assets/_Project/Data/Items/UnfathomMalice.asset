@@ -31,5 +31,5 @@ MonoBehaviour:
   _flatDamageBoostPerDuplicate: 1
   _flatDamageBoost: 5
   _damageBurstsInterval: 10
-  _damageBurstValue: 10
+  _damageBurstValue: 40
   _damageBurstDuration: 5

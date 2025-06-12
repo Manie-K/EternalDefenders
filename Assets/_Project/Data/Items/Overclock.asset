@@ -22,12 +22,12 @@ MonoBehaviour:
   _icon: {fileID: 21300000, guid: 38d68ee4f818e804a80db1c85c6a3830, type: 3}
   _cost:
   - resource: {fileID: 11400000, guid: bfa98661e90d8dd4ca62abd0c758c6e2, type: 2}
-    amount: 100
+    amount: 9550
   - resource: {fileID: 11400000, guid: fd41a69815d404d45a2295472ef0266d, type: 2}
-    amount: 100
+    amount: 9550
   _itemType: 0
   _itemTarget: 0
   _itemEffects: 
-  _attackSpeedBoost: -2
+  _attackSpeedBoost: -1
   _priceChangeMutiplier: 2
   _priceChangeFlat: 50

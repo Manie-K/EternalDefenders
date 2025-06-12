@@ -28,5 +28,5 @@ MonoBehaviour:
   _itemType: 0
   _itemTarget: 0
   _itemEffects: 
-  _speedBoost: 5
+  _speedBoost: 2
   _speedBoostPerDuplicate: 1

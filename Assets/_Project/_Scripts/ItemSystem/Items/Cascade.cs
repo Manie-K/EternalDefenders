@@ -13,14 +13,14 @@ namespace EternalDefenders
     public class Cascade : Item
     {
 
-        [SerializeField] Dictionary<StatType, int> _boosts;
-            /*
+        [System.Serializable]
+        public class StatBoost
         {
-            { StatType.Damage, 5 },
-            { StatType.Speed, 2 },
-            { StatType.MaxHealth, 20 },
-        };
-            */
+            public StatType statType;
+            public int value;
+        }
+
+        [SerializeField] List<StatBoost> _boosts;
 
         public override void Collect()
         {
@@ -36,7 +36,7 @@ namespace EternalDefenders
         {
             if (DuplicateCount == 1)
             {
-                DuplicateCount++;
+                DuplicateCount--;
                 ItemManager.Instance.OnItemPickUp -= ApplyRandomStat;
             }
 
@@ -45,12 +45,14 @@ namespace EternalDefenders
         private void ApplyRandomStat(Item item)
         {
             Stats playerStats = PlayerController.Instance.Stats;
-            KeyValuePair<StatType, int> randomBoost = _boosts.ElementAt(UnityEngine.Random.Range(0, _boosts.Count));
+            StatBoost randomBoost = _boosts.ElementAt(UnityEngine.Random.Range(0, _boosts.Count));
 
             InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
-            modifier.statType =randomBoost.Key;
+            modifier.statType =randomBoost.statType;
             modifier.modifierType = ModifierType.Flat;
-            modifier.value = randomBoost.Value;
+            modifier.value = randomBoost.value;
+            modifier.persistAfterFinish = true;
+            modifier.limitedDurationTime = 0.01f;
 
             playerStats.ApplyModifier(modifier);
         }

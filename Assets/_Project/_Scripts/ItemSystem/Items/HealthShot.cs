@@ -44,6 +44,7 @@ namespace EternalDefenders
                 modifier.statType = StatType.Health;
                 modifier.tickRate = _regenerationTickRate;
                 modifier.tickValue = healthRegenPerTick;
+                modifier.limitedDurationTime = _regenerationDuration;
 
                 playerStats.ApplyModifier(modifier);
             }

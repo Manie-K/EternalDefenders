@@ -8,9 +8,9 @@ namespace EternalDefenders
     [CreateAssetMenu(fileName = "Overclock", menuName = "EternalDefenders/ItemSystem/Items/Overclock")]
     public class Overclock : Item
     {
-        [SerializeField] private int _attackSpeedBoost = -2;
-        [SerializeField] private int _priceChangeMutiplier = 2;
-        [SerializeField] private int _priceChangeFlat = 50; 
+        [SerializeField] private int _attackSpeedBoost;
+        [SerializeField] private int _priceChangeMutiplier;
+        [SerializeField] private int _priceChangeFlat; 
 
         public override void Collect()
         {
@@ -40,6 +40,8 @@ namespace EternalDefenders
             modifier.statType = StatType.Cooldown;
             modifier.modifierType = ModifierType.Flat;
             modifier.value = attackSpeedBoost;
+            modifier.persistAfterFinish = true;
+            modifier.limitedDurationTime = 0.01f;
 
             playerStats.ApplyModifier(modifier);
 
@@ -47,16 +49,18 @@ namespace EternalDefenders
 
         private void ChangePrice(bool wasDuplicateCountRaised)
         {
+            var item = ItemManager.Instance.ItemDictionary.Items[Id];
+            var cost = item._cost;
             if (wasDuplicateCountRaised)
             {
-                foreach (ResourceCost resourceCost in _cost)
+                foreach (ResourceCost resourceCost in cost)
                 {
                     resourceCost.amount = resourceCost.amount * _priceChangeMutiplier + _priceChangeFlat;
                 }
             }
             else
             {
-                foreach (ResourceCost resourceCost in _cost)
+                foreach (ResourceCost resourceCost in cost)
                 {
                     resourceCost.amount = (resourceCost.amount - _priceChangeFlat) / _priceChangeMutiplier;
                 }

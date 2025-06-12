@@ -80,12 +80,13 @@ namespace EternalDefenders
 
                 OnItemPickUp?.Invoke(item);
 
-                if (!_equippedItems.Contains(item))
+                if (!_equippedItems.Any(i => i.Id == item.Id))
                 {
                     _equippedItems.Add(item);
                 }
 
-                item.Collect();
+                var equippedItem = _equippedItems.FindLast(i => i.Id == item.Id);
+                equippedItem.Collect();
 
             }
             else
@@ -103,7 +104,7 @@ namespace EternalDefenders
                 OnItemRemoval?.Invoke(item);
 
                 item.Remove();
-
+                
                 if (item.DuplicateCount == 0)
                 {
                     _equippedItems.RemoveAll(i => i.Id == itemId);

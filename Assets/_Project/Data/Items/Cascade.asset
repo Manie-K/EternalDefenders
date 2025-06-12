@@ -28,3 +28,10 @@ MonoBehaviour:
   _itemType: 0
   _itemTarget: 0
   _itemEffects: 
+  _boosts:
+  - statType: 2
+    value: 5
+  - statType: 3
+    value: 1
+  - statType: 1
+    value: 20

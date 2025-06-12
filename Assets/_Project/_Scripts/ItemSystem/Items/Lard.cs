@@ -36,12 +36,22 @@ namespace EternalDefenders
 
             int maxHealthBoost = wasDuplicateCountRaised ? _maxHealthBoost : -_maxHealthBoost;
 
-            InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
-            modifier.statType = StatType.MaxHealth;
-            modifier.modifierType = ModifierType.Flat;
-            modifier.value = maxHealthBoost;
+            InstantModifier maxHealthModifier = ScriptableObject.CreateInstance<InstantModifier>();
+            maxHealthModifier.statType = StatType.MaxHealth;
+            maxHealthModifier.modifierType = ModifierType.Flat;
+            maxHealthModifier.value = maxHealthBoost;
+            maxHealthModifier.persistAfterFinish = true;
+            maxHealthModifier.limitedDurationTime = 0.01f;
 
-            playerStats.ApplyModifier(modifier);
+            InstantModifier healthModifier = ScriptableObject.CreateInstance<InstantModifier>();
+            healthModifier.statType = StatType.Health;
+            healthModifier.modifierType = ModifierType.Flat;
+            healthModifier.value = maxHealthBoost;
+            healthModifier.persistAfterFinish = true;
+            healthModifier.limitedDurationTime = 0.01f;
+
+            playerStats.ApplyModifier(maxHealthModifier);
+            playerStats.ApplyModifier(healthModifier);
 
         }
     }

@@ -320,7 +320,8 @@ namespace EternalDefenders
 
             yield return new WaitForSeconds(0.2f);
             float animationLength = _animator.GetCurrentAnimatorStateInfo(0).length;
-            yield return new WaitForSeconds(animationLength);
+            float adjustenAnimationLength = animationLength * Stats.GetStat(StatType.Cooldown) / playerStats.cooldown;
+            yield return new WaitForSeconds(adjustenAnimationLength);
 
             CanMove = true;
             CurrentState = PlayerState.ReadyToFight;

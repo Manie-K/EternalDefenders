@@ -298,7 +298,7 @@ namespace EternalDefenders
 
             if (itemIndex >= _ItemsDatabase.Items.Count) return;
 
-            var selectedItem = _ItemsDatabase.Items[itemIndex];
+            var selectedItem = Instantiate(_ItemsDatabase.Items[itemIndex]);
             PlayerResourceInventory inventory = PlayerResourceInventory.Instance;
             var selectedItemCost = selectedItem.Cost;
             var stoneCost = selectedItemCost[1].amount;
@@ -307,14 +307,14 @@ namespace EternalDefenders
             if (inventory.HasEnoughOfResource(selectedItemCost[1].resource, stoneCost) && inventory.HasEnoughOfResource(selectedItemCost[0].resource, woodCost))
             {
                 //ten warunek mozna zmienic pozniej
-                if (!ItemManager.Instance.EquippedItems.Contains(selectedItem))
-                {
-                    inventory.RemoveResource(selectedItemCost[1].resource, stoneCost);
-                    inventory.RemoveResource(selectedItemCost[0].resource, woodCost);
-                    ItemManager.Instance.AddItemByID(selectedItem.Id);
 
-                    UpdatePriceColors();
-                }
+                inventory.RemoveResource(selectedItemCost[1].resource, stoneCost);
+                inventory.RemoveResource(selectedItemCost[0].resource, woodCost);
+                ItemManager.Instance.AddItemByID(selectedItem.Id);
+
+                DisplayItemsOnPage();
+                UpdatePriceColors();
+                
             }
             else
             {

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Nano-Spike Gauntlets
   _description: Adds 10 flat damage buff to player
-  _id: 0
+  _id: 5
   _rarity: 0
   _priority: 5
   _cooldownDuration: 0

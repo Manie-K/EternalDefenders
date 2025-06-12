@@ -45,6 +45,8 @@ namespace EternalDefenders
             {
                 Reload();
             }
+            reloadTime = _playerStats.GetStat(StatType.Cooldown) / 10;
+            maxFirePower = _playerStats.GetStat(StatType.Range) * 4;
         }
 
         private IEnumerator WaitAndFire(float waitingTime)

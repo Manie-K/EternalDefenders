@@ -28,7 +28,7 @@ MonoBehaviour:
   _itemType: 1
   _itemTarget: 0
   _itemEffects: 
-  _healthPercentageRegenPerDuplicate: 0.5
-  _healthPercentageRegen: 2
+  _healthPercentageRegenPerDuplicate: 0.1
+  _healthPercentageRegen: 0.5
   _regenerationTickRate: 1
   _regenerationDuration: 10
