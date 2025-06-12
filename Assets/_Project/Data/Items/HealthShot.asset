@@ -19,7 +19,7 @@ MonoBehaviour:
   _priority: 5
   _cooldownDuration: 60
   _unique: 0
-  _icon: {fileID: 21300000, guid: df4f17f0653692d45bcc92c0ee6e9469, type: 3}
+  _icon: {fileID: 21300000, guid: 725382bcddde66a4e8942287df3a9957, type: 3}
   _cost:
   - resource: {fileID: 11400000, guid: bfa98661e90d8dd4ca62abd0c758c6e2, type: 2}
     amount: 100
