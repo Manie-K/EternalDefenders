@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Mono.Cecil;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace EternalDefenders
         [SerializeField] ResourceSO resource;
         [SerializeField] int amountPerInterval;
         [SerializeField] float interval;
-        
+
         bool _isGenerating;
         Coroutine _generationCoroutine;
         void Start()
@@ -34,6 +35,10 @@ namespace EternalDefenders
                 yield return new WaitForSeconds(interval);
                 Debug.Log($"Generated {amountPerInterval} of {resource.name}");
                 PlayerResourceInventory.Instance.AddResource(resource, amountPerInterval);
+
+                var pos = transform.position;
+                pos.y = 1.75f;
+                ResourcePopup.Create(pos, resource, amountPerInterval);
             }
         }
     }

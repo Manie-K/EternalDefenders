@@ -35,6 +35,8 @@ namespace EternalDefenders
             modifier.statType = StatType.Damage;
             modifier.modifierType = ModifierType.Flat;
             modifier.value = damageBoost;
+            modifier.persistAfterFinish = true;
+            modifier.limitedDurationTime = 0.01f;
 
             playerStats.ApplyModifier(modifier);
 

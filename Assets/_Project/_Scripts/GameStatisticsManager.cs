@@ -22,7 +22,7 @@ namespace EternalDefenders
 
         public int GetFinalScore()
         {
-            int gameLengthScore = (int)((GameManager.Instance.GameLength * 60 - GameManager.Instance.EndGameTimeRemaining) * 100f);
+            int gameLengthScore = (int)(GameManager.Instance.GameLength * 60 - GameManager.Instance.EndGameTimeRemaining);
             return TowersDestroyed * -100 + PlayerDeaths * -1000 + EnemiesKilled * 100 + gameLengthScore;
         }
 

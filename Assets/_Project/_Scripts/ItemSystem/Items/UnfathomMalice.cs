@@ -38,8 +38,6 @@ namespace EternalDefenders
                 ApplyStats();
             }
             ApplyStatsDuplicate(true);
-
-
         }
 
         public override void Remove()
@@ -63,6 +61,8 @@ namespace EternalDefenders
                 modifier.statType = StatType.Damage;
                 modifier.modifierType = ModifierType.Flat;
                 modifier.value = flatDamageBoostPerDuplicate;
+                modifier.persistAfterFinish = true;
+                modifier.limitedDurationTime = 0.01f;
             }
         }
 

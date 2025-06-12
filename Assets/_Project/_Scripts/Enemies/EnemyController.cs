@@ -54,10 +54,6 @@ namespace EternalDefenders
             {
                 Die();
             }
-            else if(Stats.GetStat(StatType.Health) > 300)
-            {
-                Debug.LogError("Enemy gaining health instead of losing it");
-            }
         }
         public IEnumerator Attack()
         {

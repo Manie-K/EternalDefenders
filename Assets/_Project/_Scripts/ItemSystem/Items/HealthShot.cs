@@ -37,7 +37,7 @@ namespace EternalDefenders
 
                 float healthPercantageRegen = _healthPercentageRegen + Mathf.Max(0, DuplicateCount - 1) * _healthPercentageRegenPerDuplicate;
 
-                float healthRegenValue = playerStats.GetStat(StatType.Health) * healthPercantageRegen;
+                float healthRegenValue = playerStats.GetStat(StatType.MaxHealth) * healthPercantageRegen;
                 int healthRegenPerTick = Mathf.RoundToInt(healthRegenValue / _regenerationDuration);
 
                 OverTimeModifier modifier = ScriptableObject.CreateInstance<OverTimeModifier>();
