@@ -45,7 +45,7 @@ namespace EternalDefenders
                     EnemyController enemyController = collider.GetComponent<EnemyController>();
                     if (enemyController != null)
                     {
-                        DamageCalculator.Instance.BulletHitEnemy(enemyController);
+                        DamageCalculator.Instance.PlayerAttackEnemy(enemyController);
                         Debug.Log("Enemy hit");
                     }
                     else

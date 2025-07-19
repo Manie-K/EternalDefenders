@@ -1,5 +1,6 @@
 using EternalDefenders;
 using HudElements;
+using Mono.Cecil;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
@@ -9,18 +10,27 @@ namespace EternalDefenders
 {
     public class HudManager : MonoBehaviour
     {
+
+        // [SerializeField] private float endGameTimeRemaining;
+
         public VisualTreeAsset counterUXML;
 
         private VisualElement woodCounterContainer;
         private VisualElement rockCounterContainer;
+        private VisualElement aliveMobsCounterContainer;
+        private VisualElement deadMobsCounterContainer;
         private VisualElement waveTimerContainer;
 
         private Label counterWoodLabel;
         private Label counterStoneLabel;
-        private Label counterWaveLabel;
+        private Label counterDeadMobsLabel;
+        private Label counterAliveMobsLabel;
+        private Label counterGameEndLabel;
 
         public Sprite woodIcon;
         public Sprite stoneIcon;
+        public Sprite deathIcon;
+        public Sprite MobIcon;
 
         private HealthBar BaseHeartBar;
         private HealthBar _healthBar;
@@ -38,27 +48,46 @@ namespace EternalDefenders
 
             woodCounterContainer = hudRootElement.Q<VisualElement>("WoodCounter");
             rockCounterContainer = hudRootElement.Q<VisualElement>("StoneCounter");
+            aliveMobsCounterContainer = hudRootElement.Q<VisualElement>("AliveMobs");
+            deadMobsCounterContainer = hudRootElement.Q<VisualElement>("DeadMobs");
             waveTimerContainer = hudRootElement.Q<VisualElement>("WaveTimer");
 
             PlayerResourceInventory.Instance.OnInventoryChanged += UpdateCounterLabels;
+            GameStatisticsManager.Instance.OnEnemyDead += UpdateDeadMobs;
 
-            if (woodCounterContainer != null && rockCounterContainer != null && waveTimerContainer != null)
+            if (woodCounterContainer != null && rockCounterContainer != null && waveTimerContainer != null 
+                && aliveMobsCounterContainer!=null && deadMobsCounterContainer!=null)
             {
                 LoadCounterUI(woodCounterContainer);
                 LoadCounterUI(rockCounterContainer);
+                LoadCounterUI(aliveMobsCounterContainer);
+                LoadCounterUI(deadMobsCounterContainer);
                 LoadCounterUI(waveTimerContainer);
             }
 
             counterWoodLabel = woodCounterContainer.Q<Label>("counter");
             counterStoneLabel = rockCounterContainer.Q<Label>("counter");
-            counterWaveLabel = waveTimerContainer.Q<Label>("counter");
+            counterAliveMobsLabel = aliveMobsCounterContainer.Q<Label>("counter");
+            counterDeadMobsLabel = deadMobsCounterContainer.Q<Label>("counter");
+            counterGameEndLabel = waveTimerContainer.Q<Label>("counter");
 
-            counterWaveLabel.text = "0";
-            AddImageToContainer(woodCounterContainer, woodIcon);
-            AddImageToContainer(rockCounterContainer, stoneIcon);
+            counterGameEndLabel.text = "0";
+            counterGameEndLabel.style.fontSize = new StyleLength(Length.Percent(55));
+            counterAliveMobsLabel.text = "0";
+            counterDeadMobsLabel.text = "0";
 
+            AddImageToContainer(woodCounterContainer, woodIcon, 0);
+            AddImageToContainer(rockCounterContainer, stoneIcon, 0);
+            AddImageToContainer(aliveMobsCounterContainer, MobIcon, 1);
+            AddImageToContainer(deadMobsCounterContainer, deathIcon, 1);
 
             InvokeRepeating(nameof(UpdateHealthBars), 0f, 0.1f);
+            InvokeRepeating(nameof(UpdateAliveMobs), 0f, 0.1f);
+        }
+
+        private void Update()
+        {
+            UpdateGameTimer();
         }
 
         private void LoadCounterUI(VisualElement container)
@@ -70,7 +99,7 @@ namespace EternalDefenders
             container.Add(counterRoot);
         }
 
-        private void AddImageToContainer(VisualElement container, Sprite sprite)
+        private void AddImageToContainer(VisualElement container, Sprite sprite, int type)
         {
 
             VisualElement imageContainer = container.Q<VisualElement>("Image");
@@ -78,11 +107,29 @@ namespace EternalDefenders
             Image image = new Image();
             image.sprite = sprite;
 
-            image.style.width = Length.Percent(100);
-            image.style.height = Length.Percent(100);
+            if (type == 0)
+            {
+                image.style.width = Length.Percent(150);
+                image.style.height = Length.Percent(150);
+            }
+            else
+            {
+                image.style.width = Length.Percent(80);
+                image.style.height = Length.Percent(80);
+            }
 
             imageContainer.Clear();
             imageContainer.Add(image);
+        }
+
+        private void UpdateAliveMobs()
+        {
+            counterAliveMobsLabel.text = $"{SpawnManager.Instance.GetEnemiersParent().childCount}";
+        }
+
+        private void UpdateDeadMobs()
+        {
+            counterDeadMobsLabel.text = $"{GameStatisticsManager.Instance.EnemiesKilled}";
         }
 
         private void UpdateCounterLabels()
@@ -102,6 +149,16 @@ namespace EternalDefenders
             }
         }
 
+        private void UpdateGameTimer()
+        {
+            float endGameTimeRemaining = GameManager.Instance.EndGameTimeRemaining;
+
+            int minutes = Mathf.FloorToInt(endGameTimeRemaining / 60f);
+            int seconds = Mathf.FloorToInt(endGameTimeRemaining % 60f);
+
+            counterGameEndLabel.text = $"{minutes:00}:{seconds:00}";
+
+        }
 
         void UpdateHealthBars()
         {

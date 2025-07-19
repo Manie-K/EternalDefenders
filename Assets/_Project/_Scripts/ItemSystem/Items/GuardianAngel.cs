@@ -1,8 +1,11 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using UnityEngine;
+using static EternalDefenders.TowerBundle;
+using static UnityEditor.PlayerSettings;
 
 namespace EternalDefenders
 {
@@ -17,7 +20,7 @@ namespace EternalDefenders
         /// Value in seconds
         /// </summary>
         [SerializeField] private float _protectionCooldown;
-        [SerializeField] private int _perctentageHealthRecovery = 100;
+        [SerializeField] private int _perctentageHealthRecovery;
 
         public float ProtectionCooldown
         {
@@ -34,36 +37,14 @@ namespace EternalDefenders
             }
         }
 
-        public override void Initialize(int id, string name)
-        {
-            InitializeCommon(
-                name: name,
-                description: $"Revives fallen tower with its {_perctentageHealthRecovery}% health back",
-                id: id,
-                rarity: 1,
-                priority: 5,
-                cooldownDuration: 0,
-                cooldownRemaining: 0,
-                itemType: ItemType.Passive,
-                itemTarget: ItemTarget.Tower
-            );
-
-
-            ItemEffects.Add(ItemEffect.OnDeath);
-            ItemEffects.Add(ItemEffect.PreventsDeath);
-
-            _protectionCooldown = 30;
-        }
-
         public override void Collect()
         {
             if (DuplicateCount == 0)
             {
                 _protectedTowers = new List<ProtectedTowerCooldown>();
                 ItemManager.Instance.ProtectTower += HandleTowerDestroyed;
+                DuplicateCount++;
             }
-
-            DuplicateCount++;
         }
 
         public override void Remove()
@@ -72,9 +53,9 @@ namespace EternalDefenders
             {
                 _protectedTowers.Clear();
                 ItemManager.Instance.ProtectTower -= HandleTowerDestroyed;
+                DuplicateCount--;
             }
 
-            DuplicateCount--;
         }
 
         private void UpdateCooldowns()
@@ -89,20 +70,19 @@ namespace EternalDefenders
 
             if (item == this && !_protectedTowers.Any(ptc => ptc.Tower == towerController))
             {
-                
                 _protectedTowers.Add(new ProtectedTowerCooldown(towerController, Time.time));
                 int healthRecovery = towerController.Stats.GetStat(StatType.MaxHealth) * _perctentageHealthRecovery / 100;
-
 
                 InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
                 modifier.statType = StatType.Health;
                 modifier.modifierType = ModifierType.Flat;
-                modifier.limitedDurationTime = 1;
                 modifier.value = healthRecovery;
+                modifier.persistAfterFinish = true;
+                modifier.limitedDurationTime = 0.01f;
 
                 towerController.Stats.ApplyModifier(modifier);
                 
-                Debug.Log($"Tower destruction prevented recovered tower {healthRecovery} hp");
+                Debug.Log($"Tower destruction prevented, recovered {healthRecovery} hp");
                 return true;
             }
 

@@ -1,7 +1,9 @@
 using Mono.Cecil;
+using System.Collections.Generic;
 using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEditor.Graphs;
 using UnityEngine;
+using static EternalDefenders.TowerBundle;
 
 namespace EternalDefenders
 {
@@ -9,55 +11,34 @@ namespace EternalDefenders
     public class EnergyCore : Item
     {
 
-        [SerializeField] private int _speedBoost = 5;
-        [SerializeField] private int _speedBoostPerDuplicate = 1;
-
-        public override void Initialize(int id, string name)
-        {
-            InitializeCommon(
-                name: name,
-                description: "Gives boost to player attack and movement speed",
-                id: id,
-                rarity: 1,
-                priority: 5,
-                cooldownDuration: 0,
-                cooldownRemaining: 0,
-                itemType: ItemType.Passive,
-                itemTarget: ItemTarget.Player
-            );
-
-        }
+        [SerializeField] private int _speedBoost;
+        [SerializeField] private int _speedBoostPerDuplicate;
 
         public override void Collect()
         {
             DuplicateCount++;
-
-            if (DuplicateCount == 1)
-            {
-                ApplyStats();
-            }
+            ApplyStats(true);
         }
 
         public override void Remove()
         {
             DuplicateCount--;
-
-            if (DuplicateCount == 0)
-            {
-                ApplyStats();
-            }
+            ApplyStats(false);
         }
 
-        private void ApplyStats()
+        private void ApplyStats(bool wasDuplicateCountRaised)
         {
             Stats playerStats = PlayerController.Instance.Stats;
-
-            int speedBoost = DuplicateCount == 1 ? _speedBoost : -_speedBoost;
+            int speedBoost = wasDuplicateCountRaised
+                ? (DuplicateCount == 1 ? _speedBoost : _speedBoostPerDuplicate)
+                : (DuplicateCount == 0 ? -_speedBoost : -_speedBoostPerDuplicate);
 
             InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
             modifier.statType = StatType.Speed;
             modifier.modifierType = ModifierType.Flat;
             modifier.value = speedBoost;
+            modifier.persistAfterFinish = true;
+            modifier.limitedDurationTime = 0.01f;
 
             playerStats.ApplyModifier(modifier);
 

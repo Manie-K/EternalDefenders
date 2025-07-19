@@ -1,12 +1,32 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/_Project/UI/MainMenu/MenuStyles.uss?fileID=7433441132597879392&amp;guid=b5c865e8413ff1b4db81640d14ccc593&amp;type=3#MenuStyles" />
-    <engine:VisualElement name="Wrapper" style="flex-grow: 1;">
-        <engine:VisualElement name="Controlls" style="flex-grow: 0; padding-top: 5%; align-self: stretch;">
-            <engine:Label text="Left Mouse                Shot" name="Shot" class="Text" />
-            <engine:Label text="GameMenu                Esc" name="GameMenu" class="Text" />
-            <engine:Label text="TowerPlacing             B" name="TowerPlacing" class="Text" />
-            <engine:Label text="Items Panel                I" name="ItemsPanel" class="Text" />
+    <engine:VisualElement name="Wrapper" style="flex-grow: 1; width: 100%; top: auto; left: auto; right: auto; bottom: auto;">
+        <engine:VisualElement name="Controlls" style="flex-grow: 0; padding-top: 5%; align-self: stretch; width: 150%; margin-left: -25%;">
+            <engine:VisualElement name="Shoot" style="flex-grow: 1; flex-direction: row; width: 100%;">
+                <engine:Label text="Shoot" name="Shot" class="Text" style="flex-grow: 1; align-items: stretch; justify-content: flex-start; -unity-text-align: upper-left;" />
+                <engine:Label text="LMB" name="ShotControl" class="Text" style="width: 20%; -unity-text-align: upper-left;" />
+            </engine:VisualElement>
+            <engine:VisualElement name="GameMenu" style="flex-grow: 1; flex-direction: row; width: 100%;">
+                <engine:Label text="Game menu" name="GameMenu" class="Text" style="flex-grow: 1; align-items: stretch; justify-content: flex-start; -unity-text-align: upper-left;" />
+                <engine:Label text="Esc" name="GameMenuControl" class="Text" style="width: 20%; -unity-text-align: upper-left;" />
+            </engine:VisualElement>
+            <engine:VisualElement name="Shop" style="flex-grow: 1; flex-direction: row; width: 100%;">
+                <engine:Label text="Shop" name="Shop" class="Text" style="flex-grow: 1; align-items: stretch; justify-content: flex-start; -unity-text-align: upper-left;" />
+                <engine:Label text="B" name="ShopControl" class="Text" style="width: 20%; -unity-text-align: upper-left;" />
+            </engine:VisualElement>
+            <engine:VisualElement name="Inventory" style="flex-grow: 1; flex-direction: row; width: 100%;">
+                <engine:Label text="Inventory" name="Inventory" class="Text" style="flex-grow: 1; align-items: stretch; justify-content: flex-start; -unity-text-align: upper-left;" />
+                <engine:Label text="I" name="InventoryControl" class="Text" style="width: 20%; -unity-text-align: upper-left;" />
+            </engine:VisualElement>
+            <engine:VisualElement name="ChangeWeapon" style="flex-grow: 1; flex-direction: row; width: 100%;">
+                <engine:Label text="Change weapon" name="ChangeWeapon" class="Text" style="flex-grow: 1; align-items: stretch; justify-content: flex-start; -unity-text-align: upper-left;" />
+                <engine:Label text="K" name="ChangeWeaponControl" class="Text" style="width: 20%; -unity-text-align: upper-left;" />
+            </engine:VisualElement>
+            <engine:VisualElement name="ActivateItem" style="flex-grow: 1; flex-direction: row; width: 100%;">
+                <engine:Label text="Use active item" name="ActivateItem" class="Text" style="flex-grow: 1; align-items: stretch; justify-content: flex-start; -unity-text-align: upper-left;" />
+                <engine:Label text="E" name="ActivateItemControl" class="Text" style="width: 20%; -unity-text-align: upper-left;" />
+            </engine:VisualElement>
         </engine:VisualElement>
-        <engine:Button text="Back" name="BackControllsButton" class="menu-button" />
+        <engine:Button text="Back" name="BackControllsButton" class="menu-button" style="top: 5%; justify-content: flex-start; align-self: auto; align-items: stretch; align-content: flex-start; position: relative;" />
     </engine:VisualElement>
 </engine:UXML>

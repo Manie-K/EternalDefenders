@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e0ed23a552205c44ace481be1c1f88f, type: 3}
+  m_Name: Nano-SpikeGauntlets
+  m_EditorClassIdentifier: 
+  _name: Nano-Spike Gauntlets
+  _description: Adds 10 flat damage buff to player
+  _id: 5
+  _rarity: 0
+  _priority: 5
+  _cooldownDuration: 0
+  _unique: 0
+  _icon: {fileID: 21300000, guid: f97f3e4b2e1fa70498e05ccbea95fe47, type: 3}
+  _cost:
+  - resource: {fileID: 11400000, guid: bfa98661e90d8dd4ca62abd0c758c6e2, type: 2}
+    amount: 200
+  - resource: {fileID: 11400000, guid: fd41a69815d404d45a2295472ef0266d, type: 2}
+    amount: 200
+  _itemType: 0
+  _itemTarget: 0
+  _itemEffects: 
+  _flatDamageBoost: 10

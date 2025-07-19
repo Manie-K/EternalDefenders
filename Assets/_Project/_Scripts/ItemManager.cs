@@ -11,40 +11,82 @@ namespace EternalDefenders
 {
     public class ItemManager : Singleton<ItemManager>
     {
-        public ItemDatabase _itemDictionary = new ItemDatabase();
-        public List<Item> _equippedItems = new List<Item>();
+        #region Fields
+        [SerializeField] private ItemDatabaseSO _itemDictionary;
+        private readonly List<Item> _equippedItems = new();
+        private readonly ItemPool _pool = new();
+
+        #endregion
+
+        #region Properties
+        public ItemDatabaseSO ItemDictionary
+        {
+            get { return _itemDictionary; }
+        }
+
+        public List<Item> EquippedItems 
+        {
+            get { return _equippedItems; }
+        }
+        public ItemPool Pool { get { return _pool; } }
+
+        #endregion
+
+        #region Events
 
         public event Func<Item, TowerController, bool> ProtectTower;
+        public event Func<Item, Item> ItemToRemove;
         public event Action<Item> OnItemPickUp;
         public event Action<Item> OnItemRemoval;
 
-        public ItemDatabase ItemDictionary { get; private set; }
-        public List<Item> EquippedItems { get; private set; }
+        #endregion
 
-        protected override void Awake()
+        private void Start()
         {
-            base.Awake();
+            _pool.Initialize();
+        }
 
-            _itemDictionary.FillData();
+        private void Update()
+        {
+            List<int> itemsToRemove = new();
 
-            // Item activeItem = _equippedItems.Where(item => item.ItemType == ItemType.Active).ToList().First();
+            foreach (var item in _equippedItems)
+            {
+                item.UpdateItem(Time.deltaTime);
+                if (item.ItemEffects?.Contains(ItemEffect.Fragile) == true) {
+                    itemsToRemove.Add(item.Id);
+                }
+            }
+            foreach (var id in itemsToRemove)
+            {
+                RemoveItemByID(id);
+            }
+        }
 
-            // activeItem.Use();
+        public void UseActiveItem()
+        {
+            foreach(var item in _equippedItems)
+            {
+                item.Use();
+            }
         }
 
         public void AddItemByID(int itemId)
         {
-            Item item = _itemDictionary.Items[itemId].Item;
+            Item item = Instantiate(ItemDictionary.Items[itemId]);
 
             if (item != null)
             {
 
-                if (!_equippedItems.Contains(item))
+                OnItemPickUp?.Invoke(item);
+
+                if (!_equippedItems.Any(i => i.Id == item.Id))
                 {
                     _equippedItems.Add(item);
                 }
 
-                item.Collect();
+                var equippedItem = _equippedItems.FindLast(i => i.Id == item.Id);
+                equippedItem.Collect();
 
             }
             else
@@ -55,17 +97,17 @@ namespace EternalDefenders
 
         public void RemoveItemByID(int itemId)
         {
-            Item item = _equippedItems[itemId];
+            Item item = Instantiate(_equippedItems.Find(i => i.Id == itemId));
 
             if (item != null)
             {
-                OnItemRemoval.Invoke(item);
+                OnItemRemoval?.Invoke(item);
 
                 item.Remove();
-
+                
                 if (item.DuplicateCount == 0)
                 {
-                    _equippedItems.RemoveAt(itemId);
+                    _equippedItems.RemoveAll(i => i.Id == itemId);
                 }
             }
             else
@@ -94,14 +136,6 @@ namespace EternalDefenders
             }
 
             return false;
-        }
-
-        private void Update()
-        {
-            foreach (var item in _equippedItems)
-            {
-                item.Update();
-            }
         }
 
     }

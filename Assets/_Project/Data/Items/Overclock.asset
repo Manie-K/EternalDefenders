@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0df03b8a7dbdc2341a9c6aa33dc9195e, type: 3}
+  m_Name: Overclock
+  m_EditorClassIdentifier: 
+  _name: Overclock
+  _description: Boosts attack speed of a player
+  _id: 7
+  _rarity: 1
+  _priority: 5
+  _cooldownDuration: 0
+  _unique: 0
+  _icon: {fileID: 21300000, guid: 38d68ee4f818e804a80db1c85c6a3830, type: 3}
+  _cost:
+  - resource: {fileID: 11400000, guid: bfa98661e90d8dd4ca62abd0c758c6e2, type: 2}
+    amount: 200
+  - resource: {fileID: 11400000, guid: fd41a69815d404d45a2295472ef0266d, type: 2}
+    amount: 200
+  _itemType: 0
+  _itemTarget: 0
+  _itemEffects: 
+  _attackSpeedBoost: -1
+  _priceChangeMutiplier: 2
+  _priceChangeFlat: 50

@@ -1,4 +1,5 @@
-﻿using MG_Utilities;
+﻿using System;
+using MG_Utilities;
 using UnityEngine;
 
 namespace EternalDefenders
@@ -8,10 +9,26 @@ namespace EternalDefenders
         [SerializeField] bool canBuild = true;
         [SerializeField] float buildingHeight = 0f;
         
-        public TowerController Building { get; private set; }
+        public TowerBase Building { get; private set; }
         public float BuildingHeight => buildingHeight;
-        
+
+
+        void Start()
+        {
+            TowerController.OnTowerDestroyed += (destroyedTower =>
+            {
+                if(destroyedTower != null && destroyedTower == Building)
+                {
+                    ClearBuilding();
+                }
+            });
+        }
+
         public bool CanBuild() => canBuild && Building is null;
-        public void SetBuilding(TowerController building) => Building = building;
+        public void SetBuilding(TowerBase building) => Building = building;
+        public void ClearBuilding()
+        {
+            Building = null;
+        }
     }
 }

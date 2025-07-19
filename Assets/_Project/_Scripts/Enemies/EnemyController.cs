@@ -11,6 +11,10 @@ namespace EternalDefenders
         [SerializeField] EnemyTargetStrategy targetStrategy;
         [SerializeField] EnemyAttackStrategy attackStrategy;
         [SerializeField] float retargetingInterval = 2f;
+
+        [SerializeField] private GameObject deathEffectPrefab;
+        [SerializeField] private Vector3 deathEffectOffset = new Vector3(0, 0.5f, 0);
+
         public Stats Stats { get; private set; }
         public Effect Effect { get; private set; }
         public IEnemyTarget Target { get; private set; }
@@ -50,10 +54,6 @@ namespace EternalDefenders
             {
                 Die();
             }
-            else if(Stats.GetStat(StatType.Health) > 300)
-            {
-                Debug.LogError("Enemy gaining health instead of losing it");
-            }
         }
         public IEnumerator Attack()
         {
@@ -82,7 +82,17 @@ namespace EternalDefenders
         public void Die()
         {
             Debug.Log("I'm dead");
-            
+
+            if (deathEffectPrefab != null)
+            {
+                Vector3 spawnPosition = transform.position + deathEffectOffset;
+                GameObject deathEffect = Instantiate(deathEffectPrefab, spawnPosition, Quaternion.identity);
+
+                deathEffect.transform.localScale *= 0.9f;
+
+                Destroy(deathEffect, 5f);
+            }
+
             OnDeath?.Invoke();
             GameStatisticsManager.Instance?.NotifyEnemyKilled();
             FSMEntitiesManager.Instance?.UnregisterEntity(GetComponent<EnemyBrain>());

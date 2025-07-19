@@ -5,6 +5,7 @@ namespace EternalDefenders
     public enum ItemEffect
     {
         PreventsDeath,
-        OnDeath
+        OnDeath,
+        Fragile
     }
 }

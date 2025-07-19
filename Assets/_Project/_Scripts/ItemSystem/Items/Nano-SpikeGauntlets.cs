@@ -1,60 +1,42 @@
 using Mono.Cecil;
+using System.Collections.Generic;
 using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEditor.Graphs;
 using UnityEngine;
+using static EternalDefenders.TowerBundle;
 
 namespace EternalDefenders
 {
     [CreateAssetMenu(fileName = "Nano-SpikeGauntlets", menuName = "EternalDefenders/ItemSystem/Items/Nano-SpikeGauntlets")]
     public class NanoSpikeGauntlets : Item
     {
-
-        [SerializeField] private int _flatDamageBoost = 20;
-
-        public override void Initialize(int id, string name)
-        {
-            InitializeCommon(
-                name: name,
-                description: $"Adds {_flatDamageBoost} flat damage buff to player",
-                id: id,
-                rarity: 1,
-                priority: 5,
-                cooldownDuration: 0,
-                cooldownRemaining: 0,
-                itemType: ItemType.Passive,
-                itemTarget: ItemTarget.Player
-            );
-        }
-
+        [SerializeField] private int _flatDamageBoost;
 
         public override void Collect()
         {
-            if (DuplicateCount == 0)
-            {
-                ApplyStats();
-            }
             DuplicateCount++;
+            ApplyStats(true);
+
         }
 
         public override void Remove()
         {
-            if (DuplicateCount == 1)
-            {
-                ApplyStats();
-            }
             DuplicateCount--;
+            ApplyStats(false);
         }
 
-        private void ApplyStats()
+        private void ApplyStats(bool wasDuplicateCountRaised)
         {
             Stats playerStats = PlayerController.Instance.Stats;
 
-            int damageBoost = DuplicateCount == 1 ? _flatDamageBoost : -_flatDamageBoost;
+            int damageBoost = wasDuplicateCountRaised ? _flatDamageBoost : -_flatDamageBoost;
 
             InstantModifier modifier = ScriptableObject.CreateInstance<InstantModifier>();
             modifier.statType = StatType.Damage;
             modifier.modifierType = ModifierType.Flat;
             modifier.value = damageBoost;
+            modifier.persistAfterFinish = true;
+            modifier.limitedDurationTime = 0.01f;
 
             playerStats.ApplyModifier(modifier);
 

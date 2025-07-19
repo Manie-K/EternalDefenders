@@ -9,9 +9,12 @@ namespace EternalDefenders
     {
         private UIDocument _doc;
 
+        private Label _endGameLabel;
+
         private Label _playerDeathLabel;
         private Label _TowerDestroyedLabel;
         private Label _EnemiesKilledLabel;
+        private Label _finalScoreLabel;
 
         private Button _playAgainButton;
         private Button _ExitButton;
@@ -23,9 +26,12 @@ namespace EternalDefenders
             _doc = GetComponent<UIDocument>();
             _doc.rootVisualElement.style.display = DisplayStyle.None;
 
+            _endGameLabel = _doc.rootVisualElement.Q<Label>("EndGame_Text");
+
             _playerDeathLabel = _doc.rootVisualElement.Q<Label>("Death_Player_Number");
             _TowerDestroyedLabel = _doc.rootVisualElement.Q<Label>("Destroy_Tower_Number");
             _EnemiesKilledLabel = _doc.rootVisualElement.Q<Label>("Enemies_Killed_Number");
+            _finalScoreLabel = _doc.rootVisualElement.Q<Label>("Final_Score_Number");
 
             _playAgainButton = _doc.rootVisualElement.Q<Button>("PlayAgain");
             _playAgainButton.clicked += PlayAgainButtonOnClicked;
@@ -38,14 +44,28 @@ namespace EternalDefenders
             if (MainBaseController.Instance != null)
             {
                 MainBaseController.Instance.OnMainBaseDestroyed += GameOver;
+                GameManager.Instance.OnGameOver += WonGame;
             }
         }
 
         void GameOver()
         {
-            if (isAnimationDone) return; 
+            if (isAnimationDone) return;
 
+            _finalScoreLabel.text = GameStatisticsManager.Instance.GetFinalScore().ToString();
+            _endGameLabel.text = "Game Over";
             isAnimationDone = true; 
+            _doc.rootVisualElement.style.display = DisplayStyle.Flex;
+            DisplayStatistics();
+        }
+
+        void WonGame()
+        {
+            if (isAnimationDone) return;
+
+            _finalScoreLabel.text = GameStatisticsManager.Instance.GetFinalScore().ToString();
+            _endGameLabel.text = "Game Won";
+            isAnimationDone = true;
             _doc.rootVisualElement.style.display = DisplayStyle.Flex;
             DisplayStatistics();
         }

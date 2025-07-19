@@ -14,7 +14,7 @@ namespace EternalDefenders
             public int amount;
         }
         
-        public TowerController towerPrefab;
+        public TowerBase towerPrefab;
         public Mesh combinedMesh;
         public Sprite icon;
         public List<ResourceCost> cost;

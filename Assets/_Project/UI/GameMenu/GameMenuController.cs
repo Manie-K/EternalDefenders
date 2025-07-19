@@ -10,6 +10,7 @@ namespace EternalDefenders
         private Button _playButton;
         private Button _quitButton;
         private Button _settingsButton;
+        private Button _MusicButton;
         private VisualElement _buttonsWrapper;
         private bool _isMenuVisible = true;
 
@@ -17,9 +18,14 @@ namespace EternalDefenders
         private VisualTreeAsset _settingsButtonsTemplate;
         private VisualElement _settingsButtons;
 
+
         [SerializeField]
         private VisualTreeAsset _controllsPanelTemplate;
         private VisualElement _controllsPanel;
+
+        [SerializeField]
+        private VisualTreeAsset _MusicPanelTemplate;
+        private VisualElement _MusicPanel;
 
         private void Awake()
         {
@@ -40,9 +46,34 @@ namespace EternalDefenders
             var ControllsButton = _settingsButtons.Q<Button>("controlls");
             ControllsButton.clicked += ControllsButtonOnClicked;
 
+            var MusicButton = _settingsButtons.Q<Button>("music");
+            MusicButton.clicked += MusicButtonOnClicked;
+
             _controllsPanel = _controllsPanelTemplate.CloneTree();
             var backControllsButton = _controllsPanel.Q<Button>("BackControllsButton");
             backControllsButton.clicked += BackControllsButtonOnclicked;
+
+            _MusicPanel = _MusicPanelTemplate.CloneTree();
+            var backMusicButton = _MusicPanel.Q<Button>("BackControllsButton");
+            backMusicButton.clicked += BackControllsButtonOnclicked;
+
+
+
+            var musicSlider = _MusicPanel.Q<Slider>("MusicSlider");
+            var sfxSlider = _MusicPanel.Q<Slider>("SfxSlider");
+
+            musicSlider.value = AudioManager.Instance.MusicVolume;
+            sfxSlider.value = AudioManager.Instance.SFXVolume;
+
+            musicSlider.RegisterValueChangedCallback(evt =>
+            {
+                AudioManager.Instance.MusicVolume = evt.newValue;
+            });
+
+            sfxSlider.RegisterValueChangedCallback(evt =>
+            {
+                AudioManager.Instance.SFXVolume = evt.newValue;
+            });
 
             ToggleMenu();
         }
@@ -57,12 +88,18 @@ namespace EternalDefenders
 
         private void PlayButtonOnClicked()
         {
-            ToggleMenu(); 
+            ToggleMenu();
         }
 
         private void QuitButtonOnClicked()
         {
             SceneManager.LoadScene("MainMenu");
+        }
+
+        private void MusicButtonOnClicked()
+        {
+            _buttonsWrapper.Clear();
+            _buttonsWrapper.Add(_MusicPanel);
         }
 
         private void SettingsButtonOnClicked()
@@ -82,7 +119,7 @@ namespace EternalDefenders
         private void ToggleMenu()
         {
             _isMenuVisible = !_isMenuVisible;
-            if (!_isMenuVisible) BackButtonOnClicked(); 
+            if (!_isMenuVisible) BackButtonOnClicked();
             _doc.rootVisualElement.style.display = _isMenuVisible ? DisplayStyle.Flex : DisplayStyle.None;
         }
 

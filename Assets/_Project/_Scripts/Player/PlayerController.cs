@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 using HudElements;
 using System.Collections.Generic;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using Codice.CM.SEIDInfo;
 
 namespace EternalDefenders
 {
@@ -17,10 +18,18 @@ namespace EternalDefenders
         [SerializeField] float turnSmoothTime = 0.01f;
         [SerializeField] int respawnTime = 6;
 
+        [SerializeField] private GameObject deathEffectPrefab;
+        private Vector3 deathEffectOffset = new Vector3(0, 1.5f, 0);
+
+        [SerializeField] private GameObject Attack1Prefab;
+        [SerializeField] private GameObject Attack2Prefab;
+        private Vector3 attackEffectOffset = new Vector3(0, 0.85f, 0);
+
         public Stats Stats { get; private set; }
-        public event Action OnPlayerDeath;
-        public event Action OnPlayerRespawn;
-        public PlayerState currentState;
+        public event Action OnDeath;
+        public event Action OnRespawn;
+        public event Action OnFight;
+        public PlayerState CurrentState { get; set; }
 
         CharacterController _controller;
         Transform _playerTransform;
@@ -33,19 +42,39 @@ namespace EternalDefenders
         public readonly int _deathRifleHash = Animator.StringToHash("Death Rifle");
         public readonly int _walkRifleHash = Animator.StringToHash("Walk Rifle");
         public readonly int _jumpRifleHash = Animator.StringToHash("Jump Rifle");
+
+        public readonly int _runHash = Animator.StringToHash("Run");
+        public readonly int _idleHash = Animator.StringToHash("Idle");
+        public readonly int _deathHash = Animator.StringToHash("Death");
+        public readonly int _walkHash = Animator.StringToHash("Walk");
+        public readonly int _jumpHash = Animator.StringToHash("Jump");
+        public readonly int _fightStanceHash = Animator.StringToHash("FightStance");
+        public readonly int _hitHash = Animator.StringToHash("Hit");
+
         public readonly int[] _damageHashes = new int[] { Animator.StringToHash("Damage1"), 
             Animator.StringToHash("Damage2"), Animator.StringToHash("Damage3") };
+
+        private int _currentRunHash;
+        private int _currentIdleHash;
+        private int _currentDeathHash;
+        private int _currentWalkHash;
+        private int _currentJumpHash;
+        private int _currentAimingHash;
+        private int _currentFireHash;
+        private int _currentHitHash;
+        private int _currentFightStanceHash;
 
         private float _turnSmoothVelocity;
         private int _currentAnimationHash;
         private int _previousAnimationHash;
 
-
         private Vector3 _velocity;
         private bool _isGrounded;
         private readonly float _gravity = -9.81f;
         private float _jumpHeight = 2f;
-        private bool _canFight = true;
+
+        public bool CanFight { get; set; }
+        public bool CanMove { get; set; }
 
         protected override void Awake()
         {
@@ -55,13 +84,26 @@ namespace EternalDefenders
             _playerTransform = transform.GetChild(0).GetComponent<Transform>();
             _animator = transform.GetChild(0).GetComponent<Animator>();
 
-            currentState = PlayerState.Idle;
+            CurrentState = PlayerState.Idle;
             _currentAnimationHash = _idleRifleHash;
 
-            //TODO: Don't use playerStats directly, use Stats instead @FranciszekGwarek
             Stats = new Stats(playerStats.GetStats());
 
-            OnPlayerDeath += OnPlayerDeathDelegate;
+            OnDeath += OnDeath_Delegate;
+            OnRespawn += OnRespawn_Delegate;
+      
+            CanMove = true;
+            CanFight = true;
+
+            _currentAimingHash = _aimingSniperRifleHash;
+            _currentFireHash = _fireSniperRifleHash;
+            _currentDeathHash = _deathRifleHash;
+            _currentRunHash = _runRifleHash;
+            _currentIdleHash = _idleRifleHash;
+            _currentJumpHash = _jumpRifleHash;
+            _currentWalkHash = _walkRifleHash;
+            _currentHitHash = _hitHash;
+            _currentFightStanceHash = _fightStanceHash;
         }
 
         void Start()
@@ -70,33 +112,32 @@ namespace EternalDefenders
             transform.position = spawnPointTransform.position;
             _controller.enabled = true;
 
+            var input = InputManager.Instance;
+            input.OnPlayerWeaponChange += OnWeaponChange;
+
             ChangeAnimation(_idleRifleHash);
         }
 
         void Update()
         {
-            //Debug.Log(currentState);
             Stats.UpdateStatsModifiers(Time.deltaTime);
 
-            if (currentState != PlayerState.Dead)
+            if (Stats.GetStat(StatType.Health) <= 0 && CurrentState != PlayerState.Dead)
             {
-                //check if player is alive
-                if (Stats.GetStat(StatType.Health) <= 0)
-                { 
-                    _canFight = false;
-                    currentState = PlayerState.Dead;
-                    OnPlayerDeath?.Invoke();
-                }
-                else
-                {
+                CanFight = false;
+                CanMove = false;
+                CurrentState = PlayerState.Dead;
+                OnDeath?.Invoke();
+            }
 
-                    PlayerInput();
-                }
-
+            if (CurrentState != PlayerState.Dead && CurrentState != PlayerState.Damage)
+            {
+               PlayerActions();
             }
             else
             {
-                _canFight = false;
+                CanFight = false;
+                CanMove = false;
             }
 
             //gravity
@@ -110,13 +151,27 @@ namespace EternalDefenders
             _velocity.y += _gravity * Time.deltaTime;
             _controller.Move(_velocity * Time.deltaTime);
 
+            OnWeaponChange();
+
         }
 
-        void OnPlayerDeathDelegate()
+        void OnDeath_Delegate()
         {
             //death
-            currentState = PlayerState.Dead;
-            ChangeAnimation(_deathRifleHash);
+            CurrentState = PlayerState.Dead;
+            CanMove = false;
+            CanFight = false;
+            ChangeAnimation(_currentDeathHash);
+
+            if (deathEffectPrefab != null)
+            {
+                Vector3 spawnPosition = transform.position + deathEffectOffset;
+                GameObject deathEffect = Instantiate(deathEffectPrefab, spawnPosition, Quaternion.identity);
+
+                deathEffect.transform.localScale *= 0.2f;
+
+                Destroy(deathEffect, 5f);
+            }
 
             //respawn
             StartCoroutine(RespawnPlayerAfterDelay(respawnTime));
@@ -126,80 +181,200 @@ namespace EternalDefenders
         {
             yield return new WaitForSeconds(delay);
 
+            OnRespawn?.Invoke();
+        }
+
+        void OnRespawn_Delegate()
+        {
             _controller.enabled = false;
             transform.position = spawnPointTransform.position;
             _controller.enabled = true;
 
             Stats = new Stats(playerStats.GetStats());
-            ChangeAnimation(_idleRifleHash);
-            currentState = PlayerState.Idle;
-
-            OnPlayerRespawn?.Invoke();
+            ChangeAnimation(_currentIdleHash);
+            CurrentState = PlayerState.Idle;
+            CanMove = true;
+            CanFight = true;
         }
 
-        void PlayerInput()
+        void PlayerActions()
         {
-            if ((Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-                 && currentState != PlayerState.Damage && currentState != PlayerState.Fight)
-            {
-                //_canFight = false;
+            var input = InputManager.Instance;
 
-                if (currentState == PlayerState.Jump)
+            if (input.IsPlayerFighting && CanFight == true)
+            {
+                OnFight?.Invoke();
+                if (GetComponentInChildren<GunController>() == null)
                 {
-                    MovePlayer(currentState);
+                    Attack();
                 }
-                else if (Input.GetKey(KeyCode.LeftShift))
+            }
+            else if (input.IsPlayerMoving && CurrentState != PlayerState.Fight && CanMove == true)
+            {
+                if (CurrentState == PlayerState.Jump)
                 {
-                    currentState = PlayerState.Run;
-                    ChangeAnimation(_runRifleHash);
-                    MovePlayer(currentState);
+                    MovePlayer(CurrentState);
+                }
+                else if (input.IsPlayerSprinting)
+                {
+                    CurrentState = PlayerState.Run;
+                    ChangeAnimation(_currentRunHash);
+                    MovePlayer(CurrentState);
                 }
                 else
                 {
-                    currentState = PlayerState.Walk;
-                    ChangeAnimation(_walkRifleHash);
-                    MovePlayer(currentState);
+                    CurrentState = PlayerState.Walk;
+                    ChangeAnimation(_currentWalkHash);
+                    MovePlayer(CurrentState);
                 }
 
             }
-            else if (currentState == PlayerState.ReadyToFight)
+            else if (CurrentState == PlayerState.ReadyToFight)
             {
-                _canFight = true;
+                CanFight = true;
                 ChangeDirection360();
             }
-            else if (currentState != PlayerState.Fight && currentState != PlayerState.Damage
-                    && currentState != PlayerState.Jump)
+            else if (CurrentState != PlayerState.Fight && CurrentState != PlayerState.Jump)
             {
-                _canFight = true;
-                ChangeAnimation(_idleRifleHash);
-            }   
+                CanFight = true;
+                CurrentState = PlayerState.Idle;
+                ChangeAnimation(_currentIdleHash);
 
-            if (_isGrounded && Input.GetKeyDown(KeyCode.Space))
+            }
+
+            if (_isGrounded && input.IsPlayerJumping)
             {
                 StartCoroutine(Jump());
             }
+
+            //Debug.Log(CurrentState);
 
         }
 
         IEnumerator Jump()
         {
-            _canFight = false;
-            currentState = PlayerState.Jump;
+            CanFight = false;
+            CurrentState = PlayerState.Jump;
             _previousAnimationHash = _currentAnimationHash;
-            ChangeAnimation(_jumpRifleHash, 0.01f);
+            ChangeAnimation(_currentJumpHash, 0.01f);
             _velocity.y = Mathf.Sqrt(_jumpHeight * -2f * _gravity);
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.2f);
 
-            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-            float time = stateInfo.length;
-            Debug.Log(time);
+            // Wait until the player is grounded again
+            while (!_isGrounded)
+            {
+                yield return null;
+            }
 
-            yield return new WaitForSeconds(time);
-            ChangeAnimation(_previousAnimationHash, 0.0001f);
+            ChangeAnimation(_currentIdleHash);
 
-            currentState = PlayerState.Idle;
-            _canFight = true;
+            CurrentState = PlayerState.Idle;
+            CanFight = true;
+        }
+
+        void Attack()
+        {
+            if (CanFight && CurrentState != PlayerState.Fight)
+            {
+                if (CurrentState == PlayerState.ReadyToFight)
+                {
+                    CurrentState = PlayerState.Fight;
+                    CanMove = false;
+                    ChangeDirection360();
+                    StartCoroutine(WaitAndHit(0f));
+                }
+                else if (CurrentState != PlayerState.ReadyToFight)
+                {
+                    CurrentState = PlayerState.Fight;
+                    CanMove = false;
+                    ChangeDirection360();
+                    ChangeAnimation(_currentFightStanceHash, 0.03f);
+                    StartCoroutine(WaitAndHit(0.3f));
+                }
+            }
+        }
+
+        private IEnumerator WaitAndHit(float waitingTime = 0f)
+        {
+            yield return new WaitForSeconds(waitingTime);
+
+            if (!CanFight)
+            {
+                CanMove = true;
+                CurrentState = PlayerState.ReadyToFight;
+                yield return null;
+            }
+
+            ChangeAnimation(_currentHitHash, 0.01f);
+
+            List<EnemyController> enemiesToHit = GetEnemiesInFront(Stats.GetStat(StatType.Range));
+            foreach (var enemy in enemiesToHit)
+            {
+                if (enemy != null)
+                {
+                    DamageCalculator.Instance.PlayerAttackEnemy(enemy);
+                    AttackAnimation(enemy.transform.position);
+                }
+            }
+
+            yield return new WaitForSeconds(0.2f);
+            float animationLength = _animator.GetCurrentAnimatorStateInfo(0).length;
+            float adjustenAnimationLength = animationLength * Stats.GetStat(StatType.Cooldown) / playerStats.cooldown;
+            yield return new WaitForSeconds(adjustenAnimationLength);
+
+            CanMove = true;
+            CurrentState = PlayerState.ReadyToFight;
+        }
+
+        void AttackAnimation(Vector3 pos)
+        {
+            if (GetComponentInChildren<GunController>() == null)
+            {
+                if (Attack1Prefab != null)
+                {
+                    GameObject deathEffect = Instantiate(Attack1Prefab, pos + attackEffectOffset, Quaternion.identity);
+
+                    deathEffect.transform.localScale *= 0.3f;
+
+                    Destroy(deathEffect, 5f);
+                }
+            }
+            else
+            {
+                if (Attack2Prefab != null)
+                {
+                    GameObject deathEffect = Instantiate(Attack2Prefab, pos + attackEffectOffset, Quaternion.identity);
+
+                    deathEffect.transform.localScale *= 0.3f;
+
+                    Destroy(deathEffect, 5f);
+                }
+            }
+        }
+
+        void OnWeaponChange()
+        {
+            if (GetComponentInChildren<GunController>() == null)
+            {
+                _currentWalkHash = _walkHash;
+                _currentIdleHash = _idleHash;
+                _currentRunHash = _runHash;
+                _currentJumpHash = _jumpHash;
+                _currentDeathHash = _deathHash;
+                _currentFightStanceHash = _fightStanceHash;
+                _currentHitHash = _hitHash;
+            }
+            else
+            {
+                _currentWalkHash = _walkRifleHash;
+                _currentIdleHash = _idleRifleHash;
+                _currentRunHash = _runRifleHash;
+                _currentJumpHash = _jumpRifleHash;
+                _currentDeathHash = _deathRifleHash;
+                _currentAimingHash = _aimingSniperRifleHash;
+                _currentFireHash = _fireSniperRifleHash;
+            }
         }
 
         void ChangeDirection(Vector3 movementDirection)
@@ -235,10 +410,9 @@ namespace EternalDefenders
             Vector3 right = _playerTransform.right;
             Vector3 movementDirection = new Vector3(horizontal, 0f, vertical).normalized;
 
-            //parameters change depends on player state
             int speed;
-            if (state == PlayerState.Run) speed = playerStats.speed * 2;
-            else speed = playerStats.speed;
+            if (state == PlayerState.Run) speed = Stats.GetStat(StatType.Speed) * 2;
+            else speed = Stats.GetStat(StatType.Speed);
 
             if (movementDirection.magnitude >= 0.1f)
             {
@@ -277,24 +451,43 @@ namespace EternalDefenders
 
         public IEnumerator OnDamage()
         {
-            currentState = PlayerState.Damage;
+            CurrentState = PlayerState.Damage;
+            CanFight = false;
+            CanMove = false;
+
             System.Random random = new System.Random();
             int number = random.Next(_damageHashes.Length);
-            Console.WriteLine(number);
             ChangeAnimation(_damageHashes[number]);
             
             yield return new WaitForSeconds(1f);
-            currentState = PlayerState.Idle;
+
+            CurrentState = PlayerState.Idle;
+            CanMove = true;
+            CanFight = true;
         }
 
-        public PlayerState GetState()
+        private List<EnemyController> GetEnemiesInFront(int detectionRadius = 10, float angle = 90f)
         {
-            return currentState;
+            List<EnemyController> enemiesInFront = new List<EnemyController>();
+            Collider[] hitColliders = Physics.OverlapSphere(_playerTransform.position, detectionRadius);
+
+            foreach (var hitCollider in hitColliders)
+            {
+                EnemyController enemy = hitCollider.GetComponent<EnemyController>();
+                if (enemy != null)
+                {
+                    Vector3 directionToEnemy = (hitCollider.transform.position - _playerTransform.position).normalized;
+                    float angleToEnemy = Vector3.Angle(_playerTransform.forward, directionToEnemy);
+
+                    if (angleToEnemy <= angle / 2)
+                    {
+                        enemiesInFront.Add(enemy);
+                    }
+                }
+            }
+
+            return enemiesInFront;
         }
 
-        public bool CheckIfCanFight()
-        {
-            return _canFight;
-        }
     }
 }

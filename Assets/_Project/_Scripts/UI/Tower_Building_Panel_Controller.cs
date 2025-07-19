@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using MG_Utilities;
+using NUnit.Framework.Constraints;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static EternalDefenders.TowerBundle;
@@ -27,7 +29,7 @@ namespace EternalDefenders
 
         private int AcctualPage;
         private int SizeOfItems;
-        private ItemDatabase _ItemsDatabase;
+        private ItemDatabaseSO _ItemsDatabase;
 
         //main
         private Button Towers_Button;
@@ -58,9 +60,12 @@ namespace EternalDefenders
         private VisualElement[] _ItemsRows;
 
 
-        void Start()
+        IEnumerator Start()
         {
             _doc = GetComponent<UIDocument>();
+
+
+            _doc.rootVisualElement.style.display = DisplayStyle.None;
 
             Towers_Button = _doc.rootVisualElement.Q<Button>("TowersContener_Panel");
             Towers_Button.clicked += OnTowersButtonClicked;
@@ -74,7 +79,10 @@ namespace EternalDefenders
             InitializeItemsPanel();
 
             AcctualPage = 0;
-            _ItemsDatabase = ItemManager.Instance._itemDictionary;
+
+            yield return new WaitUntil(() => ItemManager.Instance?.ItemDictionary?.Items?.Count > 0);
+
+            _ItemsDatabase = ItemManager.Instance.ItemDictionary;
             SizeOfItems = _ItemsDatabase.Items.Count;
 
             _towerBuyButtons = new Button[]
@@ -119,10 +127,8 @@ namespace EternalDefenders
 
             SetTowerPrices();
 
-            _doc.rootVisualElement.style.display = DisplayStyle.None;
-
-            BuildingManager.Instance.OnBuildingModeEnter += OnBuildingModeEnter_Delegate;
-            BuildingManager.Instance.OnBuildingModeExit += OnBuildingModeExit_Delegate;
+            InputManager.Instance.OnStoreModeEnter += OnStoreModeEnter_Delegate;
+            InputManager.Instance.OnStoreModeExit += OnStoreModeExit_Delegate;
 
             OnTowersButtonClicked();
 
@@ -131,15 +137,15 @@ namespace EternalDefenders
 
         void OnDisable()
         {
-            BuildingManager buildingManager = BuildingManager.Instance;
-            if (buildingManager == null) return;
-            buildingManager.OnBuildingModeEnter -= OnBuildingModeEnter_Delegate;
-            buildingManager.OnBuildingModeExit -= OnBuildingModeExit_Delegate;
+            InputManager inputManager = InputManager.Instance;
+            if (inputManager == null) return;
+            inputManager.OnStoreModeEnter -= OnStoreModeEnter_Delegate;
+            inputManager.OnStoreModeExit -= OnStoreModeExit_Delegate;
         }
 
-        void OnBuildingModeExit_Delegate() => _doc.rootVisualElement.style.display = DisplayStyle.None;
+        void OnStoreModeExit_Delegate() => _doc.rootVisualElement.style.display = DisplayStyle.None;
 
-        void OnBuildingModeEnter_Delegate() => _doc.rootVisualElement.style.display = DisplayStyle.Flex;
+        void OnStoreModeEnter_Delegate() => _doc.rootVisualElement.style.display = DisplayStyle.Flex;
 
 
         private void InitializeItemsPanel()
@@ -220,6 +226,7 @@ namespace EternalDefenders
 
         void OnBackButtonClicked()
         {
+
             if (AcctualPage > 0)
             {
                 AcctualPage--;
@@ -239,14 +246,14 @@ namespace EternalDefenders
 
                 if (itemIndex < _ItemsDatabase.Items.Count)
                 {
-                    var currentItem = _ItemsDatabase.Items[itemIndex].Item;
+                    var currentItem = _ItemsDatabase.Items[itemIndex];
 
                     _ItemsNamesLabels[i, 0].text = currentItem.Name;
-                    _ItemsPriceLabels[i, 0].text = "30";
-                    _ItemsPriceLabels[i, 1].text = "30";
+                    _ItemsPriceLabels[i, 0].text = currentItem.Cost[0].amount.ToString();
+                    _ItemsPriceLabels[i, 1].text = currentItem.Cost[1].amount.ToString();
                     _ItemsDescriptionsLabels[i, 0].text = currentItem.Description;
 
-                    _ItemsSprites[i, 0].style.backgroundImage = new StyleBackground(icon);
+                    _ItemsSprites[i, 0].style.backgroundImage = currentItem.Icon.texture;
 
 
                     _ItemsRows[i].style.display = DisplayStyle.Flex;
@@ -273,10 +280,10 @@ namespace EternalDefenders
                 inventory.RemoveResource(tower.cost[1].resource, stoneCost);
                 inventory.RemoveResource(tower.cost[0].resource, woodCost);
 
-                OnBuildingModeExit_Delegate();
+                OnStoreModeExit_Delegate();
 
                 OnBuildingSelected?.Invoke(tower);
-
+                UpdatePriceColors();
             }
             else
             {
@@ -291,18 +298,23 @@ namespace EternalDefenders
 
             if (itemIndex >= _ItemsDatabase.Items.Count) return;
 
-            var selectedItem = _ItemsDatabase.Items[itemIndex].Item;
+            var selectedItem = Instantiate(_ItemsDatabase.Items[itemIndex]);
             PlayerResourceInventory inventory = PlayerResourceInventory.Instance;
+            var selectedItemCost = selectedItem.Cost;
+            var stoneCost = selectedItemCost[1].amount;
+            var woodCost = selectedItemCost[0].amount;
 
-            if (inventory.HasEnoughOfResource(res_stone, 30) && inventory.HasEnoughOfResource(res_wood, 30))
+            if (inventory.HasEnoughOfResource(selectedItemCost[1].resource, stoneCost) && inventory.HasEnoughOfResource(selectedItemCost[0].resource, woodCost))
             {
                 //ten warunek mozna zmienic pozniej
-                if (!ItemManager.Instance._equippedItems.Contains(selectedItem))
-                {
-                    inventory.RemoveResource(res_stone, 30);
-                    inventory.RemoveResource(res_wood, 30);
-                    ItemManager.Instance.AddItemByID(selectedItem.Id);
-                }
+
+                inventory.RemoveResource(selectedItemCost[1].resource, stoneCost);
+                inventory.RemoveResource(selectedItemCost[0].resource, woodCost);
+                ItemManager.Instance.AddItemByID(selectedItem.Id);
+
+                DisplayItemsOnPage();
+                UpdatePriceColors();
+                
             }
             else
             {
@@ -322,6 +334,7 @@ namespace EternalDefenders
         void UpdatePriceColors()
         {
             PlayerResourceInventory inventory = PlayerResourceInventory.Instance;
+            List<Item> items = ItemManager.Instance.ItemDictionary.Items;
 
             for (int i = 0; i < towerBundles.Count; i++)
             {
@@ -330,10 +343,13 @@ namespace EternalDefenders
             }
 
             //testowanie kupowania itemow
-            for (int i = 0; i < 4; i++)
+            int startIndex = AcctualPage * 4;
+            int endIndex = Math.Min(startIndex + 4, _ItemsDatabase.Items.Count);
+            for (int i = startIndex, j = 0; i < endIndex; i++, j++)
             {
-                UpdateLabelColor2(30, _ItemsPriceLabels[i, 0], inventory, res_wood);
-                UpdateLabelColor2(30, _ItemsPriceLabels[i, 1], inventory, res_stone);
+                var itemCost = items[i].Cost;
+                UpdateLabelColor2(itemCost[0].amount, _ItemsPriceLabels[j, 0], inventory, itemCost[0].resource);
+                UpdateLabelColor2(itemCost[1].amount, _ItemsPriceLabels[j, 1], inventory, itemCost[1].resource);
             }
         }
         void UpdateLabelColor(ResourceCost cost, Label label, PlayerResourceInventory inventory, ResourceSO resource)

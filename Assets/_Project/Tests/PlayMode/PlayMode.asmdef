@@ -4,7 +4,8 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "MainAssemblyDefinition"
+        "MainAssemblyDefinition",
+        "MG_Utilities"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

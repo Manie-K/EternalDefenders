@@ -5,5 +5,6 @@ namespace EternalDefenders
     public class GameAssetsManager : Singleton<GameAssetsManager>
     {
         public DamagePopupText damagePopupTextPrefab;
+        public ResourcePopup ResourcePopupPrefab;
     }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   shield: 100
-  damage: 40
-  range: 6
-  cooldown: 1
+  damage: 20
+  range: 8
+  cooldown: 10
   speed: 2

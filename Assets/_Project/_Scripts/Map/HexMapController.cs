@@ -10,8 +10,8 @@ namespace EternalDefenders
     {
         [SerializeField] Transform mapTransform;
         public static float HexSize => 6f;
-        public static int MapWidthChunks => 20;
-        public static int MapHeightChunks => 15;
+        public static int MapWidthChunks => 13;
+        public static int MapHeightChunks => 10;
 
         readonly HexTile[,] _map = new HexTile[MapWidthChunks * HexPerChunkX, MapHeightChunks*HexPerChunkY];
 
@@ -75,7 +75,7 @@ namespace EternalDefenders
         {
             List<HexTile> neighbours = new List<HexTile>(6);
 
-            if (x < 0 || x >= MapWidthChunks || y < 0 || y >= MapHeightChunks)
+            if (x < 0 || x >= MapWidthChunks * 3 || y < 0 || y >= MapHeightChunks * 2)
             {
                 throw new ArgumentException("Wrong tile coordinates");
             }

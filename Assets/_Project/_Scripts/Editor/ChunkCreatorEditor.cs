@@ -15,7 +15,7 @@ namespace EternalDefenders.Editor
             GUILayout.Label("There need to be 6 hex prefabs in the list to generate a chunk.", 
                 EditorStyles.wordWrappedLabel);
             
-            if (GUILayout.Button("Generate Chunks"))
+            if (GUILayout.Button("Generate Chunk"))
             {
                 myScript.CreateChunk();
             }
