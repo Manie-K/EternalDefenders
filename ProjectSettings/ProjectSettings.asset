@@ -12,7 +12,8 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: "Maciej G\xF3ralczyk, Franciszek Gwarek, Micha\u0142 W\u0119siora,
+    Julian Kulikowski, Przemek D\u0119bek"
   productName: Eternal Defenders
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}

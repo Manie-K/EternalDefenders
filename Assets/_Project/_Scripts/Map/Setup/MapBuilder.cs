@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 
 namespace EternalDefenders
@@ -25,8 +24,8 @@ namespace EternalDefenders
         void SetUp()
         {
             string json = File.ReadAllText(_filePath);
-            int[][] mapChunks = JsonConvert.DeserializeObject<int[][]>(json);
-
+            int[][] mapChunks = JsonUtility.FromJson<int[][]>(json);
+            
             _chunkTypes = new List<int>(_width * _height);
             _chunkPositions = new List<Vector3>(_width * _height);
             _chunkRotations = new List<Quaternion>(_width * _height);

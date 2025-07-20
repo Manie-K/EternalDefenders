@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
-using static EternalDefenders.TowerBundle;
 
 namespace EternalDefenders
 {
@@ -53,14 +50,14 @@ namespace EternalDefenders
             var cost = item._cost;
             if (wasDuplicateCountRaised)
             {
-                foreach (ResourceCost resourceCost in cost)
+                foreach (TowerBundle.ResourceCost resourceCost in cost)
                 {
                     resourceCost.amount = resourceCost.amount * _priceChangeMutiplier + _priceChangeFlat;
                 }
             }
             else
             {
-                foreach (ResourceCost resourceCost in cost)
+                foreach (TowerBundle.ResourceCost resourceCost in cost)
                 {
                     resourceCost.amount = (resourceCost.amount - _priceChangeFlat) / _priceChangeMutiplier;
                 }

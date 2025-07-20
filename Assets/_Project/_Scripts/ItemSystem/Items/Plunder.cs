@@ -1,5 +1,4 @@
 using UnityEngine;
-using static EternalDefenders.TowerBundle;
 
 namespace EternalDefenders
 {
@@ -45,14 +44,14 @@ namespace EternalDefenders
         {
             if (wasDuplicateCountRaised)
             {
-                foreach (ResourceCost resourceCost in _cost)
+                foreach (TowerBundle.ResourceCost resourceCost in _cost)
                 {
                     resourceCost.amount = resourceCost.amount + _priceChangeFlat;
                 }
             }
             else
             {
-                foreach (ResourceCost resourceCost in _cost)
+                foreach (TowerBundle.ResourceCost resourceCost in _cost)
                 {
                     resourceCost.amount = resourceCost.amount - _priceChangeFlat;
                 }

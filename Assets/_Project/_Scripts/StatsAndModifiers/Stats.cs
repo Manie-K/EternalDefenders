@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using PlasticGui.WorkspaceWindow.PendingChanges;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace EternalDefenders
