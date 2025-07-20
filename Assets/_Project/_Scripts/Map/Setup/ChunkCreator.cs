@@ -41,6 +41,7 @@ namespace EternalDefenders
                 hex.transform.parent = _newChunkTransform.GetChild(0);
             }
             
+            #if UNITY_EDITOR
             string prefabPath = $"Assets/_Project/Prefabs/Chunks/{prefabName}.prefab";
             GameObject prefab = PrefabUtility.SaveAsPrefabAsset(_newChunkTransform.gameObject, prefabPath);
             if (prefab)
@@ -54,6 +55,7 @@ namespace EternalDefenders
             GameObject nextVisual = new("Chunk Visual");
             nextVisual.transform.parent = nextChunk.transform;
             prefabName = "ChunkDefaultName";
+            #endif
         }
     }
 }

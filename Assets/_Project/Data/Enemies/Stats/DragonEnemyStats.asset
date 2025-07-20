@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a0ed8ead8d3b4cd38cdc496eb2c2b09c, type: 3}
-  m_Name: DragonLordEnemyStats
+  m_Name: DragonEnemyStats
   m_EditorClassIdentifier: 
-  health: 600
-  damage: 60
+  health: 300
+  damage: 35
   speed: 3
-  range: 6
-  seekingRange: 200
-  shield: 100
-  cooldown: 5
-  returnDamage: 0
+  range: 5
+  seekingRange: 40
+  shield: 10
+  cooldown: 4
+  returnDamage: 5

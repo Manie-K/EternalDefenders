@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ElectricTowerStats
   m_EditorClassIdentifier: 
   health: 200
-  damage: 300
+  damage: 30
   range: 40
-  cooldown: 10
+  cooldown: 8

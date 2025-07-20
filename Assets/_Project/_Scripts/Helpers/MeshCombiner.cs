@@ -31,10 +31,11 @@ namespace EternalDefenders.Helpers
             mesh.CombineMeshes(combine);
             
             string path = $"Assets/_Project/Meshes/{targetName}.asset";
-            
+#if UNITY_EDITOR
             AssetDatabase.CreateAsset(mesh, path);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+            #endif
         }
     }
 }

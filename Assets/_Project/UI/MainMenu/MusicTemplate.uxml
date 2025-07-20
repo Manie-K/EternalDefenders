@@ -1,8 +1,8 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/_Project/UI/MainMenu/MenuStyles.uss?fileID=7433441132597879392&amp;guid=b5c865e8413ff1b4db81640d14ccc593&amp;type=3#MenuStyles" />
-    <engine:VisualElement name="Wrapper" style="flex-grow: 1;">
+    <engine:VisualElement name="Wrapper" style="flex-grow: 1; -unity-font-definition: resource(&apos;Fonts/CinemachineRuntimeTheme&apos;);">
         <engine:Slider label="Music&#10;" value="0.5" high-value="1" fill="false" name="MusicSlider" style="align-self: stretch; font-size: 42px; flex-grow: 0; height: 70px; color: rgb(255, 255, 255); width: 500px;" />
         <engine:Slider label="Fbx" value="0.5" high-value="1" name="SfxSlider" style="align-self: stretch; font-size: 42px; align-content: stretch; flex-grow: 0; height: 70px; color: rgb(255, 255, 255); width: 500px;" />
-        <engine:Button text="Back" name="BackControllsButton" class="menu-button" style="top: 30%;" />
+        <engine:Button text="Back" name="BackControllsButton" class="menu-button" style="top: 30%; -unity-font-definition: resource(&apos;Fonts/Roboto-Bold&apos;);" />
     </engine:VisualElement>
 </engine:UXML>

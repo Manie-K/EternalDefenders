@@ -15,5 +15,5 @@ MonoBehaviour:
   statType: 7
   modifierType: 0
   persistAfterFinish: 0
-  limitedDurationTime: 10
-  value: -5
+  limitedDurationTime: 8
+  value: -10
