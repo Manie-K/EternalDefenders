@@ -11,10 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/GameWorld.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
+  - enabled: 1
     path: Assets/_Project/Scenes/TestingWorld.unity
     guid: 284c5c8b9f22e7040bee25b4a195cc4e
-  - enabled: 0
+  - enabled: 1
     path: Assets/_Project/Scenes/EmptyTestingWorld.unity
     guid: 56e56e4efb960cd4c9b2c339f5824bf0
   m_configObjects:
