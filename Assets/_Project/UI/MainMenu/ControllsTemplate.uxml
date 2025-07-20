@@ -1,7 +1,7 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/_Project/UI/MainMenu/MenuStyles.uss?fileID=7433441132597879392&amp;guid=b5c865e8413ff1b4db81640d14ccc593&amp;type=3#MenuStyles" />
     <engine:VisualElement name="Wrapper" style="flex-grow: 1; width: 100%; top: auto; left: auto; right: auto; bottom: auto; -unity-font-definition: resource(&apos;Fonts/CinemachineRuntimeTheme&apos;);">
-        <engine:VisualElement name="Controlls" style="flex-grow: 0; padding-top: 5%; align-self: stretch; width: 150%; margin-left: -25%;">
+        <engine:VisualElement name="Controlls" style="flex-grow: 0; padding-top: 5%; align-self: stretch; width: 100%; margin-left: 0;">
             <engine:VisualElement name="Shoot" style="flex-grow: 1; flex-direction: row; width: 100%;">
                 <engine:Label text="Shoot" name="Shot" class="Text" style="flex-grow: 1; align-items: stretch; justify-content: flex-start; -unity-text-align: upper-left;" />
                 <engine:Label text="LMB" name="ShotControl" class="Text" style="width: 20%; -unity-text-align: upper-left;" />
